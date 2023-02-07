@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" tools:showIn="navigation_view">
+
+<group android:checkableBehavior="single">
+    <item
+        android:id="@+id/dashboad"
+        android:icon="@drawable/dashboard"
+        android:title="@string/dashbard"/>
+    <item
+        android:id="@+id/sale"
+        android:icon="@drawable/shopping_cart"
+        android:title="@string/sale"/>
+    <item
+        android:id="@+id/category"
+        android:icon="@drawable/category"
+        android:title="@string/category"/>
+    <item
+        android:id="@+id/inventory"
+        android:icon="@drawable/inventory"
+        android:title="@string/inventory"/>
+    <item
+        android:id="@+id/report"
+        android:icon="@drawable/summarize"
+        android:title="@string/report"/>
+    <item
+        android:id="@+id/setting"
+        android:icon="@drawable/settings"
+        android:title="@string/setting"/>
+    <item
+        android:id="@+id/logout"
+        android:icon="@drawable/logout"
+        android:title="@string/sign_out"/>
+</group>
+
+</menu>
