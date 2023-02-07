@@ -12,10 +12,10 @@
         android:theme="@style/Theme.POS"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".setting.Login"
             android:exported="false" />
         <activity
-            android:name=".setting.Login"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
