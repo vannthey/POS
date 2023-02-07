@@ -16,6 +16,10 @@
        <include
            layout="@layout/custom_actionbar"
            android:id="@+id/actionBar"/>
+       <FrameLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:id="@+id/main_frame_layout"/>
    </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView

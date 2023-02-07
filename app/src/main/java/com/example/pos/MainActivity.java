@@ -8,13 +8,16 @@ import android.widget.Toast;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
+import androidx.fragment.app.Fragment;
 
+import com.example.pos.dasboard.Frag_Dashboard;
 import com.example.pos.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
     ActionBarDrawerToggle drawerToggle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,9 +40,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean NavigationSelected(MenuItem menuItem) {
-        switch (menuItem.getItemId()){
+        switch (menuItem.getItemId()) {
             case R.id.dashboad:
-                Toast.makeText(this, "Dashboard", Toast.LENGTH_SHORT).show();
+                setStateFragement(new Frag_Dashboard());
                 break;
             case R.id.sale:
                 break;
@@ -59,19 +62,23 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    private void setStateFragement(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout,fragment).commit();
+    }
+
 
     @Override
     public void onBackPressed() {
-        if (binding.navDrawerLayout.isDrawerOpen(GravityCompat.START)){
+        if (binding.navDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.navDrawerLayout.closeDrawer(GravityCompat.START);
-        }else{
+        } else {
             super.onBackPressed();
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.cart_menu,menu);
+        getMenuInflater().inflate(R.menu.cart_menu, menu);
         return true;
     }
 }
