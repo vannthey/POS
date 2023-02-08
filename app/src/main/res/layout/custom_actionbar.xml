@@ -6,4 +6,5 @@
     android:id="@+id/custom_actionbar"
     android:elevation="1dp"
     app:titleCentered="true">
+
 </com.google.android.material.appbar.MaterialToolbar>

@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
 
         binding.navDrawerView.setNavigationItemSelectedListener(this::NavigationSelected);
 
+        setStateFragement(new Frag_Dashboard());
+
     }
 
     @Override
