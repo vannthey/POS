@@ -1,5 +1,6 @@
 package com.example.pos;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +18,7 @@ import com.example.pos.databinding.ActivityMainBinding;
 import com.example.pos.inventory.Frag_inventory;
 import com.example.pos.report.Frag_report;
 import com.example.pos.sale.Frag_sale;
+import com.example.pos.setting.Preference;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,11 +37,11 @@ public class MainActivity extends AppCompatActivity {
                 binding.navDrawerLayout,
                 binding.actionBar.customActionbar,
                 R.string.Navigation_drawer_open,
-                R.string.Navigation_drawer_close);
+                R.string.Navigation_drawer_close) {
+        };
 
         binding.navDrawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
-
 
         binding.navDrawerView.setNavigationItemSelectedListener(this::NavigationSelected);
 
@@ -74,20 +76,22 @@ public class MainActivity extends AppCompatActivity {
             case R.id.report:
                 setStateFragement(new Frag_report());
                 break;
-            case R.id.setting:
-                Toast.makeText(this, "Setting", Toast.LENGTH_SHORT).show();
-                break;
             case R.id.logout:
                 Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
                 break;
-
+            case R.id.setting:
+                startActivity(new Intent(this, Preference.class));
+                break;
         }
         binding.navDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
     private void setStateFragement(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, fragment).commit();
+        getSupportFragmentManager().
+                beginTransaction().
+                replace(R.id.main_frame_layout, fragment).
+                commit();
     }
 
 

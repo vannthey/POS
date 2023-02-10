@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".dasboard.Frag_Dashboard">
 
     <LinearLayout
@@ -17,8 +18,10 @@
             android:layout_margin="10dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/txtFirstname"
+                android:id="@+id/searchView_dashboard"
                 android:layout_width="match_parent"
+                android:drawableStart="@drawable/search"
+                android:drawableEnd="@drawable/qr_code_scanner"
                 android:layout_height="wrap_content" />
 
         </com.google.android.material.textfield.TextInputLayout>

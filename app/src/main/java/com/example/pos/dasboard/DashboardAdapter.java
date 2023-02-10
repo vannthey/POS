@@ -1,6 +1,7 @@
 package com.example.pos.dasboard;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.cardview.widget.CardView;
 
 import com.example.pos.R;
 import com.example.pos.dasboard.DashboardModel;
+import com.example.pos.setting.Login;
 
 import java.util.List;
 import java.util.Random;
@@ -51,6 +53,12 @@ public class DashboardAdapter extends BaseAdapter {
         int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
         cardView_dashboard.setCardBackgroundColor(color);
         item_name.setText(model.get(i).getItem_name());
+
+        cardView_dashboard.setOnClickListener(view1 -> {
+            context.startActivity(new Intent(context, Login.class));
+        });
+
+
         return view;
     }
 }
