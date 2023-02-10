@@ -23,12 +23,16 @@
     <string name="dashboard">Dashboard</string>
     <string name="sale">Sale</string>
     <string name="category">Category</string>
-    <string name="report">report</string>
+    <string name="report">Report</string>
     <string name="inventory">Inventory</string>
     <string name="setting">Setting</string>
     <string name="currency">Currency Exchange</string>
     <string name="company_name">Company Name</string>
-    <string name="kitchencode">Kitchen Code</string>
+    <string name="kitchen_code">Kitchen Code</string>
     <string name="system_language">Language</string>
+    <string name="company_number">Phone Number</string>
+    <string name="company_address">Address</string>
+    <string name="print_invoice">Print Invoice</string>
+    <string name="change_logo">Change Logo</string>
 
 </resources>

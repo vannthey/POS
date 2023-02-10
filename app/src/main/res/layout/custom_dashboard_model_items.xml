@@ -5,7 +5,7 @@
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="100dp"
         android:layout_margin="5dp"
         android:clickable="true"
         android:id="@+id/cardView_dashboard"

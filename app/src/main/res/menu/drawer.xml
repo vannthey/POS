@@ -5,39 +5,35 @@
 <group android:checkableBehavior="single">
     <item
         android:id="@+id/dashboad"
-        android:icon="@drawable/dashboard"
+        android:icon="@drawable/ic_dashboard"
         android:title="@string/dashboard"/>
     <item
         android:id="@+id/sale"
-        android:icon="@drawable/shopping_cart"
+        android:icon="@drawable/ic_shopping_cart"
         android:title="@string/sale"/>
     <item
         android:id="@+id/category"
-        android:icon="@drawable/category"
+        android:icon="@drawable/ic_category"
         android:title="@string/category"/>
     <item
         android:id="@+id/inventory"
-        android:icon="@drawable/inventory"
+        android:icon="@drawable/ic_inventory"
         android:title="@string/inventory"/>
     <item
         android:id="@+id/report"
-        android:icon="@drawable/summarize"
+        android:icon="@drawable/ic_summarize"
         android:title="@string/report"/>
     <item
-        android:id="@+id/currency_exchange"
-        android:icon="@drawable/currency_exchange"
-        android:title="@string/currency"/>
-    <item
         android:id="@+id/manage_account"
-        android:icon="@drawable/manage_accounts"
+        android:icon="@drawable/ic_manage_accounts"
         android:title="@string/setting_account"/>
     <item
         android:id="@+id/setting"
-        android:icon="@drawable/settings"
+        android:icon="@drawable/ic_settings"
         android:title="@string/setting"/>
     <item
         android:id="@+id/logout"
-        android:icon="@drawable/logout"
+        android:icon="@drawable/ic_logout"
         android:title="@string/sign_out"/>
 </group>
 

@@ -54,10 +54,6 @@ public class DashboardAdapter extends BaseAdapter {
         cardView_dashboard.setCardBackgroundColor(color);
         item_name.setText(model.get(i).getItem_name());
 
-        cardView_dashboard.setOnClickListener(view1 -> {
-            context.startActivity(new Intent(context, Login.class));
-        });
-
 
         return view;
     }

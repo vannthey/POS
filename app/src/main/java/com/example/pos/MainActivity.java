@@ -1,5 +1,6 @@
 package com.example.pos;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
@@ -45,39 +47,49 @@ public class MainActivity extends AppCompatActivity {
 
         binding.navDrawerView.setNavigationItemSelectedListener(this::NavigationSelected);
 
-        setStateFragement(new Frag_Dashboard());
+        setStateFragment(new Frag_Dashboard());
 
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.cart:
-                Toast.makeText(this, "Shopping Cart", Toast.LENGTH_SHORT).show();
-                break;
+        if (item.getItemId() == R.id.cart) {
+            Toast.makeText(this, "Shopping Cart", Toast.LENGTH_SHORT).show();
         }
         return true;
     }
 
+    @SuppressLint("NonConstantResourceId")
     private boolean NavigationSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.dashboad:
-                setStateFragement(new Frag_Dashboard());
+                setStateFragment(new Frag_Dashboard());
                 break;
             case R.id.sale:
-                setStateFragement(new Frag_sale());
+                setStateFragment(new Frag_sale());
                 break;
             case R.id.category:
-                setStateFragement(new Frag_category());
+                setStateFragment(new Frag_category());
                 break;
             case R.id.inventory:
-                setStateFragement(new Frag_inventory());
+                setStateFragment(new Frag_inventory());
                 break;
             case R.id.report:
-                setStateFragement(new Frag_report());
+                setStateFragment(new Frag_report());
                 break;
             case R.id.logout:
-                Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setCancelable(false);
+                builder.setMessage("ARE YOU SURE WANT TO LOG OUT?");
+                builder.setNegativeButton("NO", (dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                });
+                builder.setPositiveButton("YES", (dialogInterface, i) -> {
+                    this.finishAffinity();
+                    System.exit(0);
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
                 break;
             case R.id.setting:
                 startActivity(new Intent(this, Preference.class));
@@ -87,11 +99,11 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private void setStateFragement(Fragment fragment) {
-        getSupportFragmentManager().
-                beginTransaction().
-                replace(R.id.main_frame_layout, fragment).
-                commit();
+    private void setStateFragment(Fragment fragment) {
+            getSupportFragmentManager().
+                    beginTransaction().
+                    replace(R.id.main_frame_layout, fragment).
+                    commit();
     }
 
 

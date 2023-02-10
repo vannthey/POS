@@ -4,13 +4,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.pos.databinding.FragmentFragDashboardBinding;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +24,8 @@ public class Frag_Dashboard extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentFragDashboardBinding.inflate(inflater, container, false);
 
-        binding.searchViewDashboard.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
+        binding.searchViewDashboard.setOnFocusChangeListener((view, b) -> {
 
-            }
         });
 
         List<DashboardModel> models = new ArrayList<>();
@@ -44,11 +40,26 @@ public class Frag_Dashboard extends Fragment {
         models.add(new DashboardModel("Samurai"));
         models.add(new DashboardModel("Red Bull"));
         binding.gridDashboard.setAdapter(new DashboardAdapter(models, getContext()));
-
-        binding.gridDashboard.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        binding.tabLayoutOnDashboard.addTab(binding.tabLayoutOnDashboard.newTab().setText("All"));
+        binding.tabLayoutOnDashboard.addTab(binding.tabLayoutOnDashboard.newTab().setText("Drink"));
+        binding.tabLayoutOnDashboard.addTab(binding.tabLayoutOnDashboard.newTab().setText("Soft Drink"));
+        binding.tabLayoutOnDashboard.addTab(binding.tabLayoutOnDashboard.newTab().setText("Hot Drink"));
+        binding.tabLayoutOnDashboard.addTab(binding.tabLayoutOnDashboard.newTab().setText("Food"));
+        binding.tabLayoutOnDashboard.addTab(binding.tabLayoutOnDashboard.newTab().setText("Meal"));
+        binding.tabLayoutOnDashboard.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(requireActivity(), "Click", Toast.LENGTH_SHORT).show();
+            public void onTabSelected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
             }
         });
 
