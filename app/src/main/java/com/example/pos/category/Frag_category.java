@@ -2,6 +2,7 @@ package com.example.pos.category;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -37,4 +38,5 @@ public class Frag_category extends Fragment {
 
         return binding.getRoot();
     }
+
 }

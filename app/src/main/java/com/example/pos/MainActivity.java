@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -51,10 +52,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void onHideItemNavigationDrawer() {
+       binding.navDrawerView.getMenu().getItem(R.id.category);
+    }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.cart) {
-            Toast.makeText(this, "Shopping Cart", Toast.LENGTH_SHORT).show();
+            setStateFragment(new Frag_sale());
+            binding.navDrawerView.setCheckedItem(R.id.sale);
         }
         return true;
     }
@@ -85,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                     dialogInterface.dismiss();
                 });
                 builder.setPositiveButton("YES", (dialogInterface, i) -> {
-                    this.finishAffinity();
+                    finish();
                     System.exit(0);
                 });
                 AlertDialog dialog = builder.create();
@@ -100,10 +106,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setStateFragment(Fragment fragment) {
-            getSupportFragmentManager().
-                    beginTransaction().
-                    replace(R.id.main_frame_layout, fragment).
-                    commit();
+        getSupportFragmentManager().
+                beginTransaction().
+                replace(R.id.main_frame_layout, fragment).
+                commit();
     }
 
 
