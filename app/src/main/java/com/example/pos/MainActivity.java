@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.pos.account.ManageAccountActivity;
 import com.example.pos.category.Frag_category;
 import com.example.pos.dasboard.Frag_Dashboard;
 import com.example.pos.databinding.ActivityMainBinding;
@@ -39,8 +40,7 @@ public class MainActivity extends AppCompatActivity {
                 binding.navDrawerLayout,
                 binding.actionBar.customActionbar,
                 R.string.Navigation_drawer_open,
-                R.string.Navigation_drawer_close) {
-        };
+                R.string.Navigation_drawer_close);
 
         /*
         Set state to navigation drawer to it visible on action bar
@@ -55,16 +55,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void onHideItemNavigationDrawer() {
-       binding.navDrawerView.getMenu().getItem(R.id.category);
-    }
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.add_items_cart) {
             setStateFragment(new Frag_sale());
             binding.navDrawerView.setCheckedItem(R.id.sale);
-        }else if (item.getItemId() == R.id.add_category){
+            setTitle(R.string.sale);
+        } else if (item.getItemId() == R.id.add_category) {
             Toast.makeText(this, "adding category........", Toast.LENGTH_SHORT).show();
         }
         return true;
@@ -77,38 +74,41 @@ public class MainActivity extends AppCompatActivity {
     private boolean NavigationSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.dashboad:
-                setTitle("Dashboard");
+                setTitle(R.string.dashboard);
                 setStateFragment(new Frag_Dashboard());
                 break;
             case R.id.sale:
-                setTitle("Sale");
+                setTitle(R.string.dashboard);
                 setStateFragment(new Frag_sale());
                 break;
             case R.id.category:
-                setTitle("Category");
+                setTitle(R.string.category);
                 setStateFragment(new Frag_category());
                 break;
             case R.id.inventory:
-                setTitle("Inventory");
+                setTitle(R.string.inventory);
                 setStateFragment(new Frag_inventory());
                 break;
             case R.id.report:
-                setTitle("Report");
+                setTitle(R.string.report);
                 setStateFragment(new Frag_report());
                 break;
             case R.id.logout:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setCancelable(false);
                 builder.setMessage("ARE YOU SURE WANT TO LOG OUT?");
-                builder.setNegativeButton("NO", (dialogInterface, i) -> {
-                    dialogInterface.dismiss();
-                });
+                builder.setNegativeButton("NO", (dialogInterface, i) ->
+                        dialogInterface.dismiss()
+                );
                 builder.setPositiveButton("YES", (dialogInterface, i) -> {
                     finish();
                     System.exit(0);
                 });
                 AlertDialog dialog = builder.create();
                 dialog.show();
+                break;
+            case R.id.manage_account:
+                startActivity(new Intent(this, ManageAccountActivity.class));
                 break;
             case R.id.setting:
                 startActivity(new Intent(this, Preference.class));
