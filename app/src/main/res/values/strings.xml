@@ -34,5 +34,6 @@
     <string name="company_address">Address</string>
     <string name="print_invoice">Print Invoice</string>
     <string name="change_logo">Change Logo</string>
+    <string name="payment_method">Payment Method</string>
 
 </resources>

@@ -52,7 +52,6 @@ public class CategoryAdapter extends BaseAdapter {
         int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
         cardView_category.setCardBackgroundColor(color);
         item_category.setText(model.get(i).getIccategory());
-        no_category_item.setText(model.get(i).getNo());
 
         return view;
     }

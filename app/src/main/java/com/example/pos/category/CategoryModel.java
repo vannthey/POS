@@ -12,8 +12,7 @@ public class CategoryModel {
         return no;
     }
 
-    public CategoryModel(String iccategory, String no) {
+    public CategoryModel(String iccategory) {
         this.iccategory = iccategory;
-        this.no = no;
     }
 }
