@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -34,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.actionBar.customActionbar);
-        setTitle("Blue Technology");
+        setTitle("Dashboard");
 
         drawerToggle = new ActionBarDrawerToggle(this,
                 binding.navDrawerLayout,
@@ -43,11 +42,15 @@ public class MainActivity extends AppCompatActivity {
                 R.string.Navigation_drawer_close) {
         };
 
+        /*
+        Set state to navigation drawer to it visible on action bar
+         */
         binding.navDrawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
 
         binding.navDrawerView.setNavigationItemSelectedListener(this::NavigationSelected);
 
+        binding.navDrawerView.setCheckedItem(R.id.dashboad);
         setStateFragment(new Frag_Dashboard());
 
     }
@@ -58,29 +61,39 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.cart) {
+        if (item.getItemId() == R.id.add_items_cart) {
             setStateFragment(new Frag_sale());
             binding.navDrawerView.setCheckedItem(R.id.sale);
+        }else if (item.getItemId() == R.id.add_category){
+            Toast.makeText(this, "adding category........", Toast.LENGTH_SHORT).show();
         }
         return true;
     }
 
+    /*
+    select state in nav drawer to set fragment to main activity
+     */
     @SuppressLint("NonConstantResourceId")
     private boolean NavigationSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.dashboad:
+                setTitle("Dashboard");
                 setStateFragment(new Frag_Dashboard());
                 break;
             case R.id.sale:
+                setTitle("Sale");
                 setStateFragment(new Frag_sale());
                 break;
             case R.id.category:
+                setTitle("Category");
                 setStateFragment(new Frag_category());
                 break;
             case R.id.inventory:
+                setTitle("Inventory");
                 setStateFragment(new Frag_inventory());
                 break;
             case R.id.report:
+                setTitle("Report");
                 setStateFragment(new Frag_report());
                 break;
             case R.id.logout:
@@ -124,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.cart_menu, menu);
+        getMenuInflater().inflate(R.menu.option_menu, menu);
         return true;
     }
 }
