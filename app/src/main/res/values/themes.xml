@@ -13,4 +13,9 @@
         <item name="android:statusBarColor">@color/black</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="ToolbarFont">
+            <item name="android:textSize">20sp</item>
+    </style>
+
 </resources>

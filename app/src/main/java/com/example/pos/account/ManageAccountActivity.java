@@ -1,9 +1,11 @@
 package com.example.pos.account;
 
 import android.os.Bundle;
+import android.view.Menu;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.pos.R;
 import com.example.pos.databinding.ActivityManageAccountBinding;
 
 public class ManageAccountActivity extends AppCompatActivity {
@@ -21,5 +23,11 @@ public class ManageAccountActivity extends AppCompatActivity {
         setTitle("Account Management");
 
         setContentView(binding.getRoot());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.manage_account_menu,menu);
+        return super.onCreateOptionsMenu(menu);
     }
 }

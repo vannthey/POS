@@ -35,4 +35,6 @@ public class Preference extends AppCompatActivity {
         setContentView(binding.getRoot());
     }
 
+
+
 }

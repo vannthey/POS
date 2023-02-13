@@ -35,5 +35,8 @@
     <string name="change_logo">Change Logo</string>
     <string name="payment_method">Payment Method</string>
     <string name="add_category">Add Category</string>
+    <string name="add_user">Add User</string>
+    <string name="edit_user">Edit User</string>
+    <string name="delete_user">Delete User</string>
 
 </resources>
