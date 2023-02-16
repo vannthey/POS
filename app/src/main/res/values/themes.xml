@@ -12,10 +12,20 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/black</item>
         <!-- Customize your theme here. -->
+        <item name="fontFamily">@font/poppins_regular</item>
     </style>
 
     <style name="ToolbarFont">
             <item name="android:textSize">20sp</item>
     </style>
+
+    <style name="LocalFont">
+        <item name="fontFamily">@font/poppins_regular</item>
+    </style>
+
+    <style name="KhmerFont">
+        <item name="fontFamily">@font/khmerosbattambang</item>
+    </style>
+
 
 </resources>
