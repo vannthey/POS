@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -17,6 +18,8 @@ import androidx.fragment.app.Fragment;
 import com.example.pos.R;
 import com.example.pos.databinding.FragmentFragDashboardBinding;
 import com.google.android.material.tabs.TabLayout;
+import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,10 +48,9 @@ public class Frag_Dashboard extends Fragment {
         binding.searchViewDashboard.setOnTouchListener((view, motionEvent) -> {
             final int DRAWABLE_RIGHT = 0;
             if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                if (motionEvent.getRawX() >= (binding.searchViewDashboard.getRight() 
-                        - binding.searchViewDashboard.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                if (motionEvent.getRawX() >= (binding.searchViewDashboard.getRight() - binding.searchViewDashboard.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
 
-                    Toast.makeText(requireContext(), "Scanning QR Code", Toast.LENGTH_SHORT).show();
+                    launchQRScan();
 
                 }
             }
@@ -92,9 +94,30 @@ public class Frag_Dashboard extends Fragment {
         return binding.getRoot();
     }
 
+    private void launchQRScan() {
+        ScanOptions options = new ScanOptions();
+        options.setDesiredBarcodeFormats(ScanOptions.ONE_D_CODE_TYPES);
+        options.setPrompt("Scanning Coding");
+        options.setCameraId(0);  // Use a specific camera of the device
+        options.setBeepEnabled(false);
+        options.setOrientationLocked(true);
+        options.setBarcodeImageEnabled(true);
+        barcodeLauncher.launch(options);
+    }
+
+    private final ActivityResultLauncher<ScanOptions> barcodeLauncher = registerForActivityResult(new ScanContract(),
+            result -> {
+                if (result.getContents() == null) {
+                    Toast.makeText(requireContext(), "Cancelled", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(requireContext(), "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+                }
+            });
+
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.option_menu,menu);
+        inflater.inflate(R.menu.option_menu, menu);
         menu.findItem(R.id.add_items_cart).setVisible(true);
         super.onCreateOptionsMenu(menu, inflater);
     }

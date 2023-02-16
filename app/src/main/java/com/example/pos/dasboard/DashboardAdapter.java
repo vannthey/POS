@@ -3,6 +3,7 @@ package com.example.pos.dasboard;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.provider.CalendarContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,8 +50,9 @@ public class DashboardAdapter extends BaseAdapter {
         }
         TextView item_name = view.findViewById(R.id.item_name);
         CardView cardView_dashboard = view.findViewById(R.id.cardView_dashboard);
-        Random rnd = new Random();
-        int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+//        Random rnd = new Random();
+//         int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+        int color= ((int)(Math.random()*16777215)) | (0xFF << 24);
         cardView_dashboard.setCardBackgroundColor(color);
         item_name.setText(model.get(i).getItem_name());
 
