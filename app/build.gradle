@@ -42,6 +42,15 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     /*
+    Add room database to project
+     */
+
+    def room_version = "2.5.0"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+
+    /*
     circle image view
      */
     implementation 'de.hdodenhof:circleimageview:3.1.0'
