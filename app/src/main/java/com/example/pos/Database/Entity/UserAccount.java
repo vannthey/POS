@@ -7,48 +7,63 @@ import androidx.room.PrimaryKey;
 @Entity
 public class UserAccount {
     @PrimaryKey(autoGenerate = true)
+    public
     int userId;
 
     @ColumnInfo
+    public
     String Firstname;
 
     @ColumnInfo
+    public
     String Lastname;
 
     @ColumnInfo
+    public
     String Username;
 
     @ColumnInfo
+    public
     String Password;
 
     @ColumnInfo
+    public
     Boolean isAdmin;
 
     @ColumnInfo
+    public
     Boolean isManager;
 
     @ColumnInfo
+    public
     Boolean isSeller;
 
     @ColumnInfo
+    public
     Boolean isCashier;
 
     @ColumnInfo
+    public
     Boolean canDiscount;
 
     @ColumnInfo
+    public
     Boolean canUpdate;
 
     @ColumnInfo
+    public
     Boolean canAddItem;
 
     @ColumnInfo
+    public
     Boolean canAddCategory;
 
     @ColumnInfo
+    public
     Boolean canDeleteItem;
 
     @ColumnInfo
+    public
     String createDate;
 
     public UserAccount() {

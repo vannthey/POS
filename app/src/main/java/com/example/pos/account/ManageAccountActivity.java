@@ -1,6 +1,7 @@
 package com.example.pos.account;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.example.pos.databinding.ActivityManageAccountBinding;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class ManageAccountActivity extends AppCompatActivity {
@@ -53,6 +55,16 @@ public class ManageAccountActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         binding.btnSaveCreateUser.setOnClickListener(this::OnSaveCreateUser);
         OnStateCheckBoxUserRole();
+        OnCallAllUserFromDB();
+    }
+
+    private void OnCallAllUserFromDB() {
+        Handler handler = new Handler();
+        new Thread(()->{
+            List<UserAccount> userAccountList =
+                    POSDatabase.getInstance(getApplicationContext()).getDao().userAccount();
+            handler.post(()-> Toast.makeText(this, ""+userAccountList.toString(), Toast.LENGTH_SHORT).show());
+        }).start();
     }
 
     private void OnSaveCreateUser(View view) {
@@ -170,27 +182,30 @@ public class ManageAccountActivity extends AppCompatActivity {
                 binding.canDiscount.setChecked(false);
                 binding.canUpdateItem.setChecked(false);
                 binding.canDeleteItem.setChecked(false);
+
+                binding.canAddCategory.setEnabled(false);
+                binding.canAddItem.setEnabled(false);
+                binding.canDiscount.setEnabled(false);
+                binding.canDeleteItem.setEnabled(false);
+                binding.canUpdateItem.setEnabled(false);
+
                 canDiscount = true;
                 canAddCategory = true;
                 canAddItem = true;
                 canUpdateItem = true;
                 canDeleteItem = true;
-                Toast.makeText(this, "canDiscount : " + canDiscount +
-                        "\ncanAddItem : :" + canAddItem +
-                        "\ncanAddCategory : " + canAddCategory +
-                        "\ncanUpdateItem : " + canUpdateItem +
-                        "\ncanDeleteItem : " + canDeleteItem, Toast.LENGTH_SHORT).show();
             } else {
                 canDiscount = false;
                 canAddCategory = false;
                 canAddItem = false;
                 canUpdateItem = false;
                 canDeleteItem = false;
-                Toast.makeText(this, "canDiscount : " + canDiscount +
-                        "\ncanAddItem : :" + canAddItem +
-                        "\ncanAddCategory : " + canAddCategory +
-                        "\ncanUpdateItem : " + canUpdateItem +
-                        "\ncanDeleteItem : " + canDeleteItem, Toast.LENGTH_SHORT).show();
+
+                binding.canAddCategory.setEnabled(true);
+                binding.canAddItem.setEnabled(true);
+                binding.canDiscount.setEnabled(true);
+                binding.canDeleteItem.setEnabled(true);
+                binding.canUpdateItem.setEnabled(true);
             }
         });
 
@@ -199,7 +214,13 @@ public class ManageAccountActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-
+            case R.id.add_user:
+                binding.layoutAddUser.setVisibility(View.VISIBLE);
+                break;
+            case R.id.edit_user:
+                break;
+            case R.id.delete_user:
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
