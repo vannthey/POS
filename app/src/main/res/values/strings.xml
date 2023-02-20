@@ -38,5 +38,7 @@
     <string name="add_user">Add User</string>
     <string name="edit_user">Edit User</string>
     <string name="delete_user">Delete User</string>
+    <string name="KhmerLanguage">Khmer</string>
+    <string name="EnglishLanguage">English</string>
 
 </resources>
