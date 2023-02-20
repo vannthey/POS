@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -17,7 +18,6 @@ import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.pos.account.ManageAccountActivity;
-import com.example.pos.category.Frag_add_category;
 import com.example.pos.category.Frag_category;
 import com.example.pos.dasboard.Frag_Dashboard;
 import com.example.pos.databinding.ActivityMainBinding;
@@ -57,19 +57,6 @@ public class MainActivity extends AppCompatActivity {
         binding.navDrawerView.setCheckedItem(R.id.dashboad);
         setStateFragment(new Frag_Dashboard());
 
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.add_items_cart) {
-            setStateFragment(new Frag_sale());
-            binding.navDrawerView.setCheckedItem(R.id.sale);
-            setTitle(R.string.sale);
-        } else if (item.getItemId() == R.id.add_category) {
-            setStateFragment(new Frag_add_category());
-            Toast.makeText(this, "adding category........", Toast.LENGTH_SHORT).show();
-        }
-        return true;
     }
 
     /*
@@ -150,11 +137,5 @@ public class MainActivity extends AppCompatActivity {
                 doubleBackToExitPressedOnce = false;
             }
         }, 2000);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.option_menu, menu);
-        return true;
     }
 }

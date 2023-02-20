@@ -24,8 +24,8 @@ public class Frag_category extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -35,11 +35,28 @@ public class Frag_category extends Fragment {
         binding = FragmentFragCategoryBinding.inflate(inflater, container, false);
 
         List<CategoryModel> item_category = new ArrayList<>();
-
-
         binding.gridCategory.setAdapter(new CategoryAdapter(item_category, requireContext()));
 
+        binding.btnCancelCategory.setOnClickListener(this::onCancelSaveCategory);
+
         return binding.getRoot();
+    }
+
+    private void onCancelSaveCategory(View view) {
+        binding.layoutAddCategory.setVisibility(View.GONE);
+        binding.gridCategory.setVisibility(View.VISIBLE);
+        getParentFragmentManager().beginTransaction().detach(Frag_category.this).attach(Frag_category.this).commit();
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.add_category:
+                binding.layoutAddCategory.setVisibility(View.VISIBLE);
+                binding.gridCategory.setVisibility(View.GONE);
+                Toast.makeText(requireContext(), "Adding Category", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
