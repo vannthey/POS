@@ -48,9 +48,9 @@ public class CategoryAdapter extends BaseAdapter {
         TextView no_category_item = view.findViewById(R.id.no_category_item);
         CardView cardView_category = view.findViewById(R.id.cardView_category);
 
-        Random rnd = new Random();
-        int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-        cardView_category.setCardBackgroundColor(color);
+//        Random rnd = new Random();
+//        int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+//        cardView_category.setCardBackgroundColor(color);
         item_category.setText(model.get(i).getIccategory());
 
         return view;

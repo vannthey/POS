@@ -15,6 +15,9 @@ public class Item {
     int itemQty;
 
     @ColumnInfo
+    long itemCode;
+
+    @ColumnInfo
     double itemCost;
 
     @ColumnInfo
@@ -32,9 +35,10 @@ public class Item {
     @ColumnInfo
     String createDate;
 
-    public Item(String itemName, int itemQty, double itemCost, double itemPrice, int warehouseId, int categoryId, String itemCreator, String createDate) {
+    public Item(String itemName, int itemQty, long itemCode, double itemCost, double itemPrice, int warehouseId, int categoryId, String itemCreator, String createDate) {
         this.itemName = itemName;
         this.itemQty = itemQty;
+        this.itemCode = itemCode;
         this.itemCost = itemCost;
         this.itemPrice = itemPrice;
         this.warehouseId = warehouseId;
@@ -53,6 +57,10 @@ public class Item {
 
     public int getItemQty() {
         return itemQty;
+    }
+
+    public long getItemCode() {
+        return itemCode;
     }
 
     public double getItemCost() {
@@ -85,6 +93,7 @@ public class Item {
                 "itemId=" + itemId +
                 ", itemName='" + itemName + '\'' +
                 ", itemQty=" + itemQty +
+                ", itemCode=" + itemCode +
                 ", itemCost=" + itemCost +
                 ", itemPrice=" + itemPrice +
                 ", warehouseId=" + warehouseId +

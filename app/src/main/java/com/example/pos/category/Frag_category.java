@@ -36,14 +36,6 @@ public class Frag_category extends Fragment {
 
         List<CategoryModel> item_category = new ArrayList<>();
 
-        item_category.add(new CategoryModel("Drink"));
-        item_category.add(new CategoryModel("Food"));
-        item_category.add(new CategoryModel("Meal"));
-        item_category.add(new CategoryModel("Snack"));
-        item_category.add(new CategoryModel("Calory"));
-        item_category.add(new CategoryModel("Vegetable"));
-        item_category.add(new CategoryModel("Beef"));
-        item_category.add(new CategoryModel("Beer"));
 
         binding.gridCategory.setAdapter(new CategoryAdapter(item_category, requireContext()));
 

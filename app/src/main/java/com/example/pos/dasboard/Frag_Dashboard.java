@@ -58,15 +58,6 @@ public class Frag_Dashboard extends Fragment {
         });
         List<DashboardModel> models = new ArrayList<>();
 
-        models.add(new DashboardModel("Coca Cola"));
-        models.add(new DashboardModel("Samurai"));
-        models.add(new DashboardModel("Red Bull"));
-        models.add(new DashboardModel("Coca Cola"));
-        models.add(new DashboardModel("Samurai"));
-        models.add(new DashboardModel("Red Bull"));
-        models.add(new DashboardModel("Coca Cola"));
-        models.add(new DashboardModel("Samurai"));
-        models.add(new DashboardModel("Red Bull"));
         binding.gridDashboard.setAdapter(new DashboardAdapter(models, getContext()));
         binding.tabLayoutOnDashboard.addTab(binding.tabLayoutOnDashboard.newTab().setText("All"));
         binding.tabLayoutOnDashboard.addTab(binding.tabLayoutOnDashboard.newTab().setText("Drink"));

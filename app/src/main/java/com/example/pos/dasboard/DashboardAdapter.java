@@ -52,8 +52,8 @@ public class DashboardAdapter extends BaseAdapter {
         CardView cardView_dashboard = view.findViewById(R.id.cardView_dashboard);
 //        Random rnd = new Random();
 //         int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-        int color= ((int)(Math.random()*16777215)) | (0xFF << 24);
-        cardView_dashboard.setCardBackgroundColor(color);
+//        int color= ((int)(Math.random()*16777215)) | (0xFF << 24);
+//        cardView_dashboard.setCardBackgroundColor(color);
         item_name.setText(model.get(i).getItem_name());
 
 
