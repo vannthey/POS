@@ -47,8 +47,10 @@ public class UserAccount {
     @ColumnInfo
     Boolean canDeleteItem;
 
+    @ColumnInfo
+    String createDate;
 
-    public UserAccount(String firstname, String lastname, String username, long password, Boolean isAdmin, Boolean isManager, Boolean isSeller, Boolean isCashier, Boolean canDiscount, Boolean canUpdate, Boolean canAddItem, Boolean canAddCategory, Boolean canDeleteItem) {
+    public UserAccount(String firstname, String lastname, String username, long password, Boolean isAdmin, Boolean isManager, Boolean isSeller, Boolean isCashier, Boolean canDiscount, Boolean canUpdate, Boolean canAddItem, Boolean canAddCategory, Boolean canDeleteItem, String createDate) {
         Firstname = firstname;
         Lastname = lastname;
         Username = username;
@@ -62,6 +64,7 @@ public class UserAccount {
         this.canAddItem = canAddItem;
         this.canAddCategory = canAddCategory;
         this.canDeleteItem = canDeleteItem;
+        this.createDate = createDate;
     }
 
     public int getUserId() {
@@ -120,6 +123,10 @@ public class UserAccount {
         return canDeleteItem;
     }
 
+    public String getCreateDate() {
+        return createDate;
+    }
+
     @Override
     public String toString() {
         return "UserAccount{" +
@@ -137,6 +144,7 @@ public class UserAccount {
                 ", canAddItem=" + canAddItem +
                 ", canAddCategory=" + canAddCategory +
                 ", canDeleteItem=" + canDeleteItem +
+                ", createDate='" + createDate + '\'' +
                 '}';
     }
 }

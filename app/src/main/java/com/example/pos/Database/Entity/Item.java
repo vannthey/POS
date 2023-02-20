@@ -12,6 +12,18 @@ public class Item {
     String itemName;
 
     @ColumnInfo
+    int itemQty;
+
+    @ColumnInfo
+    double itemCost;
+
+    @ColumnInfo
+    double itemPrice;
+
+    @ColumnInfo
+    int warehouseId;
+
+    @ColumnInfo
     int categoryId;
 
     @ColumnInfo
@@ -20,8 +32,12 @@ public class Item {
     @ColumnInfo
     String createDate;
 
-    public Item(String itemName, int categoryId, String itemCreator, String createDate) {
+    public Item(String itemName, int itemQty, double itemCost, double itemPrice, int warehouseId, int categoryId, String itemCreator, String createDate) {
         this.itemName = itemName;
+        this.itemQty = itemQty;
+        this.itemCost = itemCost;
+        this.itemPrice = itemPrice;
+        this.warehouseId = warehouseId;
         this.categoryId = categoryId;
         this.itemCreator = itemCreator;
         this.createDate = createDate;
@@ -33,6 +49,22 @@ public class Item {
 
     public String getItemName() {
         return itemName;
+    }
+
+    public int getItemQty() {
+        return itemQty;
+    }
+
+    public double getItemCost() {
+        return itemCost;
+    }
+
+    public double getItemPrice() {
+        return itemPrice;
+    }
+
+    public int getWarehouseId() {
+        return warehouseId;
     }
 
     public int getCategoryId() {
@@ -52,6 +84,10 @@ public class Item {
         return "Item{" +
                 "itemId=" + itemId +
                 ", itemName='" + itemName + '\'' +
+                ", itemQty=" + itemQty +
+                ", itemCost=" + itemCost +
+                ", itemPrice=" + itemPrice +
+                ", warehouseId=" + warehouseId +
                 ", categoryId=" + categoryId +
                 ", itemCreator='" + itemCreator + '\'' +
                 ", createDate='" + createDate + '\'' +

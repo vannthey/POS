@@ -15,12 +15,12 @@ public class Category {
     String creator;
 
     @ColumnInfo
-    String CreateDate;
+    String createDate;
 
     public Category(String categoryName, String creator, String createDate) {
         this.categoryName = categoryName;
         this.creator = creator;
-        CreateDate = createDate;
+        this.createDate = createDate;
     }
 
     public int getCategoryId() {
@@ -36,7 +36,7 @@ public class Category {
     }
 
     public String getCreateDate() {
-        return CreateDate;
+        return createDate;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class Category {
                 "categoryId=" + categoryId +
                 ", categoryName='" + categoryName + '\'' +
                 ", creator='" + creator + '\'' +
-                ", CreateDate='" + CreateDate + '\'' +
+                ", createDate='" + createDate + '\'' +
                 '}';
     }
 }
