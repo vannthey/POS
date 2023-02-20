@@ -13,13 +13,13 @@
         android:numColumns="2" />
 
     <LinearLayout
+        android:id="@+id/layout_add_category"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/layout_add_category"
-        android:visibility="gone"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="10dp"
+        android:visibility="gone"
         tools:context=".category.Frag_add_category">
 
         <com.google.android.material.textfield.TextInputLayout

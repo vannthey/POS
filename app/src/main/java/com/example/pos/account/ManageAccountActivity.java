@@ -2,13 +2,22 @@ package com.example.pos.account;
 
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.pos.Database.Entity.UserAccount;
+import com.example.pos.Database.POSDatabase;
 import com.example.pos.R;
 import com.example.pos.databinding.ActivityManageAccountBinding;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class ManageAccountActivity extends AppCompatActivity {
 
@@ -18,10 +27,10 @@ public class ManageAccountActivity extends AppCompatActivity {
     /*
     Position
      */
-    Boolean isAdmin = false,
-            isSeller = false,
-            isCashier = false,
-            isManager = false;
+    Boolean isAdmin = true,
+            isSeller = true,
+            isCashier = true,
+            isManager = true;
     /*
     permission
      */
@@ -31,19 +40,6 @@ public class ManageAccountActivity extends AppCompatActivity {
             canAddCategory,
             canDeleteItem,
             AllowAllPermission;
-
-    /*
-    log in information
-     */
-    String Username;
-    String Password;
-
-    /*
-    User information
-     */
-    String Firstname;
-    String Lastname;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,17 +56,19 @@ public class ManageAccountActivity extends AppCompatActivity {
     }
 
     private void OnSaveCreateUser(View view) {
-
-    }
-
-    private void OnGetAllInformation() {
-
-        Firstname = binding.addFirstName.getText().toString();
-        Lastname = binding.addLastName.getText().toString();
-        Username = binding.addUserName.getText().toString();
-        Password = binding.addUserPassword.getText().toString();
-
-
+        Date current = Calendar.getInstance().getTime();
+        SimpleDateFormat simpleFormatter = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+        String formattedDate = simpleFormatter.format(current);
+        String Firstname = binding.addFirstName.getText().toString();
+        String Lastname = binding.addLastName.getText().toString();
+        String Username = binding.addUserName.getText().toString();
+        String Password = binding.addUserPassword.getText().toString();
+        UserAccount userAccount = new UserAccount(Firstname, Lastname, Username, Password, isAdmin,
+                isManager, isSeller, isCashier, canDiscount, canUpdateItem, canAddItem, canAddCategory,
+                canDeleteItem, formattedDate);
+        new Thread(() -> {
+            POSDatabase.getInstance(getApplicationContext()).getDao().createUser(userAccount);
+        }).start();
     }
 
     private void OnStateCheckBoxUserRole() {
@@ -79,7 +77,13 @@ public class ManageAccountActivity extends AppCompatActivity {
                 binding.isManager.setEnabled(false);
                 binding.isSeller.setEnabled(false);
                 binding.isCashier.setEnabled(false);
+                isManager = false;
+                isCashier = false;
+                isSeller = false;
             } else {
+                isManager = true;
+                isCashier = true;
+                isSeller = true;
                 binding.isManager.setEnabled(true);
                 binding.isSeller.setEnabled(true);
                 binding.isCashier.setEnabled(true);
@@ -90,7 +94,13 @@ public class ManageAccountActivity extends AppCompatActivity {
                 binding.isAdmin.setEnabled(false);
                 binding.isSeller.setEnabled(false);
                 binding.isCashier.setEnabled(false);
+                isSeller = false;
+                isAdmin = false;
+                isCashier = false;
             } else {
+                isSeller = true;
+                isAdmin = true;
+                isCashier = true;
                 binding.isAdmin.setEnabled(true);
                 binding.isSeller.setEnabled(true);
                 binding.isCashier.setEnabled(true);
@@ -102,7 +112,13 @@ public class ManageAccountActivity extends AppCompatActivity {
                 binding.isAdmin.setEnabled(false);
                 binding.isManager.setEnabled(false);
                 binding.isCashier.setEnabled(false);
+                isAdmin = false;
+                isManager = false;
+                isCashier = false;
             } else {
+                isAdmin = true;
+                isManager = true;
+                isCashier = true;
                 binding.isAdmin.setEnabled(true);
                 binding.isCashier.setEnabled(true);
                 binding.isManager.setEnabled(true);
@@ -113,7 +129,13 @@ public class ManageAccountActivity extends AppCompatActivity {
                 binding.isAdmin.setEnabled(false);
                 binding.isManager.setEnabled(false);
                 binding.isSeller.setEnabled(false);
+                isAdmin = false;
+                isSeller = false;
+                isManager = false;
             } else {
+                isAdmin = true;
+                isSeller = true;
+                isManager = true;
                 binding.isAdmin.setEnabled(true);
                 binding.isManager.setEnabled(true);
                 binding.isSeller.setEnabled(true);
@@ -172,6 +194,14 @@ public class ManageAccountActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

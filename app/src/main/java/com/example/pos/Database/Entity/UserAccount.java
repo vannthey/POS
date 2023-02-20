@@ -1,9 +1,10 @@
 package com.example.pos.Database.Entity;
 
 import androidx.room.ColumnInfo;
+import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-
+@Entity
 public class UserAccount {
     @PrimaryKey(autoGenerate = true)
     int userId;
@@ -18,7 +19,7 @@ public class UserAccount {
     String Username;
 
     @ColumnInfo
-    long Password;
+    String Password;
 
     @ColumnInfo
     Boolean isAdmin;
@@ -50,7 +51,10 @@ public class UserAccount {
     @ColumnInfo
     String createDate;
 
-    public UserAccount(String firstname, String lastname, String username, long password, Boolean isAdmin, Boolean isManager, Boolean isSeller, Boolean isCashier, Boolean canDiscount, Boolean canUpdate, Boolean canAddItem, Boolean canAddCategory, Boolean canDeleteItem, String createDate) {
+    public UserAccount() {
+    }
+
+    public UserAccount(String firstname, String lastname, String username, String password, Boolean isAdmin, Boolean isManager, Boolean isSeller, Boolean isCashier, Boolean canDiscount, Boolean canUpdate, Boolean canAddItem, Boolean canAddCategory, Boolean canDeleteItem, String createDate) {
         Firstname = firstname;
         Lastname = lastname;
         Username = username;
@@ -65,6 +69,27 @@ public class UserAccount {
         this.canAddCategory = canAddCategory;
         this.canDeleteItem = canDeleteItem;
         this.createDate = createDate;
+    }
+
+    @Override
+    public String toString() {
+        return "UserAccount{" +
+                "userId=" + userId +
+                ", Firstname='" + Firstname + '\'' +
+                ", Lastname='" + Lastname + '\'' +
+                ", Username='" + Username + '\'' +
+                ", Password='" + Password + '\'' +
+                ", isAdmin=" + isAdmin +
+                ", isManager=" + isManager +
+                ", isSeller=" + isSeller +
+                ", isCashier=" + isCashier +
+                ", canDiscount=" + canDiscount +
+                ", canUpdate=" + canUpdate +
+                ", canAddItem=" + canAddItem +
+                ", canAddCategory=" + canAddCategory +
+                ", canDeleteItem=" + canDeleteItem +
+                ", createDate='" + createDate + '\'' +
+                '}';
     }
 
     public int getUserId() {
@@ -83,7 +108,7 @@ public class UserAccount {
         return Username;
     }
 
-    public long getPassword() {
+    public String getPassword() {
         return Password;
     }
 
@@ -125,10 +150,5 @@ public class UserAccount {
 
     public String getCreateDate() {
         return createDate;
-    }
-
-    @Override
-    public String toString() {
-        return "UserAccount{" + "userId=" + userId + ", Firstname='" + Firstname + '\'' + ", Lastname='" + Lastname + '\'' + ", Username='" + Username + '\'' + ", Password=" + Password + ", isAdmin=" + isAdmin + ", isManager=" + isManager + ", isSeller=" + isSeller + ", isCashier=" + isCashier + ", canDiscount=" + canDiscount + ", canUpdate=" + canUpdate + ", canAddItem=" + canAddItem + ", canAddCategory=" + canAddCategory + ", canDeleteItem=" + canDeleteItem + ", createDate='" + createDate + '\'' + '}';
     }
 }

@@ -1,7 +1,6 @@
 package com.example.pos.category;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,21 +11,13 @@ import androidx.cardview.widget.CardView;
 
 import com.example.pos.R;
 
-import java.util.List;
-import java.util.Random;
-
 public class CategoryAdapter extends BaseAdapter {
-    List<CategoryModel> model;
-    Context context;
 
-    public CategoryAdapter(List<CategoryModel> model, Context context) {
-        this.model = model;
-        this.context = context;
-    }
+    Context context;
 
     @Override
     public int getCount() {
-        return model.size();
+        return 0;
     }
 
     @Override
@@ -51,7 +42,6 @@ public class CategoryAdapter extends BaseAdapter {
 //        Random rnd = new Random();
 //        int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
 //        cardView_category.setCardBackgroundColor(color);
-        item_category.setText(model.get(i).getIccategory());
 
         return view;
     }

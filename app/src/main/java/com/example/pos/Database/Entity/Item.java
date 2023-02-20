@@ -1,8 +1,10 @@
 package com.example.pos.Database.Entity;
 
 import androidx.room.ColumnInfo;
+import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+@Entity
 public class Item {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo

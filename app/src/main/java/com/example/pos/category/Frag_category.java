@@ -16,9 +16,6 @@ import androidx.fragment.app.Fragment;
 import com.example.pos.R;
 import com.example.pos.databinding.FragmentFragCategoryBinding;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Frag_category extends Fragment {
     FragmentFragCategoryBinding binding;
 
@@ -34,9 +31,6 @@ public class Frag_category extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentFragCategoryBinding.inflate(inflater, container, false);
 
-        List<CategoryModel> item_category = new ArrayList<>();
-        binding.gridCategory.setAdapter(new CategoryAdapter(item_category, requireContext()));
-
         binding.btnCancelCategory.setOnClickListener(this::onCancelSaveCategory);
 
         return binding.getRoot();
@@ -47,6 +41,7 @@ public class Frag_category extends Fragment {
         binding.gridCategory.setVisibility(View.VISIBLE);
         getParentFragmentManager().beginTransaction().detach(Frag_category.this).attach(Frag_category.this).commit();
     }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
