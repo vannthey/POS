@@ -3,6 +3,7 @@ package com.example.pos.Database.Entity;
 import androidx.room.ColumnInfo;
 import androidx.room.PrimaryKey;
 
+
 public class UserAccount {
     @PrimaryKey(autoGenerate = true)
     int userId;
@@ -45,6 +46,7 @@ public class UserAccount {
 
     @ColumnInfo
     Boolean canDeleteItem;
+
 
     public UserAccount(String firstname, String lastname, String username, long password, Boolean isAdmin, Boolean isManager, Boolean isSeller, Boolean isCashier, Boolean canDiscount, Boolean canUpdate, Boolean canAddItem, Boolean canAddCategory, Boolean canDeleteItem) {
         Firstname = firstname;

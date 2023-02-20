@@ -111,29 +111,36 @@
             android:layout_height="wrap_content"
             android:paddingStart="10dp"
             android:paddingEnd="10dp">
-
-            <CheckBox
+            <com.google.android.material.checkbox.MaterialCheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:id="@+id/isAdmin"
+                android:buttonTint="@color/Blue"
                 android:text="Admin" />
 
-            <CheckBox
+            <com.google.android.material.checkbox.MaterialCheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:id="@+id/isManager"
+                android:buttonTint="@color/Blue"
                 android:text="Manager" />
 
-            <CheckBox
+            <com.google.android.material.checkbox.MaterialCheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Saler" />
+                android:id="@+id/isSeller"
+                android:buttonTint="@color/Blue"
+                android:text="Seller" />
 
-            <CheckBox
+            <com.google.android.material.checkbox.MaterialCheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:id="@+id/isCashier"
+                android:buttonTint="@color/Blue"
                 android:text="Cashier" />
         </LinearLayout>
 
@@ -148,22 +155,28 @@
             android:paddingStart="10dp"
             android:paddingEnd="10dp">
 
-            <CheckBox
+            <com.google.android.material.checkbox.MaterialCheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:id="@+id/canDiscount"
+                android:buttonTint="@color/Blue"
                 android:text="Discount" />
 
-            <CheckBox
+            <com.google.android.material.checkbox.MaterialCheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:id="@+id/canUpdateItem"
+                android:buttonTint="@color/Blue"
                 android:text="Update Item" />
 
-            <CheckBox
+            <com.google.android.material.checkbox.MaterialCheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:id="@+id/canAddItem"
+                android:buttonTint="@color/Blue"
                 android:text="Add Item" />
         </LinearLayout>
         <LinearLayout
@@ -172,16 +185,27 @@
             android:paddingStart="10dp"
             android:paddingEnd="10dp">
 
-            <CheckBox
+            <com.google.android.material.checkbox.MaterialCheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:id="@+id/canAddCategory"
+                android:buttonTint="@color/Blue"
                 android:text="Add Category" />
-            <CheckBox
+            <com.google.android.material.checkbox.MaterialCheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:id="@+id/canDeleteItem"
+                android:buttonTint="@color/Blue"
                 android:text="Delete Item" />
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/canDoAll"
+                android:buttonTint="@color/Blue"
+                android:text="Allow All" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -191,6 +215,7 @@
             <com.google.android.material.button.MaterialButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/btnSaveCreateUser"
                 android:text="Save"
                 android:textAllCaps="false" />
         </LinearLayout>
