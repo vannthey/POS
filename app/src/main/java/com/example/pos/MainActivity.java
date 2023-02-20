@@ -3,6 +3,8 @@ package com.example.pos;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -15,6 +17,7 @@ import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.pos.account.ManageAccountActivity;
+import com.example.pos.category.Frag_add_category;
 import com.example.pos.category.Frag_category;
 import com.example.pos.dasboard.Frag_Dashboard;
 import com.example.pos.databinding.ActivityMainBinding;
@@ -27,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
     ActionBarDrawerToggle drawerToggle;
+    boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
             binding.navDrawerView.setCheckedItem(R.id.sale);
             setTitle(R.string.sale);
         } else if (item.getItemId() == R.id.add_category) {
+            setStateFragment(new Frag_add_category());
             Toast.makeText(this, "adding category........", Toast.LENGTH_SHORT).show();
         }
         return true;
@@ -131,8 +136,20 @@ public class MainActivity extends AppCompatActivity {
         if (binding.navDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.navDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+            }
         }
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Click Again", Toast.LENGTH_SHORT).show();
+
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 2000);
     }
 
     @Override

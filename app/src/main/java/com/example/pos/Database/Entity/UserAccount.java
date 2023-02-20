@@ -129,22 +129,6 @@ public class UserAccount {
 
     @Override
     public String toString() {
-        return "UserAccount{" +
-                "userId=" + userId +
-                ", Firstname='" + Firstname + '\'' +
-                ", Lastname='" + Lastname + '\'' +
-                ", Username='" + Username + '\'' +
-                ", Password=" + Password +
-                ", isAdmin=" + isAdmin +
-                ", isManager=" + isManager +
-                ", isSeller=" + isSeller +
-                ", isCashier=" + isCashier +
-                ", canDiscount=" + canDiscount +
-                ", canUpdate=" + canUpdate +
-                ", canAddItem=" + canAddItem +
-                ", canAddCategory=" + canAddCategory +
-                ", canDeleteItem=" + canDeleteItem +
-                ", createDate='" + createDate + '\'' +
-                '}';
+        return "UserAccount{" + "userId=" + userId + ", Firstname='" + Firstname + '\'' + ", Lastname='" + Lastname + '\'' + ", Username='" + Username + '\'' + ", Password=" + Password + ", isAdmin=" + isAdmin + ", isManager=" + isManager + ", isSeller=" + isSeller + ", isCashier=" + isCashier + ", canDiscount=" + canDiscount + ", canUpdate=" + canUpdate + ", canAddItem=" + canAddItem + ", canAddCategory=" + canAddCategory + ", canDeleteItem=" + canDeleteItem + ", createDate='" + createDate + '\'' + '}';
     }
 }
