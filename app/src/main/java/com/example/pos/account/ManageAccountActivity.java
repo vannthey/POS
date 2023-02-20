@@ -21,7 +21,6 @@ public class ManageAccountActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         binding.customActionbarManageAccount.customActionbar.setNavigationOnClickListener(v -> finish());
         setTitle("Account Management");
-
         setContentView(binding.getRoot());
     }
 

@@ -1,9 +1,9 @@
-package com.example.pos.Entity;
+package com.example.pos.Database.Entity;
 
 import androidx.room.ColumnInfo;
 import androidx.room.PrimaryKey;
 
-public class UerAccount {
+public class UserAccount {
     @PrimaryKey(autoGenerate = true)
     int userId;
 
@@ -26,7 +26,7 @@ public class UerAccount {
     Boolean isManager;
 
     @ColumnInfo
-    Boolean isSaler;
+    Boolean isSeller;
 
     @ColumnInfo
     Boolean isCashier;
@@ -46,20 +46,24 @@ public class UerAccount {
     @ColumnInfo
     Boolean canDeleteItem;
 
-    public UerAccount(String firstname, String lastname, String username, long password, Boolean isAdmin, Boolean isManager, Boolean isSaler, Boolean isCashier, Boolean canDiscount, Boolean canUpdate, Boolean canAddItem, Boolean canAddCategory, Boolean canDeleteItem) {
+    public UserAccount(String firstname, String lastname, String username, long password, Boolean isAdmin, Boolean isManager, Boolean isSeller, Boolean isCashier, Boolean canDiscount, Boolean canUpdate, Boolean canAddItem, Boolean canAddCategory, Boolean canDeleteItem) {
         Firstname = firstname;
         Lastname = lastname;
         Username = username;
         Password = password;
         this.isAdmin = isAdmin;
         this.isManager = isManager;
-        this.isSaler = isSaler;
+        this.isSeller = isSeller;
         this.isCashier = isCashier;
         this.canDiscount = canDiscount;
         this.canUpdate = canUpdate;
         this.canAddItem = canAddItem;
         this.canAddCategory = canAddCategory;
         this.canDeleteItem = canDeleteItem;
+    }
+
+    public int getUserId() {
+        return userId;
     }
 
     public String getFirstname() {
@@ -86,8 +90,8 @@ public class UerAccount {
         return isManager;
     }
 
-    public Boolean getSaler() {
-        return isSaler;
+    public Boolean getSeller() {
+        return isSeller;
     }
 
     public Boolean getCashier() {
@@ -116,7 +120,7 @@ public class UerAccount {
 
     @Override
     public String toString() {
-        return "UerAccount{" +
+        return "UserAccount{" +
                 "userId=" + userId +
                 ", Firstname='" + Firstname + '\'' +
                 ", Lastname='" + Lastname + '\'' +
@@ -124,7 +128,7 @@ public class UerAccount {
                 ", Password=" + Password +
                 ", isAdmin=" + isAdmin +
                 ", isManager=" + isManager +
-                ", isSaler=" + isSaler +
+                ", isSeller=" + isSeller +
                 ", isCashier=" + isCashier +
                 ", canDiscount=" + canDiscount +
                 ", canUpdate=" + canUpdate +
