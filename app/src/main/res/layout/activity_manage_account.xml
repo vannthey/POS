@@ -12,19 +12,19 @@
         layout="@layout/custom_actionbar" />
 
     <ListView
+        android:id="@+id/show_list_all_user"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none"
-        android:visibility="gone"
-        android:divider="@null"/>
+        android:divider="@null"
+        android:scrollbars="none" />
 
     <LinearLayout
         android:id="@+id/layout_add_user"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
@@ -227,9 +227,22 @@
             android:gravity="center">
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCancelCreateUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:backgroundTint="@color/Red"
+                android:text="Cancel"
+                android:textAllCaps="false" />
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSaveCreateUser"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:backgroundTint="@color/Blue"
                 android:text="Save"
                 android:textAllCaps="false" />
         </LinearLayout>

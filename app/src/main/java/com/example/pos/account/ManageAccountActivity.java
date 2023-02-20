@@ -54,8 +54,14 @@ public class ManageAccountActivity extends AppCompatActivity {
         setTitle("Account Management");
         setContentView(binding.getRoot());
         binding.btnSaveCreateUser.setOnClickListener(this::OnSaveCreateUser);
+        binding.btnCancelCreateUser.setOnClickListener(this::OnCancelCreateUser);
         OnStateCheckBoxUserRole();
         OnCallAllUserFromDB();
+    }
+
+    private void OnCancelCreateUser(View view) {
+        binding.showListAllUser.setVisibility(View.VISIBLE);
+        binding.layoutAddUser.setVisibility(View.GONE);
     }
 
     private void OnCallAllUserFromDB() {
@@ -63,7 +69,7 @@ public class ManageAccountActivity extends AppCompatActivity {
         new Thread(()->{
             List<UserAccount> userAccountList =
                     POSDatabase.getInstance(getApplicationContext()).getDao().userAccount();
-            handler.post(()-> Toast.makeText(this, ""+userAccountList.toString(), Toast.LENGTH_SHORT).show());
+            handler.post(()-> binding.showListAllUser.setAdapter(new AdapterAccountManager(userAccountList,this)));
         }).start();
     }
 
@@ -215,6 +221,7 @@ public class ManageAccountActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.add_user:
+                binding.showListAllUser.setVisibility(View.GONE);
                 binding.layoutAddUser.setVisibility(View.VISIBLE);
                 break;
             case R.id.edit_user:
