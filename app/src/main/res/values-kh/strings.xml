@@ -16,7 +16,7 @@
     <string name="price">10$</string>
     <string name="name_user">VAN-THEY</string>
 
-    <!-- Item in Navigation drawer -->
+    <!-- Product in Navigation drawer -->
     <string name="setting_account">Manage account</string>
     <string name="sign_out">Sign out</string>
     <string name="shopping_cart">cart</string>

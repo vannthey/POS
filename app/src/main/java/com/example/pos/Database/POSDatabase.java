@@ -8,11 +8,11 @@ import androidx.room.RoomDatabase;
 
 import com.example.pos.Database.Dao.POSDao;
 import com.example.pos.Database.Entity.Category;
-import com.example.pos.Database.Entity.Item;
+import com.example.pos.Database.Entity.Inventory;
+import com.example.pos.Database.Entity.Product;
 import com.example.pos.Database.Entity.UserAccount;
-import com.example.pos.Database.Entity.Warehouse;
 
-@Database(entities = {UserAccount.class, Category.class, Item.class, Warehouse.class}, version = 1)
+@Database(entities = {UserAccount.class, Category.class, Product.class, Inventory.class}, version = 1)
 public abstract class POSDatabase extends RoomDatabase {
 
     public abstract POSDao getDao();

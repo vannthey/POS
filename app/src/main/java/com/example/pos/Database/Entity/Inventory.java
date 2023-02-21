@@ -5,29 +5,29 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class Warehouse {
+public class Inventory {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo
     public
-    int warehouseId;
+    int inventoryId;
 
     @ColumnInfo
-    String warehouseName;
+    String inventoryName;
 
     @ColumnInfo
     String createDate;
 
-    public Warehouse(String warehouseName, String createDate) {
-        this.warehouseName = warehouseName;
+    public Inventory(String inventoryName, String createDate) {
+        this.inventoryName = inventoryName;
         this.createDate = createDate;
     }
 
-    public int getWarehouseId() {
-        return warehouseId;
+    public int getInventoryId() {
+        return inventoryId;
     }
 
-    public String getWarehouseName() {
-        return warehouseName;
+    public String getInventoryName() {
+        return inventoryName;
     }
 
     public String getCreateDate() {
@@ -36,9 +36,9 @@ public class Warehouse {
 
     @Override
     public String toString() {
-        return "Warehouse{" +
-                "warehouseId=" + warehouseId +
-                ", warehouseName='" + warehouseName + '\'' +
+        return "Inventory{" +
+                "warehouseId=" + inventoryId +
+                ", warehouseName='" + inventoryName + '\'' +
                 ", createDate='" + createDate + '\'' +
                 '}';
     }

@@ -5,8 +5,9 @@ import androidx.room.Insert;
 import androidx.room.Query;
 
 import com.example.pos.Database.Entity.Category;
+import com.example.pos.Database.Entity.Inventory;
+import com.example.pos.Database.Entity.Product;
 import com.example.pos.Database.Entity.UserAccount;
-import com.example.pos.Database.Entity.Warehouse;
 
 import java.util.List;
 
@@ -17,19 +18,22 @@ public interface POSDao {
     void createUser(UserAccount userAccount);
 
     @Insert
-    void createInventory(Warehouse warehouse);
+    void createInventory(Inventory warehouse);
     @Insert
     void createCategory(Category category);
 
     @Query("SELECT * FROM UserAccount")
     List<UserAccount> userAccount();
 
-    @Query("SELECT * FROM Warehouse")
-    List<Warehouse> getAllInventory();
+    @Query("SELECT * FROM Inventory")
+    List<Inventory> getAllInventory();
 
     @Query("SELECT * FROM UserAccount Where Username =:username AND Password =:password")
     List<UserAccount> checkUser(String username,String password);
 
     @Query("SELECT * FROM Category")
     List<Category> getAllCategory();
+
+    @Query("SELECT * FROM Product")
+    List<Product> getAllProduct();
 }

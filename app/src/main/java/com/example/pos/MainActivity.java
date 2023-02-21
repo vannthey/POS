@@ -127,25 +127,27 @@ public class MainActivity extends AppCompatActivity {
                 commit();
     }
 
-
     @Override
     public void onBackPressed() {
         if (binding.navDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.navDrawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            if (doubleBackToExitPressedOnce) {
-                super.onBackPressed();
-            }
+        } else{
+            return;
         }
-        this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "Click Again", Toast.LENGTH_SHORT).show();
-
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                doubleBackToExitPressedOnce = false;
-            }
-        }, 2000);
+//        else {
+//            if (doubleBackToExitPressedOnce) {
+//                super.onBackPressed();
+//            }
+//        }
+//        this.doubleBackToExitPressedOnce = true;
+//        Toast.makeText(this, "Click Again", Toast.LENGTH_SHORT).show();
+//
+//        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+//
+//            @Override
+//            public void run() {
+//                doubleBackToExitPressedOnce = false;
+//            }
+//        }, 2000);
     }
 }

@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.pos.Database.Entity.Warehouse;
+import com.example.pos.Database.Entity.Inventory;
 import com.example.pos.Database.POSDatabase;
 import com.example.pos.R;
 import com.example.pos.databinding.FragmentFragInventoryBinding;
@@ -27,7 +27,7 @@ import java.util.Locale;
 
 public class Frag_inventory extends Fragment {
     FragmentFragInventoryBinding binding;
-    List<Warehouse> warehouseList;
+    List<Inventory> warehouseList;
     AdapterInventory adapterInventory;
 
     @Override
@@ -73,7 +73,7 @@ public class Frag_inventory extends Fragment {
             String date = simpleDateFormat.format(c);
             Handler handler = new Handler();
             new Thread(() -> {
-                POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().createInventory(new Warehouse(inventoryName, date));
+                POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().createInventory(new Inventory(inventoryName, date));
             handler.post(()->{
                 onShowAllInventory();
                 binding.gridInventory.setVisibility(View.VISIBLE);
