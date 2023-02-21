@@ -14,6 +14,7 @@ import com.example.pos.Database.Entity.UserAccount;
 import com.example.pos.Database.POSDatabase;
 import com.example.pos.R;
 import com.example.pos.databinding.ActivityManageAccountBinding;
+import com.example.pos.databinding.CustomListAllUserBinding;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -25,6 +26,7 @@ public class ManageAccountActivity extends AppCompatActivity {
 
     private static final String TAG = "User Role";
     ActivityManageAccountBinding binding;
+    CustomListAllUserBinding userBinding;
 
     /*
     Position
@@ -36,12 +38,14 @@ public class ManageAccountActivity extends AppCompatActivity {
     /*
     permission
      */
-    Boolean canDiscount,
-            canUpdateItem,
-            canAddItem,
-            canAddCategory,
-            canDeleteItem,
+    Boolean canDiscount = false,
+            canUpdateItem = false,
+            canAddItem = false,
+            canAddCategory = false,
+            canDeleteItem = false,
             AllowAllPermission;
+    UserAccount userAccount;
+    List<UserAccount> userAccountList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,10 +70,10 @@ public class ManageAccountActivity extends AppCompatActivity {
 
     private void OnCallAllUserFromDB() {
         Handler handler = new Handler();
-        new Thread(()->{
-            List<UserAccount> userAccountList =
+        new Thread(() -> {
+            userAccountList =
                     POSDatabase.getInstance(getApplicationContext()).getDao().userAccount();
-            handler.post(()-> binding.showListAllUser.setAdapter(new AdapterAccountManager(userAccountList,this)));
+            handler.post(() -> binding.showListAllUser.setAdapter(new AdapterAccountManager(userAccountList, this)));
         }).start();
     }
 
@@ -81,7 +85,7 @@ public class ManageAccountActivity extends AppCompatActivity {
         String Lastname = binding.addLastName.getText().toString();
         String Username = binding.addUserName.getText().toString();
         String Password = binding.addUserPassword.getText().toString();
-        UserAccount userAccount = new UserAccount(Firstname, Lastname, Username, Password, isAdmin,
+        userAccount = new UserAccount(Firstname, Lastname, Username, Password, isAdmin,
                 isManager, isSeller, isCashier, canDiscount, canUpdateItem, canAddItem, canAddCategory,
                 canDeleteItem, formattedDate);
         new Thread(() -> {
@@ -161,25 +165,41 @@ public class ManageAccountActivity extends AppCompatActivity {
         });
 
         binding.canDiscount.setOnCheckedChangeListener((compoundButton, b) -> {
-            canDiscount = binding.canDiscount.isChecked();
-            Toast.makeText(this, "canDiscount : " + canDiscount, Toast.LENGTH_SHORT).show();
+            if (canDiscount = binding.canDiscount.isChecked()) {
+                Toast.makeText(this, "canDiscount : " + canDiscount, Toast.LENGTH_SHORT).show();
+            } else {
+                canDiscount = false;
+            }
         });
         binding.canAddCategory.setOnCheckedChangeListener((compoundButton, b) -> {
-            canAddCategory = binding.canAddCategory.isChecked();
-            Toast.makeText(this, "canAddCategory : " + canAddCategory, Toast.LENGTH_SHORT).show();
+            if (canAddCategory = binding.canAddCategory.isChecked()) {
+                Toast.makeText(this, "canAddCategory : " + canAddCategory, Toast.LENGTH_SHORT).show();
+            } else {
+                canAddCategory = false;
+            }
+
         });
         binding.canAddItem.setOnCheckedChangeListener((compoundButton, b) -> {
-            canAddItem = binding.canAddItem.isChecked();
-            Toast.makeText(this, "canAddItem : " + canAddItem, Toast.LENGTH_SHORT).show();
+            if (canAddItem = binding.canAddItem.isChecked()) {
+                Toast.makeText(this, "canAddItem : " + canAddItem, Toast.LENGTH_SHORT).show();
+            } else {
+                canAddItem = false;
+            }
         });
 
         binding.canDeleteItem.setOnCheckedChangeListener((compoundButton, b) -> {
-            canDeleteItem = binding.canDeleteItem.isChecked();
-            Toast.makeText(this, "canDeleteItem : " + canDeleteItem, Toast.LENGTH_SHORT).show();
+            if (canDeleteItem = binding.canDeleteItem.isChecked()) {
+                Toast.makeText(this, "canDeleteItem : " + canDeleteItem, Toast.LENGTH_SHORT).show();
+            } else {
+                canDeleteItem = false;
+            }
         });
         binding.canUpdateItem.setOnCheckedChangeListener((compoundButton, b) -> {
-            canUpdateItem = binding.canUpdateItem.isChecked();
-            Toast.makeText(this, "canUpdateItem : " + canUpdateItem, Toast.LENGTH_SHORT).show();
+            if (canUpdateItem = binding.canUpdateItem.isChecked()) {
+                Toast.makeText(this, "canUpdateItem : " + canUpdateItem, Toast.LENGTH_SHORT).show();
+            } else {
+                canUpdateItem = false;
+            }
         });
         binding.canDoAll.setOnCheckedChangeListener((compoundButton, b) -> {
             if (AllowAllPermission = binding.canDoAll.isChecked()) {
@@ -219,7 +239,7 @@ public class ManageAccountActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.add_user:
                 binding.showListAllUser.setVisibility(View.GONE);
                 binding.layoutAddUser.setVisibility(View.VISIBLE);

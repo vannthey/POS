@@ -22,6 +22,11 @@ public class AdapterAccountManager extends BaseAdapter {
     }
 
     @Override
+    public boolean isEnabled(int position) {
+        return false;
+    }
+
+    @Override
     public int getCount() {
         return userAccountList.size();
     }

@@ -3,104 +3,138 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp">
+
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
             android:id="@+id/userId"
-            android:textSize="16sp"
-            android:text="No"/>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center"
-            android:layout_weight="2"
+            android:text="No"
             android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
             android:id="@+id/userName"
-            android:textSize="16sp"
-            android:text="Username"/>
-        <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_weight="2"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:id="@+id/userPassword"
-            android:text="Password"/>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/userRole"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:textColor="@color/black"
-            android:textSize="16sp"
             android:gravity="center"
-            android:text="Role"/>
+            android:text="Username"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/userPassword"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Password"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/userRole"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Role"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_edit"
+            android:id="@+id/ic_edit_user"
+            android:visibility="gone" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_delete"
+            android:id="@+id/ic_delete_user"
+            android:visibility="gone" />
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
+
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:textColor="@color/black"
             android:id="@+id/userFullName"
-            android:textSize="16sp"
-            android:text="Full Name"/>
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_weight="1"
+            android:gravity="center"
+            android:text="Full Name"
             android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
             android:id="@+id/userCanDiscount"
-            android:textSize="16sp"
-            android:text="Discount"/>
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_weight="1"
+            android:gravity="center"
+            android:text="Discount"
             android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
             android:id="@+id/userCanUpdate"
-            android:textSize="16sp"
-            android:text="Update"/>
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_weight="1"
+            android:gravity="center"
+            android:text="Update"
             android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
             android:id="@+id/userCanDelete"
-            android:textSize="16sp"
-            android:text="Delete"/>
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_weight="1"
+            android:gravity="center"
+            android:text="Delete"
             android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
             android:id="@+id/userCanAddItem"
-            android:textSize="16sp"
-            android:text="Add Item"/>
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_weight="1"
+            android:gravity="center"
+            android:text="Add Item"
             android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
             android:id="@+id/userCanAddCategory"
-            android:textSize="16sp"
-            android:text="Add Category"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Add Category"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
     </LinearLayout>
 </LinearLayout>
