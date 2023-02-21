@@ -51,5 +51,6 @@
     <string name="product_price">Product Price</string>
     <string name="product_code">Product Code</string>
     <string name="product_category">Product Category</string>
+    <string name="add_product">Add Product</string>
 
 </resources>

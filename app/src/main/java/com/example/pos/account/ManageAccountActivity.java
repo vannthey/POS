@@ -78,6 +78,7 @@ public class ManageAccountActivity extends AppCompatActivity {
     }
 
     private void OnSaveCreateUser(View view) {
+        Handler handler = new Handler();
         Date current = Calendar.getInstance().getTime();
         SimpleDateFormat simpleFormatter = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
         String formattedDate = simpleFormatter.format(current);
@@ -90,6 +91,11 @@ public class ManageAccountActivity extends AppCompatActivity {
                 canDeleteItem, formattedDate);
         new Thread(() -> {
             POSDatabase.getInstance(getApplicationContext()).getDao().createUser(userAccount);
+            handler.post(()->{
+                binding.layoutAddUser.setVisibility(View.GONE);
+                binding.showListAllUser.setVisibility(View.VISIBLE);
+                OnCallAllUserFromDB();
+            });
         }).start();
     }
 

@@ -20,5 +20,11 @@
         android:visible="false"
         android:title="@string/add_inventory"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/add_product"
+        android:icon="@drawable/ic_add"
+        android:visible="false"
+        android:title="@string/add_product"
+        app:showAsAction="ifRoom" />
 
 </menu>
