@@ -20,6 +20,7 @@ import com.example.pos.category.Frag_category;
 import com.example.pos.dasboard.Frag_Dashboard;
 import com.example.pos.databinding.ActivityMainBinding;
 import com.example.pos.inventory.Frag_inventory;
+import com.example.pos.product.Frag_Product;
 import com.example.pos.report.Frag_report;
 import com.example.pos.sale.Frag_sale;
 import com.example.pos.setting.Preference;
@@ -68,6 +69,10 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("NonConstantResourceId")
     private boolean NavigationSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
+            case R.id.item:
+                setTitle(R.string.product);
+                setStateFragment(new Frag_Product());
+                break;
             case R.id.dashboad:
                 setTitle(R.string.dashboard);
                 setStateFragment(new Frag_Dashboard());

@@ -45,5 +45,11 @@
     <string name="save">Save</string>
     <string name="product">Product</string>
     <string name="search_product">Search Product</string>
+    <string name="product_name">Product Name</string>
+    <string name="product_qty">Product Quantity</string>
+    <string name="product_cost">Product Cost</string>
+    <string name="product_price">Product Price</string>
+    <string name="product_code">Product Code</string>
+    <string name="product_category">Product Category</string>
 
 </resources>
