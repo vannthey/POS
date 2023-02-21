@@ -2,6 +2,7 @@ package com.example.pos;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -28,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     ActionBarDrawerToggle drawerToggle;
     boolean doubleBackToExitPressedOnce = false;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+    private final String SaveUserLogin = "UserLogin";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(binding.actionBar.customActionbar);
         setTitle("Dashboard");
 
+        sharedPreferences = getSharedPreferences(SaveUserLogin, MODE_PRIVATE);
+        editor = sharedPreferences.edit();
         drawerToggle = new ActionBarDrawerToggle(this,
                 binding.navDrawerLayout,
                 binding.actionBar.customActionbar,
@@ -90,6 +96,8 @@ public class MainActivity extends AppCompatActivity {
                         dialogInterface.dismiss()
                 );
                 builder.setPositiveButton("YES", (dialogInterface, i) -> {
+                    editor.clear();
+                    editor.apply();
                     finish();
                     System.exit(0);
                 });

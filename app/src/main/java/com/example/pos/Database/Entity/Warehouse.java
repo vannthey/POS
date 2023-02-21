@@ -8,6 +8,7 @@ import androidx.room.PrimaryKey;
 public class Warehouse {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo
+    public
     int warehouseId;
 
     @ColumnInfo

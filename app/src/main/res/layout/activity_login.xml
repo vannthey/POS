@@ -18,7 +18,7 @@
         android:layout_marginBottom="10dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/txtFirstname"
+            android:id="@+id/txtUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -35,7 +35,8 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:id="@+id/txtPassword"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -48,6 +49,7 @@
     <RadioButton
         android:layout_width="wrap_content"
         android:layout_height="24dp"
+        android:id="@+id/rememberMeLogin"
         android:gravity="center" />
     <TextView
         android:layout_width="wrap_content"

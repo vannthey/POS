@@ -9,15 +9,25 @@ import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 
+import com.example.pos.Database.Entity.Category;
 import com.example.pos.R;
 
-public class CategoryAdapter extends BaseAdapter {
+import java.util.List;
+
+public class AdapterCategory extends BaseAdapter {
+
+    List<Category> categories;
 
     Context context;
 
+    public AdapterCategory(List<Category> categories, Context context) {
+        this.categories = categories;
+        this.context = context;
+    }
+
     @Override
     public int getCount() {
-        return 0;
+        return categories.size();
     }
 
     @Override
@@ -38,6 +48,8 @@ public class CategoryAdapter extends BaseAdapter {
         TextView item_category = view.findViewById(R.id.item_category);
         TextView no_category_item = view.findViewById(R.id.no_category_item);
         CardView cardView_category = view.findViewById(R.id.cardView_category);
+
+        item_category.setText(categories.get(i).getCategoryName());
 
 //        Random rnd = new Random();
 //        int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));

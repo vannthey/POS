@@ -41,5 +41,8 @@
     <string name="KhmerLanguage">Khmer</string>
     <string name="EnglishLanguage">English</string>
     <string name="add_inventory">Add Inventory</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="product">Product</string>
 
 </resources>

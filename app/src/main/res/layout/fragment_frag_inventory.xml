@@ -1,22 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".inventory.Frag_inventory">
 
-    <LinearLayout
+    <GridView
+        android:id="@+id/grid_inventory"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:divider="@null"
+        android:listSelector="#00000000"
+        android:numColumns="2"
+        android:scrollbars="none" />
+
+    <LinearLayout
+        android:id="@+id/layout_add_inventory"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
         android:orientation="vertical"
-        android:gravity="center">
+        android:visibility="gone">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Inventory"
-            android:textSize="24pt"/>
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp">
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inventoryName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/inventory" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCancelInventory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:backgroundTint="@color/Red"
+                android:text="@string/cancel" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSaveInventory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:backgroundTint="@color/Blue"
+                android:text="@string/save" />
+        </LinearLayout>
     </LinearLayout>
 
-</FrameLayout>
+</LinearLayout>

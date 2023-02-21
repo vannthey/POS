@@ -8,6 +8,7 @@ import androidx.room.PrimaryKey;
 public class Category {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo
+    public
     int categoryId;
 
     @ColumnInfo
