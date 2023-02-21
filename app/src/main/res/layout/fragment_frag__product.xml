@@ -3,9 +3,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".product.Frag_Product">
+    android:orientation="vertical"
+    tools:context=".product.Frag_Product"
+    android:padding="10dp">
 
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/search_product"
+            android:drawableStart="@drawable/ic_search"
+            android:drawableEnd="@drawable/ic_qr_code_scanner"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@null"
+        android:scrollbars="none"
+        android:id="@+id/list_show_product"/>
 
 </LinearLayout>
