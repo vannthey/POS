@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">POS</string>
     <string name="login">Login</string>
@@ -39,6 +38,47 @@
     <string name="add_user">Add User</string>
     <string name="edit_user">Edit User</string>
     <string name="delete_user">Delete User</string>
-    <string name="KhmerLanguage">ភាសាខ្មែរ</string>
-    <string name="EnglishLanguage">អង់គ្លេស</string>
+    <string name="KhmerLanguage">Khmer</string>
+    <string name="EnglishLanguage">English</string>
+    <string name="add_inventory">Add Inventory</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="product">Product</string>
+    <string name="search_product">Search Product</string>
+    <string name="product_name">Product Name</string>
+    <string name="product_qty">Product Quantity</string>
+    <string name="product_cost">Product Cost</string>
+    <string name="product_price">Product Price</string>
+    <string name="product_code">Product Code</string>
+    <string name="product_category">Product Category</string>
+    <string name="add_product">Add Product</string>
+    <string name="admin">Admin</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="position">Position</string>
+    <string name="sex">Sex</string>
+    <string name="address">Address</string>
+    <string name="firstname">First Name</string>
+    <string name="lastname">Last Name</string>
+    <string name="personal_information">Personal Information</string>
+    <string name="manager">Manager</string>
+    <string name="seller">Seller</string>
+    <string name="cashier">Cashier</string>
+    <string name="permission">Permission</string>
+    <string name="delete_item">Delete Item</string>
+    <string name="allow_all">Allow All</string>
+    <string name="discount">Discount</string>
+    <string name="update_item">Update Item</string>
+    <string name="add_item">Add Item</string>
+    <string name="date_of_birth">Date Of Birth</string>
+    <string name="customer">Customer</string>
+    <string name="supplier">Supplier</string>
+    <string name="supplier_name">Supplier Name</string>
+    <string name="supplier_phone">Supplier Phone Number</string>
+    <string name="supplier_address">Supplier Address</string>
+    <string name="delete">Delete</string>
+    <string name="update">Update</string>
+    <string name="add_supplier">Add Supplier</string>
+    <string name="supplier_sex">Supplier Sex</string>
+
 </resources>
