@@ -52,5 +52,24 @@
     <string name="product_code">Product Code</string>
     <string name="product_category">Product Category</string>
     <string name="add_product">Add Product</string>
+    <string name="admin">Admin</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="position">Position</string>
+    <string name="sex">Sex</string>
+    <string name="address">Address</string>
+    <string name="firstname">First Name</string>
+    <string name="lastname">Last Name</string>
+    <string name="personal_information">Personal Information</string>
+    <string name="manager">Manager</string>
+    <string name="seller">Seller</string>
+    <string name="cashier">Cashier</string>
+    <string name="permission">Permission</string>
+    <string name="delete_item">Delete Item</string>
+    <string name="allow_all">Allow All</string>
+    <string name="discount">Discount</string>
+    <string name="update_item">Update Item</string>
+    <string name="add_item">Add Item</string>
+    <string name="date_of_birth">Date Of Birth</string>
 
 </resources>

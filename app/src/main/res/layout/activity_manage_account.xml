@@ -16,7 +16,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@null"
-        android:scrollbars="none" />
+        android:scrollbars="none"
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/layout_add_user"
@@ -24,12 +25,12 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="10dp"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Personal Information" />
+            android:text="@string/personal_information" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,7 +49,7 @@
                     android:id="@+id/add_first_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="First Name" />
+                    android:hint="@string/firstname" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -64,7 +65,7 @@
                     android:id="@+id/add_last_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Last Name" />
+                    android:hint="@string/lastname" />
 
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
@@ -87,7 +88,7 @@
                     android:id="@+id/add_user_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Username" />
+                    android:hint="@string/username" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -104,16 +105,87 @@
                     android:id="@+id/add_user_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Password"
+                    android:hint="@string/password"
                     android:inputType="textPassword" />
 
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/sex" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingStart="10dp"
+                android:text="@string/date_of_birth" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:buttonTint="@color/Blue"
+                android:text="@string/male" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:buttonTint="@color/Blue"
+                android:text="@string/female" />
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="30dp"
+                android:layout_weight="2">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/ic_date" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Possition" />
+            android:text="@string/address" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxHeight="100dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/position" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -127,7 +199,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:buttonTint="@color/Blue"
-                android:text="Admin" />
+                android:text="@string/admin" />
 
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/isManager"
@@ -135,7 +207,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:buttonTint="@color/Blue"
-                android:text="Manager" />
+                android:text="@string/manager" />
 
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/isSeller"
@@ -143,7 +215,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:buttonTint="@color/Blue"
-                android:text="Seller" />
+                android:text="@string/seller" />
 
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/isCashier"
@@ -151,13 +223,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:buttonTint="@color/Blue"
-                android:text="Cashier" />
+                android:text="@string/cashier" />
         </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Permission" />
+            android:text="@string/permission" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -171,7 +243,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:buttonTint="@color/Blue"
-                android:text="Discount" />
+                android:text="@string/discount" />
 
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/canUpdateItem"
@@ -179,7 +251,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:buttonTint="@color/Blue"
-                android:text="Update Item" />
+                android:text="@string/update_item" />
 
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/canAddItem"
@@ -187,7 +259,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:buttonTint="@color/Blue"
-                android:text="Add Item" />
+                android:text="@string/add_item" />
         </LinearLayout>
 
         <LinearLayout
@@ -202,7 +274,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:buttonTint="@color/Blue"
-                android:text="Add Category" />
+                android:text="@string/add_category" />
 
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/canDeleteItem"
@@ -210,7 +282,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:buttonTint="@color/Blue"
-                android:text="Delete Item" />
+                android:text="@string/delete_item" />
 
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/canDoAll"
@@ -218,13 +290,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:buttonTint="@color/Blue"
-                android:text="Allow All" />
+                android:text="@string/allow_all" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center">
+            android:layout_height="match_parent"
+            android:gravity="center|bottom">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnCancelCreateUser"
@@ -233,7 +305,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:backgroundTint="@color/Red"
-                android:text="Cancel"
+                android:text="@string/cancel"
                 android:textAllCaps="false" />
 
             <com.google.android.material.button.MaterialButton
@@ -243,7 +315,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:backgroundTint="@color/Blue"
-                android:text="Save"
+                android:text="@string/save"
                 android:textAllCaps="false" />
         </LinearLayout>
     </LinearLayout>
