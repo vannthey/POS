@@ -138,6 +138,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:buttonTint="@color/Blue"
+                android:id="@+id/userMale"
                 android:text="@string/male" />
 
             <com.google.android.material.checkbox.MaterialCheckBox
@@ -145,6 +146,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:buttonTint="@color/Blue"
+                android:id="@+id/userFemale"
                 android:text="@string/female" />
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -157,6 +159,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/userDateOfBirth"
                     android:drawableEnd="@drawable/ic_date" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -178,6 +181,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/userAddress"
                 android:maxHeight="100dp" />
 
         </com.google.android.material.textfield.TextInputLayout>

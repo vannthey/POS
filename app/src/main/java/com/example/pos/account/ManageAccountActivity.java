@@ -1,10 +1,12 @@
 package com.example.pos.account;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -65,6 +67,25 @@ public class ManageAccountActivity extends AppCompatActivity {
         binding.btnCancelCreateUser.setOnClickListener(this::OnCancelCreateUser);
         OnStateCheckBoxUserRole();
         OnCallAllUserFromDB();
+        OnSetUserDateOfBird();
+    }
+
+    private void OnSetUserDateOfBird() {
+        Date current = Calendar.getInstance().getTime();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy",Locale.getDefault());
+        String currentDate = dateFormat.format(current);
+        binding.userDateOfBirth.setText(currentDate);
+        binding.userDateOfBirth.setOnClickListener(v->{
+            DatePickerDialog dialog = new DatePickerDialog(this);
+            dialog.setOnDateSetListener((datePicker, i, i1, i2) -> {
+                String year = String.valueOf(i);
+                String month = String.valueOf(i1+1);
+                String day = String.valueOf(i2);
+                String day_month_year = day+"-"+month+"-"+year;
+                binding.userDateOfBirth.setText(day_month_year);
+            });
+            dialog.show();
+        });
     }
 
     private void OnAnimationChangeLayout() {
