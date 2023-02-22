@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey;
 @Entity
 public class UserAccount {
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo
     public
     int userId;
 
@@ -17,6 +18,12 @@ public class UserAccount {
     @ColumnInfo
     public
     String Lastname;
+    @ColumnInfo
+    public String Sex;
+    @ColumnInfo
+    public String DOB;
+    @ColumnInfo
+    public String Address;
 
     @ColumnInfo
     public
@@ -25,6 +32,7 @@ public class UserAccount {
     @ColumnInfo
     public
     String Password;
+
 
     @ColumnInfo
     public
@@ -57,9 +65,12 @@ public class UserAccount {
     public UserAccount() {
     }
 
-    public UserAccount(String firstname, String lastname, String username, String password, String userRole, Boolean canDiscount, Boolean canUpdate, Boolean canAddItem, Boolean canAddCategory, Boolean canDeleteItem, String createDate) {
+    public UserAccount(String firstname, String lastname, String sex, String DOB, String address, String username, String password, String userRole, Boolean canDiscount, Boolean canUpdate, Boolean canAddItem, Boolean canAddCategory, Boolean canDeleteItem, String createDate) {
         Firstname = firstname;
         Lastname = lastname;
+        Sex = sex;
+        this.DOB = DOB;
+        Address = address;
         Username = username;
         Password = password;
         UserRole = userRole;
@@ -81,6 +92,18 @@ public class UserAccount {
 
     public String getLastname() {
         return Lastname;
+    }
+
+    public String getSex() {
+        return Sex;
+    }
+
+    public String getDOB() {
+        return DOB;
+    }
+
+    public String getAddress() {
+        return Address;
     }
 
     public String getUsername() {
@@ -125,6 +148,9 @@ public class UserAccount {
                 "userId=" + userId +
                 ", Firstname='" + Firstname + '\'' +
                 ", Lastname='" + Lastname + '\'' +
+                ", Sex='" + Sex + '\'' +
+                ", DOB='" + DOB + '\'' +
+                ", Address='" + Address + '\'' +
                 ", Username='" + Username + '\'' +
                 ", Password='" + Password + '\'' +
                 ", UserRole='" + UserRole + '\'' +

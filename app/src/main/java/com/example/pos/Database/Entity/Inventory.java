@@ -12,14 +12,28 @@ public class Inventory {
     int inventoryId;
 
     @ColumnInfo
+    public
     String inventoryName;
 
     @ColumnInfo
+    public
+    String inventoryAddress;
+
+    @ColumnInfo
+    public
+    int creator;
+    @ColumnInfo
+    public
     String createDate;
 
-    public Inventory(String inventoryName, String createDate) {
+    public Inventory(String inventoryName, String inventoryAddress, int creator, String createDate) {
         this.inventoryName = inventoryName;
+        this.inventoryAddress = inventoryAddress;
+        this.creator = creator;
         this.createDate = createDate;
+    }
+
+    public Inventory() {
     }
 
     public int getInventoryId() {
@@ -30,16 +44,15 @@ public class Inventory {
         return inventoryName;
     }
 
-    public String getCreateDate() {
-        return createDate;
+    public String getInventoryAddress() {
+        return inventoryAddress;
     }
 
-    @Override
-    public String toString() {
-        return "Inventory{" +
-                "warehouseId=" + inventoryId +
-                ", warehouseName='" + inventoryName + '\'' +
-                ", createDate='" + createDate + '\'' +
-                '}';
+    public int getCreator() {
+        return creator;
+    }
+
+    public String getCreateDate() {
+        return createDate;
     }
 }

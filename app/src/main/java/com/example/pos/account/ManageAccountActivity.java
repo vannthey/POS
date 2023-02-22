@@ -96,8 +96,6 @@ public class ManageAccountActivity extends AppCompatActivity {
         String Lastname = binding.addLastName.getText().toString();
         String Username = binding.addUserName.getText().toString();
         String Password = binding.addUserPassword.getText().toString();
-        userAccount = new UserAccount(Firstname, Lastname, Username, Password, UserRole, canDiscount,
-                canUpdateItem, canAddItem, canAddCategory, canDeleteItem, formattedDate);
         new Thread(() -> {
             POSDatabase.getInstance(getApplicationContext()).getDao().createUser(userAccount);
             handler.post(() -> {

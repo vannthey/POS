@@ -12,18 +12,29 @@ public class Category {
     int categoryId;
 
     @ColumnInfo
+    public
     String categoryName;
 
     @ColumnInfo
+    public
+    int supplierId;
+
+    @ColumnInfo
+    public
     String creator;
 
     @ColumnInfo
+    public
     String createDate;
 
-    public Category(String categoryName, String creator, String createDate) {
+    public Category(String categoryName, int supplierId, String creator, String createDate) {
         this.categoryName = categoryName;
+        this.supplierId = supplierId;
         this.creator = creator;
         this.createDate = createDate;
+    }
+
+    public Category() {
     }
 
     public int getCategoryId() {
@@ -32,6 +43,10 @@ public class Category {
 
     public String getCategoryName() {
         return categoryName;
+    }
+
+    public int getSupplierId() {
+        return supplierId;
     }
 
     public String getCreator() {
@@ -47,6 +62,7 @@ public class Category {
         return "Category{" +
                 "categoryId=" + categoryId +
                 ", categoryName='" + categoryName + '\'' +
+                ", supplierId=" + supplierId +
                 ", creator='" + creator + '\'' +
                 ", createDate='" + createDate + '\'' +
                 '}';

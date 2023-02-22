@@ -73,7 +73,8 @@ public class Frag_inventory extends Fragment {
             String date = simpleDateFormat.format(c);
             Handler handler = new Handler();
             new Thread(() -> {
-                POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().createInventory(new Inventory(inventoryName, date));
+               // POSDatabase.getInstance(requireContext().getApplicationContext()).getDao()
+                // .createInventory(new Inventory(inventoryName, date));
             handler.post(()->{
                 onShowAllInventory();
                 binding.gridInventory.setVisibility(View.VISIBLE);

@@ -77,7 +77,8 @@ public class Frag_category extends Fragment {
             Toast.makeText(requireContext(), "Please Input Category Name", Toast.LENGTH_SHORT).show();
         }else {
             new Thread(() -> {
-                POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().createCategory(new Category(categoryName, username, date));
+              //  POSDatabase.getInstance(requireContext().getApplicationContext()).getDao()
+                //  .createCategory(new Category(categoryName, username, date));
                 handler.post(() -> {
                     onShowAllCategory();
                     binding.layoutAddCategory.setVisibility(View.GONE);
