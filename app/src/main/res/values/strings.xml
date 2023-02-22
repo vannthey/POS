@@ -73,5 +73,11 @@
     <string name="date_of_birth">Date Of Birth</string>
     <string name="customer">Customer</string>
     <string name="supplier">Supplier</string>
+    <string name="supplier_name">Supplier Name</string>
+    <string name="supplier_phone">Supplier Phone Number</string>
+    <string name="supplier_address">Supplier Address</string>
+    <string name="delete">Delete</string>
+    <string name="update">Update</string>
+    <string name="add_supplier">Add Supplier</string>
 
 </resources>

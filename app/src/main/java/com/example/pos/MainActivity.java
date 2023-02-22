@@ -22,6 +22,7 @@ import com.example.pos.product.Frag_Product;
 import com.example.pos.report.Frag_report;
 import com.example.pos.sale.Frag_sale;
 import com.example.pos.setting.Preference;
+import com.example.pos.supplier.Frag_supplier;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -99,6 +100,10 @@ public class MainActivity extends AppCompatActivity {
             case R.id.report:
                 setTitle(R.string.report);
                 setStateFragment(new Frag_report());
+                break;
+            case R.id.supplier:
+                setTitle(R.string.supplier);
+                setStateFragment(new Frag_supplier());
                 break;
             case R.id.logout:
                 editor = sharedPreferences.edit();

@@ -26,5 +26,11 @@
         android:visible="false"
         android:title="@string/add_product"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/add_supplier"
+        android:icon="@drawable/ic_add"
+        android:visible="false"
+        android:title="@string/add_supplier"
+        app:showAsAction="ifRoom" />
 
 </menu>
