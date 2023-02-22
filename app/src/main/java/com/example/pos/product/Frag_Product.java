@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.transition.Fade;
 import androidx.transition.Slide;
 import androidx.transition.Transition;
 import androidx.transition.TransitionManager;
@@ -44,6 +43,7 @@ public class Frag_Product extends Fragment {
         onShowAllProduct();
         return binding.getRoot();
     }
+
     private void onCancelSaveProduct(View view) {
         binding.layoutAddProduct.setVisibility(View.GONE);
         binding.layoutShowProduct.setVisibility(View.VISIBLE);
@@ -67,9 +67,9 @@ public class Frag_Product extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.add_product) {
-            TransitionManager.beginDelayedTransition(binding.layoutAddProduct,transition);
-            binding.layoutAddProduct.setVisibility(binding.layoutAddProduct.getVisibility()==View.GONE?View.VISIBLE:View.GONE);
-            binding.layoutShowProduct.setVisibility(binding.layoutShowProduct.getVisibility()==View.VISIBLE?View.GONE:View.VISIBLE);
+            TransitionManager.beginDelayedTransition(binding.layoutAddProduct, transition);
+            binding.layoutAddProduct.setVisibility(binding.layoutAddProduct.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+            binding.layoutShowProduct.setVisibility(binding.layoutShowProduct.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
         }
         return super.onOptionsItemSelected(item);
     }

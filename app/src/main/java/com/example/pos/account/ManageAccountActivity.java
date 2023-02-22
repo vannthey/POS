@@ -6,8 +6,6 @@ import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.DatePicker;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -49,7 +47,17 @@ public class ManageAccountActivity extends AppCompatActivity {
             canAddCategory = false,
             canDeleteItem = false,
             AllowAllPermission;
+    /*
+    Sex
+     */
+    Boolean isMale = true,
+            isFemale = true;
+    String UserSex;
     UserAccount userAccount;
+    String DateOfBirth;
+    String day;
+    String month;
+    String year;
     List<UserAccount> userAccountList;
 
     @Override
@@ -65,26 +73,65 @@ public class ManageAccountActivity extends AppCompatActivity {
         OnAnimationChangeLayout();
         binding.btnSaveCreateUser.setOnClickListener(this::OnSaveCreateUser);
         binding.btnCancelCreateUser.setOnClickListener(this::OnCancelCreateUser);
-        OnStateCheckBoxUserRole();
+        OnStateCheckBox();
         OnCallAllUserFromDB();
         OnSetUserDateOfBird();
     }
 
     private void OnSetUserDateOfBird() {
         Date current = Calendar.getInstance().getTime();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy",Locale.getDefault());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
         String currentDate = dateFormat.format(current);
         binding.userDateOfBirth.setText(currentDate);
-        binding.userDateOfBirth.setOnClickListener(v->{
+        binding.userDateOfBirth.setOnClickListener(v -> {
             DatePickerDialog dialog = new DatePickerDialog(this);
             dialog.setOnDateSetListener((datePicker, i, i1, i2) -> {
-                String year = String.valueOf(i);
-                String month = String.valueOf(i1+1);
-                String day = String.valueOf(i2);
-                String day_month_year = day+"-"+month+"-"+year;
-                binding.userDateOfBirth.setText(day_month_year);
+                switch (i1 + 1) {
+                    case 1:
+                        month = "Jan";
+                        break;
+                    case 2:
+                        month = "Feb";
+                        break;
+                    case 3:
+                        month = "Mac";
+                        break;
+                    case 4:
+                        month = "Apr";
+                        break;
+                    case 5:
+                        month = "May";
+                        break;
+                    case 6:
+                        month = "Jun";
+                        break;
+                    case 7:
+                        month = "Jul";
+                        break;
+                    case 8:
+                        month = "Aug";
+                        break;
+                    case 9:
+                        month = "Set";
+                        break;
+                    case 10:
+                        month = "Oct";
+                        break;
+                    case 11:
+                        month = "Nov";
+                        break;
+                    case 12:
+                        month = "Dec";
+                        break;
+                }
+                year = String.valueOf(i);
+                day = String.valueOf(i2);
+                DateOfBirth = day + "-" + month + "-" + year;
+                binding.userDateOfBirth.setText(DateOfBirth);
             });
             dialog.show();
+
+
         });
     }
 
@@ -113,10 +160,14 @@ public class ManageAccountActivity extends AppCompatActivity {
         Date current = Calendar.getInstance().getTime();
         SimpleDateFormat simpleFormatter = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
         String formattedDate = simpleFormatter.format(current);
-        String Firstname = binding.addFirstName.getText().toString();
-        String Lastname = binding.addLastName.getText().toString();
-        String Username = binding.addUserName.getText().toString();
-        String Password = binding.addUserPassword.getText().toString();
+        String Firstname = String.valueOf(binding.addFirstName.getText());
+        String Lastname = String.valueOf(binding.addLastName.getText());
+        String Username = String.valueOf(binding.addUserName.getText());
+        String Password = String.valueOf(binding.addUserPassword.getText());
+        String Address = String.valueOf(binding.userAddress.getText());
+        userAccount = new UserAccount(Firstname, Lastname, UserSex, DateOfBirth, Address, Username,
+                Password, UserRole, canDiscount, canUpdateItem, canAddItem, canAddCategory,
+                canDeleteItem, formattedDate);
         new Thread(() -> {
             POSDatabase.getInstance(getApplicationContext()).getDao().createUser(userAccount);
             handler.post(() -> {
@@ -127,7 +178,25 @@ public class ManageAccountActivity extends AppCompatActivity {
         }).start();
     }
 
-    private void OnStateCheckBoxUserRole() {
+    private void OnStateCheckBox() {
+        binding.userMale.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (isMale = binding.userMale.isChecked()) {
+                UserSex = "Male";
+                binding.userFemale.setEnabled(false);
+            } else {
+                UserSex = null;
+                binding.userFemale.setEnabled(true);
+            }
+        });
+        binding.userFemale.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (isFemale = binding.userFemale.isChecked()) {
+                UserSex = "Female";
+                binding.userMale.setEnabled(false);
+            } else {
+                UserSex = null;
+                binding.userMale.setEnabled(true);
+            }
+        });
         binding.isAdmin.setOnCheckedChangeListener((compoundButton, b) -> {
             if (isAdmin == binding.isAdmin.isChecked()) {
                 binding.isManager.setEnabled(false);
@@ -208,14 +277,12 @@ public class ManageAccountActivity extends AppCompatActivity {
 
         binding.canDiscount.setOnCheckedChangeListener((compoundButton, b) -> {
             if (canDiscount = binding.canDiscount.isChecked()) {
-                Toast.makeText(this, "canDiscount : " + canDiscount, Toast.LENGTH_SHORT).show();
             } else {
                 canDiscount = false;
             }
         });
         binding.canAddCategory.setOnCheckedChangeListener((compoundButton, b) -> {
             if (canAddCategory = binding.canAddCategory.isChecked()) {
-                Toast.makeText(this, "canAddCategory : " + canAddCategory, Toast.LENGTH_SHORT).show();
             } else {
                 canAddCategory = false;
             }
@@ -223,7 +290,6 @@ public class ManageAccountActivity extends AppCompatActivity {
         });
         binding.canAddItem.setOnCheckedChangeListener((compoundButton, b) -> {
             if (canAddItem = binding.canAddItem.isChecked()) {
-                Toast.makeText(this, "canAddItem : " + canAddItem, Toast.LENGTH_SHORT).show();
             } else {
                 canAddItem = false;
             }
@@ -231,14 +297,12 @@ public class ManageAccountActivity extends AppCompatActivity {
 
         binding.canDeleteItem.setOnCheckedChangeListener((compoundButton, b) -> {
             if (canDeleteItem = binding.canDeleteItem.isChecked()) {
-                Toast.makeText(this, "canDeleteItem : " + canDeleteItem, Toast.LENGTH_SHORT).show();
             } else {
                 canDeleteItem = false;
             }
         });
         binding.canUpdateItem.setOnCheckedChangeListener((compoundButton, b) -> {
             if (canUpdateItem = binding.canUpdateItem.isChecked()) {
-                Toast.makeText(this, "canUpdateItem : " + canUpdateItem, Toast.LENGTH_SHORT).show();
             } else {
                 canUpdateItem = false;
             }
@@ -281,15 +345,9 @@ public class ManageAccountActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.add_user:
-                binding.showListAllUser.setVisibility(View.GONE);
-                binding.layoutAddUser.setVisibility(View.VISIBLE);
-                break;
-            case R.id.edit_user:
-                break;
-            case R.id.delete_user:
-                break;
+        if (item.getItemId() == R.id.add_user) {
+            binding.showListAllUser.setVisibility(View.GONE);
+            binding.layoutAddUser.setVisibility(View.VISIBLE);
         }
         return super.onOptionsItemSelected(item);
     }

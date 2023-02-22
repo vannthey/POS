@@ -24,6 +24,14 @@
         android:icon="@drawable/ic_inventory"
         android:title="@string/inventory"/>
     <item
+        android:id="@+id/supplier"
+        android:icon="@drawable/ic_supplier"
+        android:title="@string/supplier"/>
+    <item
+        android:id="@+id/customer"
+        android:icon="@drawable/ic_customer"
+        android:title="@string/customer"/>
+    <item
         android:id="@+id/report"
         android:icon="@drawable/ic_summarize"
         android:title="@string/report"/>
@@ -31,6 +39,7 @@
         android:id="@+id/manage_account"
         android:icon="@drawable/ic_manage_accounts"
         android:title="@string/setting_account"/>
+</group>
     <item
         android:id="@+id/setting"
         android:icon="@drawable/ic_settings"
@@ -39,6 +48,5 @@
         android:id="@+id/logout"
         android:icon="@drawable/ic_logout"
         android:title="@string/sign_out"/>
-</group>
 
 </menu>
