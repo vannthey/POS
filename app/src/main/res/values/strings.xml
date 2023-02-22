@@ -79,5 +79,6 @@
     <string name="delete">Delete</string>
     <string name="update">Update</string>
     <string name="add_supplier">Add Supplier</string>
+    <string name="supplier_sex">Supplier Sex</string>
 
 </resources>

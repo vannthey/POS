@@ -19,12 +19,13 @@ import java.util.List;
 public class Login extends AppCompatActivity {
 
     private final String SaveUserLogin = "UserLogin";
+    private final String SaveUserRole = "SaveUserRole";
     private final String SaveUsername = "Username";
     private final String SavePassword = "Password";
     private final String DefaultUsername = "Admin";
     private final String DefaultPassword = "Admin";
     private final String SaveUserFullName = "SaveUserFullName";
-    private final String SaveUserRole = "SaveUserRole";
+
     String Username;
     String Password;
     ActivityLoginBinding binding;
@@ -64,8 +65,8 @@ public class Login extends AppCompatActivity {
     private void btnLogin(View view) {
         sharedPreferences = getSharedPreferences(SaveUserLogin, MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        Username = binding.txtUsername.getText().toString();
-        Password = binding.txtPassword.getText().toString();
+        Username = String.valueOf(binding.txtUsername.getText());
+        Password = String.valueOf(binding.txtPassword.getText());
         if (Username.equals(DefaultUsername) && Password.equals(DefaultPassword)) {
             startActivity(new Intent(this, MainActivity.class));
         }
@@ -79,6 +80,7 @@ public class Login extends AppCompatActivity {
                             userAccounts.get(i).getUsername() + " " + userAccounts.get(i).getLastname());
                     editor.putString(SaveUsername, Username);
                     editor.putString(SavePassword, Password);
+                    editor.putString(SaveUserRole, userAccounts.get(i).getUserRole());
                     editor.commit();
                     startActivity(new Intent(this, MainActivity.class));
                     finish();
