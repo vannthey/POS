@@ -17,9 +17,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.pos.Database.Entity.Category;
+import com.example.pos.Database.Entity.Supplier;
 import com.example.pos.Database.POSDatabase;
 import com.example.pos.R;
 import com.example.pos.databinding.FragmentFragCategoryBinding;
+import com.example.pos.supplier.AdapterSupplierSpinner;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -33,6 +35,8 @@ public class Frag_category extends Fragment {
     private final String SaveUserLogin = "UserLogin";
     private final String SaveUsername = "Username";
     List<Category> categories;
+    List<Supplier> supplierList;
+    Handler handler;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,6 +54,7 @@ public class Frag_category extends Fragment {
         binding.btnSaveCategory.setOnClickListener(this::onSaveCategory);
         sharedPreferences = requireContext().getSharedPreferences(SaveUserLogin, Context.MODE_PRIVATE);
         onShowAllCategory();
+
         return binding.getRoot();
     }
 
@@ -66,18 +71,18 @@ public class Frag_category extends Fragment {
     }
 
     private void onSaveCategory(View view) {
-        Handler handler = new Handler();
-        String categoryName = binding.categoryName.getText().toString();
+        handler = new Handler();
+        String categoryName = String.valueOf(binding.categoryName.getText());
         String username = sharedPreferences.getString(SaveUsername, "");
         Date current = Calendar.getInstance().getTime();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-mmm-yyyy",
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yyyy",
                 Locale.getDefault());
         String date = simpleDateFormat.format(current);
         if (categoryName.isEmpty()) {
             Toast.makeText(requireContext(), "Please Input Category Name", Toast.LENGTH_SHORT).show();
-        }else {
+        } else {
             new Thread(() -> {
-              //  POSDatabase.getInstance(requireContext().getApplicationContext()).getDao()
+                //  POSDatabase.getInstance(requireContext().getApplicationContext()).getDao()
                 //  .createCategory(new Category(categoryName, username, date));
                 handler.post(() -> {
                     onShowAllCategory();
@@ -87,6 +92,8 @@ public class Frag_category extends Fragment {
             }
             ).start();
         }
+
+
     }
 
     private void onCancelSaveCategory(View view) {
@@ -96,12 +103,18 @@ public class Frag_category extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.add_category:
-                binding.layoutAddCategory.setVisibility(View.VISIBLE);
-                binding.gridCategory.setVisibility(View.GONE);
-                Toast.makeText(requireContext(), "Adding Category", Toast.LENGTH_SHORT).show();
-                break;
+        if (item.getItemId() == R.id.add_category) {
+            binding.layoutAddCategory.setVisibility(View.VISIBLE);
+            binding.gridCategory.setVisibility(View.GONE);
+            Toast.makeText(requireContext(), "Adding Category", Toast.LENGTH_SHORT).show();
+            handler = new Handler();
+            new Thread(() -> {
+                supplierList =
+                        POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().getAllSupplier();
+                handler.post(() -> {
+                    binding.spinnerSupplierCategory.setAdapter(new AdapterSupplierSpinner(supplierList, requireContext()));
+                });
+            }).start();
         }
         return super.onOptionsItemSelected(item);
     }
