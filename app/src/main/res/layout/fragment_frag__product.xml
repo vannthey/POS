@@ -10,6 +10,7 @@
         android:id="@+id/layout_add_product"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
         android:orientation="vertical"
         android:visibility="gone">
 
@@ -178,6 +179,7 @@
         android:id="@+id/layout_show_product"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
         android:orientation="vertical"
         android:visibility="visible">
 

@@ -61,24 +61,10 @@ public class AdapterAccountManager extends BaseAdapter {
         boolean canAddCategory = userAccountList.get(i).getCanAddCategory();
         boolean canUpdate = userAccountList.get(i).getCanUpdate();
 
-        boolean isAdmin = userAccountList.get(i).getAdmin();
-        boolean isManager = userAccountList.get(i).getManager();
-        boolean isCashier = userAccountList.get(i).getCashier();
-        boolean isSeller = userAccountList.get(i).getSeller();
         userNo.setText(String.valueOf(RowCount));
         userName.setText(userAccountList.get(i).getUsername());
         userPassword.setText(userAccountList.get(i).getPassword());
-        if (isAdmin) {
-            userRole.setText("Admin");
-        }else if(isManager){
-            userRole.setText("Manager");
-        }else if(isCashier){
-            userRole.setText("Cashier");
-        }else if (isSeller){
-            userRole.setText("Seller");
-        }else {
-            userRole.setText("Null");
-        }
+        userRole.setText(userAccountList.get(i).getUserRole());
         return view;
     }
 }

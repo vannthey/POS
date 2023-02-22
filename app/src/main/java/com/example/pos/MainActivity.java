@@ -4,10 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
@@ -33,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     private final String SaveUserLogin = "UserLogin";
+    private final String SaveUserFullName = "SaveUserFullName";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +40,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         setSupportActionBar(binding.actionBar.customActionbar);
         setTitle("Dashboard");
-
-        sharedPreferences = getSharedPreferences(SaveUserLogin, MODE_PRIVATE);
-        editor = sharedPreferences.edit();
         drawerToggle = new ActionBarDrawerToggle(this,
                 binding.navDrawerLayout,
                 binding.actionBar.customActionbar,
@@ -56,11 +52,22 @@ public class MainActivity extends AppCompatActivity {
         binding.navDrawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
 
-        binding.navDrawerView.setNavigationItemSelectedListener(this::NavigationSelected);
 
+        binding.navDrawerView.setNavigationItemSelectedListener(this::NavigationSelected);
         binding.navDrawerView.setCheckedItem(R.id.dashboad);
         setStateFragment(new Frag_Dashboard());
+        sharedPreferences = getSharedPreferences(SaveUserLogin, MODE_PRIVATE);
 
+
+    }
+
+    private void onSetUserNameAndRoleOnNavDrawer() {
+        String fullName = sharedPreferences.getString(SaveUserFullName, "");
+        TextView userOnNavDrawer =
+                binding.navDrawerView.getHeaderView(0).findViewById(R.id.userOnNavDrawer);
+                userOnNavDrawer.setText(fullName);
+        TextView userRoleOnNavDrawer =
+                binding.navDrawerView.getHeaderView(0).findViewById(R.id.userRoleOnNavDrawer);
     }
 
     /*
@@ -94,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
                 setStateFragment(new Frag_report());
                 break;
             case R.id.logout:
+                editor = sharedPreferences.edit();
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setCancelable(false);
                 builder.setMessage("ARE YOU SURE WANT TO LOG OUT?");
@@ -102,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 );
                 builder.setPositiveButton("YES", (dialogInterface, i) -> {
                     editor.clear();
-                    editor.apply();
+                    editor.commit();
                     finish();
                     System.exit(0);
                 });
@@ -131,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (binding.navDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.navDrawerLayout.closeDrawer(GravityCompat.START);
-        } else{
+        } else {
             return;
         }
 //        else {

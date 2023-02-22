@@ -9,12 +9,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.transition.Slide;
+import androidx.transition.Transition;
+import androidx.transition.TransitionManager;
 
 import com.example.pos.Database.Entity.UserAccount;
 import com.example.pos.Database.POSDatabase;
 import com.example.pos.R;
 import com.example.pos.databinding.ActivityManageAccountBinding;
-import com.example.pos.databinding.CustomListAllUserBinding;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -26,7 +28,8 @@ public class ManageAccountActivity extends AppCompatActivity {
 
     private static final String TAG = "User Role";
     ActivityManageAccountBinding binding;
-    CustomListAllUserBinding userBinding;
+    Transition transition;
+    String UserRole;
 
     /*
     Position
@@ -57,10 +60,17 @@ public class ManageAccountActivity extends AppCompatActivity {
         binding.customActionbarManageAccount.customActionbar.setNavigationOnClickListener(v -> finish());
         setTitle("Account Management");
         setContentView(binding.getRoot());
+        OnAnimationChangeLayout();
         binding.btnSaveCreateUser.setOnClickListener(this::OnSaveCreateUser);
         binding.btnCancelCreateUser.setOnClickListener(this::OnCancelCreateUser);
         OnStateCheckBoxUserRole();
         OnCallAllUserFromDB();
+    }
+
+    private void OnAnimationChangeLayout() {
+        TransitionManager.beginDelayedTransition(binding.layoutAddUser, transition);
+        transition = new Slide();
+        transition.setDuration(6000);
     }
 
     private void OnCancelCreateUser(View view) {
@@ -86,12 +96,11 @@ public class ManageAccountActivity extends AppCompatActivity {
         String Lastname = binding.addLastName.getText().toString();
         String Username = binding.addUserName.getText().toString();
         String Password = binding.addUserPassword.getText().toString();
-        userAccount = new UserAccount(Firstname, Lastname, Username, Password, isAdmin,
-                isManager, isSeller, isCashier, canDiscount, canUpdateItem, canAddItem, canAddCategory,
-                canDeleteItem, formattedDate);
+        userAccount = new UserAccount(Firstname, Lastname, Username, Password, UserRole, canDiscount,
+                canUpdateItem, canAddItem, canAddCategory, canDeleteItem, formattedDate);
         new Thread(() -> {
             POSDatabase.getInstance(getApplicationContext()).getDao().createUser(userAccount);
-            handler.post(()->{
+            handler.post(() -> {
                 binding.layoutAddUser.setVisibility(View.GONE);
                 binding.showListAllUser.setVisibility(View.VISIBLE);
                 OnCallAllUserFromDB();
@@ -108,7 +117,9 @@ public class ManageAccountActivity extends AppCompatActivity {
                 isManager = false;
                 isCashier = false;
                 isSeller = false;
+                UserRole = "Admin";
             } else {
+                UserRole = null;
                 isManager = true;
                 isCashier = true;
                 isSeller = true;
@@ -119,6 +130,7 @@ public class ManageAccountActivity extends AppCompatActivity {
         });
         binding.isManager.setOnCheckedChangeListener((compoundButton, b) -> {
             if (isManager == binding.isManager.isChecked()) {
+                UserRole = "Manager";
                 binding.isAdmin.setEnabled(false);
                 binding.isSeller.setEnabled(false);
                 binding.isCashier.setEnabled(false);
@@ -126,6 +138,7 @@ public class ManageAccountActivity extends AppCompatActivity {
                 isAdmin = false;
                 isCashier = false;
             } else {
+                UserRole = null;
                 isSeller = true;
                 isAdmin = true;
                 isCashier = true;
@@ -137,6 +150,7 @@ public class ManageAccountActivity extends AppCompatActivity {
         binding.isSeller.setOnCheckedChangeListener((compoundButton, b) -> {
 
             if (isSeller == binding.isSeller.isChecked()) {
+                UserRole = "Seller";
                 binding.isAdmin.setEnabled(false);
                 binding.isManager.setEnabled(false);
                 binding.isCashier.setEnabled(false);
@@ -144,6 +158,7 @@ public class ManageAccountActivity extends AppCompatActivity {
                 isManager = false;
                 isCashier = false;
             } else {
+                UserRole = null;
                 isAdmin = true;
                 isManager = true;
                 isCashier = true;
@@ -154,6 +169,7 @@ public class ManageAccountActivity extends AppCompatActivity {
         });
         binding.isCashier.setOnCheckedChangeListener((compoundButton, b) -> {
             if (isCashier == binding.isCashier.isChecked()) {
+                UserRole = "Cashier";
                 binding.isAdmin.setEnabled(false);
                 binding.isManager.setEnabled(false);
                 binding.isSeller.setEnabled(false);
@@ -161,6 +177,7 @@ public class ManageAccountActivity extends AppCompatActivity {
                 isSeller = false;
                 isManager = false;
             } else {
+                UserRole = null;
                 isAdmin = true;
                 isSeller = true;
                 isManager = true;
