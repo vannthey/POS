@@ -5,14 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
 
 import com.example.pos.Database.Entity.Inventory;
-import com.example.pos.R;
+import com.example.pos.databinding.CustomInventoryItemBinding;
 
 import java.util.List;
 
 public class AdapterInventory extends BaseAdapter {
+    CustomInventoryItemBinding binding;
     List<Inventory> warehouseList;
     Context ctx;
 
@@ -38,11 +38,11 @@ public class AdapterInventory extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        if (view==null){
-            view = LayoutInflater.from(ctx).inflate(R.layout.custom_inventory_item,viewGroup,false);
+        if (view == null) {
+            binding = CustomInventoryItemBinding.inflate(LayoutInflater.from(ctx), viewGroup, false);
+            view = binding.getRoot();
         }
-        TextView inventory_name = view.findViewById(R.id.inventory_name);
-        inventory_name.setText(warehouseList.get(i).getInventoryName());
+        binding.inventoryName.setText(warehouseList.get(i).getInventoryName());
         return view;
     }
 }

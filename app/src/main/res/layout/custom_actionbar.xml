@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/custom_actionbar"
     android:elevation="1dp"
-    app:titleTextAppearance="@style/ToolbarFont"
-    app:titleCentered="true">
+    app:titleTextColor="@color/Brilliant_Azure"
+    app:titleTextAppearance="@style/ToolbarFont">
 
 </com.google.android.material.appbar.MaterialToolbar>

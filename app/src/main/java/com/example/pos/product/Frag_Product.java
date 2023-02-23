@@ -39,7 +39,6 @@ public class Frag_Product extends Fragment {
         binding = FragmentFragProductBinding.inflate(getLayoutInflater(), container, false);
         binding.btnSaveProduct.setOnClickListener(this::onSaveProduct);
         binding.btnCancelAddProduct.setOnClickListener(this::onCancelSaveProduct);
-        transition = new Slide();
         onShowAllProduct();
         return binding.getRoot();
     }
@@ -67,6 +66,7 @@ public class Frag_Product extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.add_product) {
+            transition = new Slide();
             TransitionManager.beginDelayedTransition(binding.layoutAddProduct, transition);
             binding.layoutAddProduct.setVisibility(binding.layoutAddProduct.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
             binding.layoutShowProduct.setVisibility(binding.layoutShowProduct.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);

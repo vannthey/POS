@@ -13,13 +13,13 @@
         android:divider="@null"
         android:listSelector="#00000000"
         android:numColumns="2"
+        android:visibility="visible"
         android:scrollbars="none" />
 
     <LinearLayout
         android:id="@+id/layout_add_inventory"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone">
 
@@ -34,14 +34,48 @@
                 android:id="@+id/inventoryName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/inventory" />
+                android:hint="@string/inventory_title" />
 
         </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp">
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inventoryLocation"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:gravity="top"
+                android:hint="@string/inventory_location" />
+
+        </com.google.android.material.textfield.TextInputLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:gravity="center">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnUpdateInventory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:visibility="gone"
+                android:layout_marginEnd="10dp"
+                android:backgroundTint="@color/Red"
+                android:text="@string/update" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDeleteInventory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:visibility="gone"
+                android:backgroundTint="@color/Red"
+                android:text="@string/delete" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnCancelInventory"

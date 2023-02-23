@@ -44,7 +44,6 @@ public class AdapterSupplier extends BaseAdapter {
             view = binding.getRoot();
         }
         binding.customSupplierName.setText(suppliers.get(i).getSupplierName());
-        binding.customSupplierPhone.setText(suppliers.get(i).getSupplierPhoneNumber());
         return view;
     }
 }

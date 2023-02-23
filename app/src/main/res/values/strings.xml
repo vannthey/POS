@@ -80,5 +80,9 @@
     <string name="update">Update</string>
     <string name="add_supplier">Add Supplier</string>
     <string name="supplier_sex">Supplier Sex</string>
+    <string name="payment">Payment</string>
+    <string name="inventory_location">Invantory Location</string>
+    <string name="inventory_title">Title</string>
+    <string name="product_tax">Product Tax</string>
 
 </resources>

@@ -6,12 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".category.Frag_category">
 
-    <GridView
+    <ListView
         android:id="@+id/grid_category"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:listSelector="#00000000"
-        android:numColumns="2"
         android:visibility="visible" />
 
     <LinearLayout
@@ -23,12 +21,14 @@
         android:padding="10dp"
         android:visibility="gone"
         tools:context=".category.Frag_add_category">
+
         <TextView
-            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:text="@string/supplier"/>
+            android:layout_marginTop="10dp"
+            android:text="@string/supplier"
+            android:textSize="16sp" />
+
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -42,11 +42,12 @@
         </com.google.android.material.card.MaterialCardView>
 
         <TextView
-            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:text="@string/category"/>
+            android:layout_marginTop="10dp"
+            android:text="@string/category"
+            android:textSize="16sp" />
+
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"

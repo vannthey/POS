@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,9 +20,10 @@ import androidx.fragment.app.Fragment;
 import com.example.pos.Database.Entity.Category;
 import com.example.pos.Database.Entity.Supplier;
 import com.example.pos.Database.POSDatabase;
+import com.example.pos.Database.Relationship.CategoryWithSupplier;
 import com.example.pos.R;
 import com.example.pos.databinding.FragmentFragCategoryBinding;
-import com.example.pos.supplier.AdapterSupplierSpinner;
+import com.example.pos.supplier.AdapterSupplier;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -35,6 +37,7 @@ public class Frag_category extends Fragment {
     private final String SaveUserLogin = "UserLogin";
     private final String SaveUsername = "Username";
     List<Category> categoryList;
+    List<CategoryWithSupplier> categoryWithSupplierList;
     Category category;
     List<Supplier> supplierList;
     Handler handler;
@@ -60,19 +63,12 @@ public class Frag_category extends Fragment {
         return binding.getRoot();
     }
 
-    private void onSupplierSpinnerItemClick() {
-        binding.spinnerSupplierCategory.setOnItemClickListener((adapterView, view, i, l) ->
-        {
-            SupplierId = supplierList.get(i).getSupplierId();
-        });
-    }
-
     private void onShowAllCategory() {
         new Thread(() -> {
-            categoryList =
-                    POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().getAllCategory();
+            categoryWithSupplierList =
+                    POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().getAllCategoryFtSupplier();
             handler.post(() -> {
-                binding.gridCategory.setAdapter(new AdapterCategory(categoryList, requireContext()));
+                binding.gridCategory.setAdapter(new AdapterCategory(categoryWithSupplierList, requireContext()));
             });
 
         }).start();
@@ -88,17 +84,17 @@ public class Frag_category extends Fragment {
         if (categoryName.isEmpty()) {
             Toast.makeText(requireContext(), "Please Input Category Name", Toast.LENGTH_SHORT).show();
         } else {
-//            category = new Category(categoryName, SupplierId, username, date);
-//            new Thread(() -> {
-//                POSDatabase.getInstance(requireContext().getApplicationContext()).getDao()
-//                        .createCategory(category);
-//                handler.post(() -> {
-//                    onShowAllCategory();
-//                    binding.layoutAddCategory.setVisibility(View.GONE);
-//                    binding.gridCategory.setVisibility(View.VISIBLE);
-//                });
-//            }
-//            ).start();
+            category = new Category(categoryName, SupplierId, username, date);
+            new Thread(() -> {
+                POSDatabase.getInstance(requireContext().getApplicationContext()).getDao()
+                        .createCategory(category);
+                handler.post(() -> {
+                    onShowAllCategory();
+                    binding.layoutAddCategory.setVisibility(View.GONE);
+                    binding.gridCategory.setVisibility(View.VISIBLE);
+                });
+            }
+            ).start();
         }
 
 
@@ -118,9 +114,22 @@ public class Frag_category extends Fragment {
                 supplierList =
                         POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().getAllSupplier();
                 handler.post(() -> {
-                    binding.spinnerSupplierCategory.setAdapter(new AdapterSupplierSpinner(supplierList, requireContext()));
+                    binding.spinnerSupplierCategory.setAdapter(new AdapterSupplier(supplierList,
+                            requireContext()));
                 });
             }).start();
+            binding.spinnerSupplierCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    SupplierId = supplierList.get(i).getSupplierId();
+                    Toast.makeText(requireContext(), "" + SupplierId, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                    SupplierId = 0;
+                }
+            });
         }
         return super.onOptionsItemSelected(item);
     }

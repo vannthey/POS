@@ -9,7 +9,7 @@
         android:title="@string/dashboard"/>
     <item
         android:id="@+id/sale"
-        android:icon="@drawable/ic_shopping_cart"
+        android:icon="@drawable/ic_sale"
         android:title="@string/sale"/>
     <item
         android:id="@+id/category"
@@ -21,7 +21,7 @@
         android:title="@string/product"/>
     <item
         android:id="@+id/inventory"
-        android:icon="@drawable/ic_inventory"
+        android:icon="@drawable/ic_warehouse"
         android:title="@string/inventory"/>
     <item
         android:id="@+id/supplier"
@@ -31,6 +31,10 @@
         android:id="@+id/customer"
         android:icon="@drawable/ic_customer"
         android:title="@string/customer"/>
+    <item
+        android:id="@+id/payment"
+        android:icon="@drawable/ic_payments"
+        android:title="@string/payment"/>
     <item
         android:id="@+id/report"
         android:icon="@drawable/ic_summarize"

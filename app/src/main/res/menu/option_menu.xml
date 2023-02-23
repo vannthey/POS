@@ -10,25 +10,25 @@
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/add_category"
-        android:icon="@drawable/ic_add"
+        android:icon="@drawable/ic_form_add"
         android:visible="false"
         android:title="@string/add_category"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/add_inventory"
-        android:icon="@drawable/ic_add"
+        android:icon="@drawable/ic_form_add"
         android:visible="false"
         android:title="@string/add_inventory"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/add_product"
-        android:icon="@drawable/ic_add"
+        android:icon="@drawable/ic_form_add"
         android:visible="false"
         android:title="@string/add_product"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/add_supplier"
-        android:icon="@drawable/ic_add"
+        android:icon="@drawable/ic_form_add"
         android:visible="false"
         android:title="@string/add_supplier"
         app:showAsAction="ifRoom" />
