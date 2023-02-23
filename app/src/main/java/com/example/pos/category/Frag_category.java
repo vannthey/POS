@@ -68,7 +68,7 @@ public class Frag_category extends Fragment {
             categoryWithSupplierList =
                     POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().getAllCategoryFtSupplier();
             handler.post(() -> {
-                binding.gridCategory.setAdapter(new AdapterCategory(categoryWithSupplierList, requireContext()));
+                binding.gridCategory.setAdapter(new AdapterCategoryFtSupplier(categoryWithSupplierList, requireContext()));
             });
 
         }).start();

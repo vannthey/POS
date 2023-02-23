@@ -68,11 +68,42 @@ public class Frag_supplier extends Fragment {
 
         OnGetAllSupplier();
         OnCheckSupplierSex();
+        OnSupplierItemClick();
 
         return binding.getRoot();
     }
 
+    private void OnSupplierItemClick() {
+        binding.listShowSupplier.setOnItemClickListener((adapterView, view, i, l) -> {
+            binding.txtSupplierPhone.setText(supplierList.get(i).getSupplierPhoneNumber());
+            binding.txtSupplierName.setText(supplierList.get(i).getSupplierName());
+            binding.txtSupplierAddress.setText(supplierList.get(i).getSupplierAddress());
+            String sex = supplierList.get(i).getSupplierSex();
+            if (sex.contains("Male")) {
+                binding.supplierMale.setChecked(true);
+                binding.supplierFemale.setChecked(false);
+            } else if (sex.contains("Female")) {
+                binding.supplierMale.setChecked(false);
+                binding.supplierFemale.setChecked(true);
+            }
+            OnShowDeleteUpdateBtn();
+            OnShowListAtSupplier();
+        });
+    }
+
+    private void OnShowDeleteUpdateBtn() {
+        binding.btnDeleteSupplier.setVisibility(View.VISIBLE);
+        binding.btnUpdateSupplier.setVisibility(View.VISIBLE);
+        binding.btnSaveSupplier.setVisibility(View.GONE);
+    }
+
     private void OnCancelSupplier(View view) {
+        binding.supplierMale.setChecked(false);
+        binding.supplierFemale.setChecked(false);
+        OnHideListAtSupplier();
+    }
+
+    private void OnHideListAtSupplier() {
         TransitionManager.beginDelayedTransition(binding.layoutAddSupplier, transitionAdd);
         TransitionManager.beginDelayedTransition(binding.listShowSupplier, transitionList);
         binding.layoutAddSupplier.setVisibility(binding.layoutAddSupplier.getVisibility() ==
@@ -107,20 +138,20 @@ public class Frag_supplier extends Fragment {
         SupplierName = String.valueOf(binding.txtSupplierName.getText());
         SupplierPhone = String.valueOf(binding.txtSupplierPhone.getText());
         SupplierAddress = String.valueOf(binding.txtSupplierAddress.getText());
-        preferences = requireContext().getSharedPreferences(SaveUserLogin,0);
-        String UserRole = preferences.getString(SaveUserRole,"");
+        preferences = requireContext().getSharedPreferences(SaveUserLogin, 0);
+        String UserRole = preferences.getString(SaveUserRole, "");
         Date current = Calendar.getInstance().getTime();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yyyy",
                 Locale.getDefault());
         String createDate = simpleDateFormat.format(current);
-        supplier = new Supplier(SupplierName,SupplierSex,SupplierPhone,SupplierAddress,UserRole,createDate);
+        supplier = new Supplier(SupplierName, SupplierSex, SupplierPhone, SupplierAddress, UserRole, createDate);
         handler = new Handler();
         new Thread(() -> {
             POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().createSupplier(supplier);
-            handler.post(()->{
+            handler.post(() -> {
                 OnGetAllSupplier();
                 OnCancelSupplier(view);
-                binding.txtSupplierName.setText(null) ;
+                binding.txtSupplierName.setText(null);
                 binding.txtSupplierAddress.setText(null);
                 binding.txtSupplierPhone.setText(null);
             });
@@ -139,17 +170,21 @@ public class Frag_supplier extends Fragment {
 
     }
 
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.add_supplier) {
-            TransitionManager.beginDelayedTransition(binding.layoutAddSupplier, transitionAdd);
-            TransitionManager.beginDelayedTransition(binding.listShowSupplier, transitionList);
-            binding.layoutAddSupplier.setVisibility(binding.layoutAddSupplier.getVisibility() ==
-                    View.GONE ? View.VISIBLE : View.GONE);
-            binding.listShowSupplier.setVisibility(binding.listShowSupplier.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-
+            OnShowListAtSupplier();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void OnShowListAtSupplier() {
+        TransitionManager.beginDelayedTransition(binding.layoutAddSupplier, transitionAdd);
+        TransitionManager.beginDelayedTransition(binding.listShowSupplier, transitionList);
+        binding.layoutAddSupplier.setVisibility(binding.layoutAddSupplier.getVisibility() ==
+                View.GONE ? View.VISIBLE : View.GONE);
+        binding.listShowSupplier.setVisibility(binding.listShowSupplier.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
     }
 
     @Override

@@ -29,6 +29,9 @@ public interface POSDao {
     @Insert
     void createSupplier(Supplier supplier);
 
+    @Insert
+    void createProduct(Product product);
+
     @Query("SELECT * FROM UserAccount")
     List<UserAccount> userAccount();
 
@@ -42,7 +45,9 @@ public interface POSDao {
     List<Category> getAllCategory();
 
     @Transaction
-    @Query("SELECT Category.categoryName,Supplier.supplierName FROM Category JOIN Supplier ON " +
+    @Query("SELECT Category.categoryId,Supplier.supplierId,Category.categoryName,Supplier.supplierName FROM Category" +
+            " JOIN " +
+            "Supplier ON " +
             "Category" +
             ".categoryId = Supplier.supplierId")
     List<CategoryWithSupplier> getAllCategoryFtSupplier();

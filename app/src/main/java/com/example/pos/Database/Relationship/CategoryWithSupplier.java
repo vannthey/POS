@@ -21,7 +21,9 @@ public class CategoryWithSupplier {
     @ColumnInfo
     public String supplierName;
 
-    public CategoryWithSupplier(String categoryName, String supplierName) {
+    public CategoryWithSupplier(int categoryId, int supplierId, String categoryName, String supplierName) {
+        this.categoryId = categoryId;
+        this.supplierId = supplierId;
         this.categoryName = categoryName;
         this.supplierName = supplierName;
     }

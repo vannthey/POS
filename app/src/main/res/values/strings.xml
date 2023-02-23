@@ -84,5 +84,6 @@
     <string name="inventory_location">Invantory Location</string>
     <string name="inventory_title">Title</string>
     <string name="product_tax">Product Tax</string>
+    <string name="language">Language</string>
 
 </resources>

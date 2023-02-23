@@ -1,5 +1,6 @@
 package com.example.pos.inventory;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -26,10 +27,12 @@ import java.util.List;
 import java.util.Locale;
 
 public class Frag_inventory extends Fragment {
+    private final String SaveUserLogin = "UserLogin";
+    private final String SaveUsername = "Username";
     FragmentFragInventoryBinding binding;
     List<Inventory> warehouseList;
-    AdapterInventory adapterInventory;
-
+    Handler handler;
+    SharedPreferences sharedPreferences;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,8 +45,8 @@ public class Frag_inventory extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentFragInventoryBinding.inflate(inflater, container, false);
 
-        binding.btnCancelInventory.setOnClickListener(this::OnCancelAddInventory);
-        binding.btnSaveInventory.setOnClickListener(this::OnSaveInventory);
+        binding.btnCancelInventory.setOnClickListener(this::onCancelAddInventory);
+        binding.btnSaveInventory.setOnClickListener(this::onSaveInventory);
 
         onShowAllInventory();
 
@@ -51,19 +54,22 @@ public class Frag_inventory extends Fragment {
     }
 
     private void onShowAllInventory() {
-        Handler handler = new Handler();
+        handler = new Handler();
         new Thread(() -> {
             warehouseList =
                     POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().getAllInventory();
             handler.post(() -> {
-                binding.gridInventory.setAdapter(new AdapterInventory(warehouseList, requireContext()));
+                binding.listInventory.setAdapter(new AdapterInventory(warehouseList, requireContext()));
             });
         }).start();
 
     }
 
-    private void OnSaveInventory(View view) {
-        String inventoryName = binding.inventoryName.getText().toString();
+    private void onSaveInventory(View view) {
+        String inventoryName = String.valueOf(binding.inventoryName.getText());
+        String inventoryAddress=String.valueOf(binding.inventoryLocation.getText());
+        sharedPreferences = requireContext().getSharedPreferences(SaveUserLogin,0);
+        String Username = sharedPreferences.getString(SaveUsername,"");
         if (inventoryName.isEmpty()) {
             Toast.makeText(requireContext(), "Please Input Inventory Name", Toast.LENGTH_SHORT).show();
         } else {
@@ -73,11 +79,11 @@ public class Frag_inventory extends Fragment {
             String date = simpleDateFormat.format(c);
             Handler handler = new Handler();
             new Thread(() -> {
-               // POSDatabase.getInstance(requireContext().getApplicationContext()).getDao()
-                // .createInventory(new Inventory(inventoryName, date));
+                POSDatabase.getInstance(requireContext().getApplicationContext()).getDao()
+                 .createInventory(new Inventory(inventoryName,inventoryAddress,Username,date));
             handler.post(()->{
                 onShowAllInventory();
-                binding.gridInventory.setVisibility(View.VISIBLE);
+                binding.listInventory.setVisibility(View.VISIBLE);
                 binding.inventoryName.setText("");
                 binding.layoutAddInventory.setVisibility(View.GONE);
             });
@@ -85,16 +91,17 @@ public class Frag_inventory extends Fragment {
         }
     }
 
-    private void OnCancelAddInventory(View view) {
-        binding.gridInventory.setVisibility(View.VISIBLE);
+    private void onCancelAddInventory(View view) {
+        binding.listInventory.setVisibility(View.VISIBLE);
         binding.inventoryName.setText("");
+        binding.inventoryLocation.setText("");
         binding.layoutAddInventory.setVisibility(View.GONE);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.add_inventory) {
-            binding.gridInventory.setVisibility(View.GONE);
+            binding.listInventory.setVisibility(View.GONE);
             binding.layoutAddInventory.setVisibility(View.VISIBLE);
         }
         return super.onOptionsItemSelected(item);

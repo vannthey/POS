@@ -109,7 +109,7 @@ public class Frag_Dashboard extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.option_menu, menu);
-        menu.findItem(R.id.add_items_cart).setVisible(true);
+        menu.findItem(R.id.app_language).setVisible(true);
         super.onCreateOptionsMenu(menu, inflater);
     }
 }

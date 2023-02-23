@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -35,6 +36,7 @@
                         android:id="@+id/addProductName"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:drawableEnd="@drawable/ic_product"
                         android:hint="@string/product_name" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -72,22 +74,10 @@
                     android:layout_marginTop="10dp">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/addProductCategory"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:hint="@string/product_category" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/addProductTax"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:drawableEnd="@drawable/ic_percent"
                         android:hint="@string/product_tax" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -128,21 +118,44 @@
                 android:orientation="vertical"
                 android:padding="10dp">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/inventory"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="60dp"
+                    android:layout_margin="1dp"
+                    app:cardElevation="2dp">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/addProductInventory"
+                    <Spinner
+                        android:id="@+id/spinnerProductInventory"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:clickable="true"
-                        android:cursorVisible="false"
-                        android:focusable="true"
-                        android:hint="@string/inventory" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_height="match_parent" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/category"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_margin="1dp"
+                    app:cardElevation="2dp">
+
+                    <Spinner
+                        android:id="@+id/spinnerProductCategory"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </com.google.android.material.card.MaterialCardView>
+
             </LinearLayout>
         </LinearLayout>
 
@@ -188,9 +201,9 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_gravity="end"
+            android:layout_marginEnd="10dp"
             android:contentDescription="@null"
             android:src="@drawable/ic_sort" />
-
         <ListView
             android:id="@+id/list_show_product"
             android:layout_width="match_parent"

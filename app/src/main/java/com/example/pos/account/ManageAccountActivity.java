@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -59,7 +60,7 @@ public class ManageAccountActivity extends AppCompatActivity {
     String month;
     String year;
     List<UserAccount> userAccountList;
-
+    Handler handler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -142,16 +143,40 @@ public class ManageAccountActivity extends AppCompatActivity {
     }
 
     private void OnCancelCreateUser(View view) {
+        binding.userMale.setChecked(false);
+        binding.userFemale.setChecked(false);
+        binding.canDoAll.setChecked(false);
+        binding.canDiscount.setChecked(false);
+        binding.canUpdateItem.setChecked(false);
+        binding.canAddItem.setChecked(false);
+        binding.canAddCategory.setChecked(false);
+        binding.canDeleteItem.setChecked(false);
+        binding.isAdmin.setChecked(false);
+        binding.isCashier.setChecked(false);
+        binding.isManager.setChecked(false);
+        binding.isSeller.setChecked(false);
+        binding.addFirstName.setText("");
+        binding.addLastName.setText("");
+        binding.addUserName.setText("");
+        binding.addUserPassword.setText("");
+        binding.userAddress.setText("");
+        binding.userDateOfBirth.setText("");
         binding.showListAllUser.setVisibility(View.VISIBLE);
         binding.layoutAddUser.setVisibility(View.GONE);
     }
 
     private void OnCallAllUserFromDB() {
-        Handler handler = new Handler();
+        handler = new Handler();
         new Thread(() -> {
             userAccountList =
                     POSDatabase.getInstance(getApplicationContext()).getDao().userAccount();
-            handler.post(() -> binding.showListAllUser.setAdapter(new AdapterAccountManager(userAccountList, this)));
+            handler.post(() ->{
+                binding.showListAllUser.setAdapter(new AdapterAccountManager(userAccountList,
+                        this));
+                binding.showListAllUser.setOnItemClickListener((adapterView, view, i, l) -> {
+                    Toast.makeText(this, ""+userAccountList.get(i).toString(), Toast.LENGTH_SHORT).show();
+                });
+            });
         }).start();
     }
 
@@ -173,6 +198,24 @@ public class ManageAccountActivity extends AppCompatActivity {
             handler.post(() -> {
                 binding.layoutAddUser.setVisibility(View.GONE);
                 binding.showListAllUser.setVisibility(View.VISIBLE);
+                binding.userMale.setChecked(false);
+                binding.userFemale.setChecked(false);
+                binding.canDoAll.setChecked(false);
+                binding.canDiscount.setChecked(false);
+                binding.canUpdateItem.setChecked(false);
+                binding.canAddItem.setChecked(false);
+                binding.canAddCategory.setChecked(false);
+                binding.canDeleteItem.setChecked(false);
+                binding.isAdmin.setChecked(false);
+                binding.isCashier.setChecked(false);
+                binding.isManager.setChecked(false);
+                binding.isSeller.setChecked(false);
+                binding.addFirstName.setText("");
+                binding.addLastName.setText("");
+                binding.addUserName.setText("");
+                binding.addUserPassword.setText("");
+                binding.userAddress.setText("");
+                binding.userDateOfBirth.setText("");
                 OnCallAllUserFromDB();
             });
         }).start();

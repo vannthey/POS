@@ -27,6 +27,9 @@ public class Product {
     double productPrice;
 
     @ColumnInfo
+    double productTax;
+
+    @ColumnInfo
     int inventoryId;
 
     @ColumnInfo
@@ -38,16 +41,34 @@ public class Product {
     @ColumnInfo
     String createDate;
 
-    public Product(String productName, int productQty, long productCode, double productCost, double productPrice, int inventoryId, int categoryId, String creator, String createDate) {
+    public Product(String productName, int productQty, long productCode, double productCost, double productPrice, double productTax, int inventoryId, int categoryId, String creator, String createDate) {
         this.productName = productName;
         this.productQty = productQty;
         this.productCode = productCode;
         this.productCost = productCost;
         this.productPrice = productPrice;
+        this.productTax = productTax;
         this.inventoryId = inventoryId;
         this.categoryId = categoryId;
         this.creator = creator;
         this.createDate = createDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "productId=" + productId +
+                ", productName='" + productName + '\'' +
+                ", productQty=" + productQty +
+                ", productCode=" + productCode +
+                ", productCost=" + productCost +
+                ", productPrice=" + productPrice +
+                ", productTax=" + productTax +
+                ", inventoryId=" + inventoryId +
+                ", categoryId=" + categoryId +
+                ", creator='" + creator + '\'' +
+                ", createDate='" + createDate + '\'' +
+                '}';
     }
 
     public int getProductId() {
@@ -74,6 +95,10 @@ public class Product {
         return productPrice;
     }
 
+    public double getProductTax() {
+        return productTax;
+    }
+
     public int getInventoryId() {
         return inventoryId;
     }
@@ -88,21 +113,5 @@ public class Product {
 
     public String getCreateDate() {
         return createDate;
-    }
-
-    @Override
-    public String toString() {
-        return "Product{" +
-                "itemId=" + productId +
-                ", itemName='" + productName + '\'' +
-                ", itemQty=" + productQty +
-                ", itemCode=" + productCode +
-                ", itemCost=" + productCost +
-                ", itemPrice=" + productPrice +
-                ", warehouseId=" + inventoryId +
-                ", categoryId=" + categoryId +
-                ", itemCreator='" + creator + '\'' +
-                ", createDate='" + createDate + '\'' +
-                '}';
     }
 }

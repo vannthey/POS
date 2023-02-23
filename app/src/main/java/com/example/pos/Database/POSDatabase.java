@@ -28,7 +28,7 @@ public abstract class POSDatabase extends RoomDatabase {
 
         if (INSTANCE == null) {
 
-            INSTANCE = Room.databaseBuilder(context.getApplicationContext(), POSDatabase.class, "POS_DATABASE").fallbackToDestructiveMigration().build();
+            INSTANCE = Room.databaseBuilder(context.getApplicationContext(), POSDatabase.class, "POS_DATABASE").build();
 
         }
 

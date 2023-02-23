@@ -9,21 +9,18 @@ import android.widget.TextView;
 
 import com.example.pos.Database.Entity.UserAccount;
 import com.example.pos.R;
+import com.example.pos.databinding.CustomListAllUserBinding;
 
 import java.util.List;
 
 public class AdapterAccountManager extends BaseAdapter {
+    CustomListAllUserBinding binding;
     List<UserAccount> userAccountList;
     Context context;
 
     public AdapterAccountManager(List<UserAccount> userAccountList, Context context) {
         this.userAccountList = userAccountList;
         this.context = context;
-    }
-
-    @Override
-    public boolean isEnabled(int position) {
-        return false;
     }
 
     @Override
@@ -44,27 +41,15 @@ public class AdapterAccountManager extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.custom_list_all_user, viewGroup,
+            binding = CustomListAllUserBinding.inflate(LayoutInflater.from(context), viewGroup,
                     false);
+            view = binding.getRoot();
         }
-        long RowCount = getItemId(i)+1;
-        String userFirstname, userLastname;
-        TextView userRole = view.findViewById(R.id.userRole);
-        TextView userName = view.findViewById(R.id.userName);
-        TextView userPassword = view.findViewById(R.id.userPassword);
-        TextView userNo = view.findViewById(R.id.userId);
-
-        userFirstname = userAccountList.get(i).getFirstname();
-        userLastname = userAccountList.get(i).getLastname();
-        boolean canDiscount = userAccountList.get(i).getCanDiscount();
-        boolean canAddItem = userAccountList.get(i).getCanAddItem();
-        boolean canAddCategory = userAccountList.get(i).getCanAddCategory();
-        boolean canUpdate = userAccountList.get(i).getCanUpdate();
-
-        userNo.setText(String.valueOf(RowCount));
-        userName.setText(userAccountList.get(i).getUsername());
-        userPassword.setText(userAccountList.get(i).getPassword());
-        userRole.setText(userAccountList.get(i).getUserRole());
+        long RowCount = getItemId(i) + 1;
+        binding.userId.setText(String.valueOf(RowCount));
+        binding.userName.setText(userAccountList.get(i).getUsername());
+        binding.userPassword.setText(userAccountList.get(i).getPassword());
+        binding.userRole.setText(userAccountList.get(i).getUserRole());
         return view;
     }
 }

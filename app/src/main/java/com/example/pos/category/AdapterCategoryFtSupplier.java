@@ -6,19 +6,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.example.pos.Database.Entity.Category;
 import com.example.pos.Database.Relationship.CategoryWithSupplier;
 import com.example.pos.databinding.CustomCategoryModelItemsBinding;
 
 import java.util.List;
 
-public class AdapterCategory extends BaseAdapter {
+public class AdapterCategoryFtSupplier extends BaseAdapter {
     CustomCategoryModelItemsBinding binding;
-    List<Category> categories;
+    List<CategoryWithSupplier> categories;
 
     Context context;
 
-    public AdapterCategory(List<Category> categories, Context context) {
+    public AdapterCategoryFtSupplier(List<CategoryWithSupplier> categories, Context context) {
         this.categories = categories;
         this.context = context;
     }
@@ -46,7 +45,10 @@ public class AdapterCategory extends BaseAdapter {
             view = binding.getRoot();
         }
         binding.itemCategory.setText(categories.get(i).getCategoryName());
-        binding.categorySupplierName.setVisibility(View.GONE);
+        binding.categorySupplierName.setVisibility(View.VISIBLE);
+        binding.categorySupplierName.setText(categories.get(i).getSupplierName());
+
+
         return view;
     }
 }

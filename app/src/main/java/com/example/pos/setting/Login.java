@@ -19,19 +19,22 @@ import java.util.List;
 public class Login extends AppCompatActivity {
 
     private final String SaveUserLogin = "UserLogin";
-    private final String SaveUserRole = "SaveUserRole";
     private final String SaveUsername = "Username";
+    private final String SaveUserRole = "SaveUserRole";
     private final String SavePassword = "Password";
     private final String DefaultUsername = "Admin";
+    private final String DefaultUser = "DefaultUser";
     private final String DefaultPassword = "Admin";
+
+
     private final String SaveUserFullName = "SaveUserFullName";
 
     String Username;
     String Password;
     ActivityLoginBinding binding;
     List<UserAccount> userAccounts;
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
+    SharedPreferences sharedPreferences, sharedDefaultUser;
+    SharedPreferences.Editor editor,editorDefault;
     Handler handler;
 
     @Override
@@ -64,10 +67,14 @@ public class Login extends AppCompatActivity {
 
     private void btnLogin(View view) {
         sharedPreferences = getSharedPreferences(SaveUserLogin, MODE_PRIVATE);
+        sharedDefaultUser = getSharedPreferences(DefaultUser, MODE_PRIVATE);
+        editorDefault = sharedDefaultUser.edit();
         editor = sharedPreferences.edit();
         Username = String.valueOf(binding.txtUsername.getText());
         Password = String.valueOf(binding.txtPassword.getText());
         if (Username.equals(DefaultUsername) && Password.equals(DefaultPassword)) {
+            editorDefault.putString(DefaultUsername, "Admin");
+            editorDefault.commit();
             startActivity(new Intent(this, MainActivity.class));
         }
         new Thread(() -> {

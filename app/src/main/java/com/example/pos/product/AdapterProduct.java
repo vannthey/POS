@@ -16,6 +16,11 @@ public class AdapterProduct extends BaseAdapter {
     List<Product> itemList;
     Context ctx;
 
+    public AdapterProduct(List<Product> itemList, Context ctx) {
+        this.itemList = itemList;
+        this.ctx = ctx;
+    }
+
     @Override
     public int getCount() {
         return itemList.size();
@@ -44,11 +49,9 @@ public class AdapterProduct extends BaseAdapter {
         binding.customProductName.setText(itemList.get(i).getProductName());
         binding.customProductPrice.setText(String.valueOf(itemList.get(i).getProductPrice()));
         binding.customProductQty.setText(String.valueOf(itemList.get(i).getProductQty()));
-        int numRow = 0;
-        for (int j = 0; j < itemList.size(); j++) {
-            numRow++;
+        long numRow = getItemId(i)+1;
+
             binding.numRowProduct.setText(String.valueOf(numRow));
-        }
 
         return view;
     }

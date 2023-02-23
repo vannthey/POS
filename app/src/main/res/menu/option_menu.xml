@@ -9,6 +9,12 @@
         android:title="@string/shopping_cart"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/app_language"
+        android:icon="@drawable/ic_language"
+        android:visible="false"
+        android:title="@string/language"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/add_category"
         android:icon="@drawable/ic_form_add"
         android:visible="false"
