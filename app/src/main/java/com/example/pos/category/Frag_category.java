@@ -34,9 +34,11 @@ public class Frag_category extends Fragment {
     SharedPreferences sharedPreferences;
     private final String SaveUserLogin = "UserLogin";
     private final String SaveUsername = "Username";
-    List<Category> categories;
+    List<Category> categoryList;
+    Category category;
     List<Supplier> supplierList;
     Handler handler;
+    int SupplierId;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,7 +51,7 @@ public class Frag_category extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentFragCategoryBinding.inflate(inflater, container, false);
-
+        handler = new Handler();
         binding.btnCancelCategory.setOnClickListener(this::onCancelSaveCategory);
         binding.btnSaveCategory.setOnClickListener(this::onSaveCategory);
         sharedPreferences = requireContext().getSharedPreferences(SaveUserLogin, Context.MODE_PRIVATE);
@@ -58,20 +60,25 @@ public class Frag_category extends Fragment {
         return binding.getRoot();
     }
 
+    private void onSupplierSpinnerItemClick() {
+        binding.spinnerSupplierCategory.setOnItemClickListener((adapterView, view, i, l) ->
+        {
+            SupplierId = supplierList.get(i).getSupplierId();
+        });
+    }
+
     private void onShowAllCategory() {
-        Handler handler = new Handler();
         new Thread(() -> {
-            categories =
+            categoryList =
                     POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().getAllCategory();
             handler.post(() -> {
-                binding.gridCategory.setAdapter(new AdapterCategory(categories, requireContext()));
+                binding.gridCategory.setAdapter(new AdapterCategory(categoryList, requireContext()));
             });
 
         }).start();
     }
 
     private void onSaveCategory(View view) {
-        handler = new Handler();
         String categoryName = String.valueOf(binding.categoryName.getText());
         String username = sharedPreferences.getString(SaveUsername, "");
         Date current = Calendar.getInstance().getTime();
@@ -81,16 +88,17 @@ public class Frag_category extends Fragment {
         if (categoryName.isEmpty()) {
             Toast.makeText(requireContext(), "Please Input Category Name", Toast.LENGTH_SHORT).show();
         } else {
-            new Thread(() -> {
-                //  POSDatabase.getInstance(requireContext().getApplicationContext()).getDao()
-                //  .createCategory(new Category(categoryName, username, date));
-                handler.post(() -> {
-                    onShowAllCategory();
-                    binding.layoutAddCategory.setVisibility(View.GONE);
-                    binding.gridCategory.setVisibility(View.VISIBLE);
-                });
-            }
-            ).start();
+//            category = new Category(categoryName, SupplierId, username, date);
+//            new Thread(() -> {
+//                POSDatabase.getInstance(requireContext().getApplicationContext()).getDao()
+//                        .createCategory(category);
+//                handler.post(() -> {
+//                    onShowAllCategory();
+//                    binding.layoutAddCategory.setVisibility(View.GONE);
+//                    binding.gridCategory.setVisibility(View.VISIBLE);
+//                });
+//            }
+//            ).start();
         }
 
 
@@ -106,8 +114,6 @@ public class Frag_category extends Fragment {
         if (item.getItemId() == R.id.add_category) {
             binding.layoutAddCategory.setVisibility(View.VISIBLE);
             binding.gridCategory.setVisibility(View.GONE);
-            Toast.makeText(requireContext(), "Adding Category", Toast.LENGTH_SHORT).show();
-            handler = new Handler();
             new Thread(() -> {
                 supplierList =
                         POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().getAllSupplier();

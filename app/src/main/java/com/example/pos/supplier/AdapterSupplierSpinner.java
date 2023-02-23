@@ -44,6 +44,7 @@ public class AdapterSupplierSpinner extends BaseAdapter {
             view = binding.getRoot();
         }
         binding.customSupplierNameSpinner.setText(supplierList.get(i).getSupplierName());
+        binding.customSupplierIdSpinner.setText(String.valueOf(supplierList.get(i).getSupplierId()));
         return view;
     }
 }
