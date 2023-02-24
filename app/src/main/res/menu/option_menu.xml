@@ -21,6 +21,12 @@
         android:title="@string/add_category"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/add_unit"
+        android:icon="@drawable/ic_form_add"
+        android:visible="false"
+        android:title="@string/add_unit"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/add_inventory"
         android:icon="@drawable/ic_form_add"
         android:visible="false"

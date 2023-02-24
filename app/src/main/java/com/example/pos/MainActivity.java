@@ -26,6 +26,7 @@ import com.example.pos.report.Frag_report;
 import com.example.pos.sale.Frag_sale;
 import com.example.pos.setting.Preference;
 import com.example.pos.supplier.Frag_supplier;
+import com.example.pos.unit.Frag_unit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
             binding.navDrawerView.getMenu().findItem(R.id.payment).setVisible(false);
             binding.navDrawerView.getMenu().findItem(R.id.customer).setVisible(false);
             binding.navDrawerView.getMenu().findItem(R.id.supplier).setVisible(false);
+            binding.navDrawerView.getMenu().findItem(R.id.unit).setVisible(false);
             TextView userOnNavDrawer =
                     binding.navDrawerView.getHeaderView(0).findViewById(R.id.userOnNavDrawer);
             userOnNavDrawer.setText("Admin");
@@ -94,10 +96,10 @@ public class MainActivity extends AppCompatActivity {
     private void onSetUserNameAndRoleOnNavDrawer() {
         TextView userOnNavDrawer =
                 binding.navDrawerView.getHeaderView(0).findViewById(R.id.userOnNavDrawer);
-        userOnNavDrawer.setText(SharedPreferenceHelper.getInstance(this).getSaveUserLoginName(this));
+        userOnNavDrawer.setText(SharedPreferenceHelper.getInstance().getSaveUserLoginName(this));
         TextView userRoleOnNavDrawer =
                 binding.navDrawerView.getHeaderView(0).findViewById(R.id.userRoleOnNavDrawer);
-        userRoleOnNavDrawer.setText(SharedPreferenceHelper.getInstance(this).getSaveUserLoginRole(this));
+        userRoleOnNavDrawer.setText(SharedPreferenceHelper.getInstance().getSaveUserLoginRole(this));
     }
 
     /*
@@ -133,6 +135,10 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.supplier:
                     setTitle(R.string.supplier);
                     setStateFragment(new Frag_supplier());
+                    break;
+                case R.id.unit:
+                    setTitle(R.string.unit);
+                    setStateFragment(new Frag_unit());
                     break;
                 case R.id.logout:
                     editor = sharedPreferences.edit();

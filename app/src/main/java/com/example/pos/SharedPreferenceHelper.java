@@ -11,7 +11,7 @@ public class SharedPreferenceHelper {
     private final String DefaultPassword = "Admin";
     private static SharedPreferenceHelper INSTANCE;
 
-    public static synchronized SharedPreferenceHelper getInstance(Context context) {
+    public static synchronized SharedPreferenceHelper getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new SharedPreferenceHelper();
         }

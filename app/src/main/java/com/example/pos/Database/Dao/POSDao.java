@@ -9,6 +9,7 @@ import com.example.pos.Database.Entity.Category;
 import com.example.pos.Database.Entity.Inventory;
 import com.example.pos.Database.Entity.Product;
 import com.example.pos.Database.Entity.Supplier;
+import com.example.pos.Database.Entity.Unit;
 import com.example.pos.Database.Entity.UserAccount;
 import com.example.pos.Database.Relationship.CategoryWithSupplier;
 
@@ -31,6 +32,8 @@ public interface POSDao {
 
     @Insert
     void createProduct(Product product);
+    @Insert
+    void createUnit(Unit unit);
 
     @Query("SELECT * FROM UserAccount")
     List<UserAccount> userAccount();
@@ -67,4 +70,8 @@ public interface POSDao {
             "Like :Id")
     void updateSupplierById(String supplierName, String supplierAddress, String supplierSex,
                             String supplierPhoneNumber, int Id);
+    @Query("SELECT * FROM Unit")
+    List<Unit> getAllUnit();
+
+
 }

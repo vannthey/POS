@@ -70,7 +70,7 @@ public class Frag_category extends Fragment {
             Toast.makeText(requireContext(), "Please Input Category Name", Toast.LENGTH_SHORT).show();
         } else {
             category = new Category(categoryName,
-                    SharedPreferenceHelper.getInstance(requireContext()).getSaveUserLoginName(requireContext()),
+                    SharedPreferenceHelper.getInstance().getSaveUserLoginName(requireContext()),
                     CurrentDateHelper.getCurrentDate());
             new Thread(() -> {
                 POSDatabase.getInstance(requireContext().getApplicationContext()).getDao()

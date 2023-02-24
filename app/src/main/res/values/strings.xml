@@ -85,5 +85,9 @@
     <string name="inventory_title">Title</string>
     <string name="product_tax">Product Tax</string>
     <string name="language">Language</string>
+    <string name="unit">Unit</string>
+    <string name="dot">.</string>
+    <string name="add_unit">Add Unit</string>
+    <string name="qty">Quantity</string>
 
 </resources>

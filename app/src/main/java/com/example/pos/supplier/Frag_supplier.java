@@ -58,7 +58,7 @@ public class Frag_supplier extends Fragment {
         transitionList = new Slide(Gravity.START);
         transitionAdd.setDuration(500);
         transitionList.setDuration(500);
-        binding.btnCancelSupplier.setOnClickListener(this::OnCancelSupplier);
+        binding.btnCancelSupplier.setOnClickListener(v -> OnClearDataSupplier());
         binding.btnSaveSupplier.setOnClickListener(this::OnSaveSupplier);
 
         OnGetAllSupplier();
@@ -91,18 +91,41 @@ public class Frag_supplier extends Fragment {
         binding.btnDeleteSupplier.setVisibility(View.VISIBLE);
         binding.btnUpdateSupplier.setVisibility(View.VISIBLE);
         binding.btnSaveSupplier.setVisibility(View.GONE);
+        handler = new Handler();
         binding.btnUpdateSupplier.setOnClickListener(v -> {
             SupplierName = String.valueOf(binding.txtSupplierName.getText());
             SupplierPhone = String.valueOf(binding.txtSupplierPhone.getText());
             SupplierAddress = String.valueOf(binding.txtSupplierAddress.getText());
-            new Thread(() -> POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().updateSupplierById(SupplierName, SupplierAddress, SupplierSex, SupplierPhone, supplierId)).start();
+            new Thread(() -> {
+                POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().updateSupplierById(SupplierName, SupplierAddress, SupplierSex, SupplierPhone, supplierId);
+                handler.post(()->{
+                    OnClearDataSupplier();
+                    OnHideDeleteUpdate();
+                });
+            }).start();
         });
-        binding.btnDeleteSupplier.setOnClickListener(v -> new Thread(() -> POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().deleteSupplierById(supplierId)).start());
+        binding.btnDeleteSupplier.setOnClickListener(v -> new Thread(() -> {
+            POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().deleteSupplierById(supplierId);
+            handler.post(()->{
+                OnHideDeleteUpdate();
+                OnClearDataSupplier();
+            });
+        }).start());
     }
 
-    private void OnCancelSupplier(View view) {
+    private void OnHideDeleteUpdate() {
+        binding.btnDeleteSupplier.setVisibility(View.GONE);
+        binding.btnUpdateSupplier.setVisibility(View.GONE);
+        binding.btnSaveSupplier.setVisibility(View.VISIBLE);
+    }
+
+    private void OnClearDataSupplier() {
         binding.supplierMale.setChecked(false);
         binding.supplierFemale.setChecked(false);
+        binding.txtSupplierName.setText(null);
+        binding.txtSupplierPhone.setText(null);
+        binding.txtSupplierAddress.setText(null);
+        OnHideDeleteUpdate();
         OnHideListAtSupplier();
     }
 
@@ -142,17 +165,14 @@ public class Frag_supplier extends Fragment {
         SupplierPhone = String.valueOf(binding.txtSupplierPhone.getText());
         SupplierAddress = String.valueOf(binding.txtSupplierAddress.getText());
         supplier = new Supplier(SupplierName, SupplierSex, SupplierPhone, SupplierAddress,
-                SharedPreferenceHelper.getInstance(requireContext()).getSaveUserLoginName(requireContext()),
+                SharedPreferenceHelper.getInstance().getSaveUserLoginName(requireContext()),
                 CurrentDateHelper.getCurrentDate());
         handler = new Handler();
         new Thread(() -> {
             POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().createSupplier(supplier);
             handler.post(() -> {
                 OnGetAllSupplier();
-                OnCancelSupplier(view);
-                binding.txtSupplierName.setText(null);
-                binding.txtSupplierAddress.setText(null);
-                binding.txtSupplierPhone.setText(null);
+                OnClearDataSupplier();
             });
         }).start();
     }

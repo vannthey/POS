@@ -12,13 +12,17 @@
         android:icon="@drawable/ic_sale"
         android:title="@string/sale"/>
     <item
-        android:id="@+id/category"
-        android:icon="@drawable/ic_category"
-        android:title="@string/category"/>
-    <item
         android:id="@+id/item"
         android:icon="@drawable/ic_product"
         android:title="@string/product"/>
+    <item
+        android:id="@+id/unit"
+        android:icon="@drawable/ic_unit"
+        android:title="@string/unit"/>
+    <item
+        android:id="@+id/category"
+        android:icon="@drawable/ic_category"
+        android:title="@string/category"/>
     <item
         android:id="@+id/inventory"
         android:icon="@drawable/ic_warehouse"

@@ -39,12 +39,15 @@ public class Product {
     int categoryId;
 
     @ColumnInfo
+    int supplierId;
+
+    @ColumnInfo
     String creator;
 
     @ColumnInfo
     String createDate;
 
-    public Product(String productName, int productQty, int productUnitId, long productCode, double productCost, double productPrice, double productTax, int inventoryId, int categoryId, String creator, String createDate) {
+    public Product(String productName, int productQty, int productUnitId, long productCode, double productCost, double productPrice, double productTax, int inventoryId, int categoryId, int supplierId, String creator, String createDate) {
         this.productName = productName;
         this.productQty = productQty;
         this.productUnitId = productUnitId;
@@ -54,6 +57,7 @@ public class Product {
         this.productTax = productTax;
         this.inventoryId = inventoryId;
         this.categoryId = categoryId;
+        this.supplierId = supplierId;
         this.creator = creator;
         this.createDate = createDate;
     }
@@ -98,11 +102,34 @@ public class Product {
         return categoryId;
     }
 
+    public int getSupplierId() {
+        return supplierId;
+    }
+
     public String getCreator() {
         return creator;
     }
 
     public String getCreateDate() {
         return createDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "productId=" + productId +
+                ", productName='" + productName + '\'' +
+                ", productQty=" + productQty +
+                ", productUnitId=" + productUnitId +
+                ", productCode=" + productCode +
+                ", productCost=" + productCost +
+                ", productPrice=" + productPrice +
+                ", productTax=" + productTax +
+                ", inventoryId=" + inventoryId +
+                ", categoryId=" + categoryId +
+                ", supplierId=" + supplierId +
+                ", creator='" + creator + '\'' +
+                ", createDate='" + createDate + '\'' +
+                '}';
     }
 }

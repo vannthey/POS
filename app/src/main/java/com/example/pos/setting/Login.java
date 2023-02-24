@@ -32,8 +32,8 @@ public class Login extends AppCompatActivity {
         binding.btnLogin.setOnClickListener(this::btnLogin);
         handler = new Handler();
 
-        Username = SharedPreferenceHelper.getInstance(this).getSaveUserLoginName(this);
-        Password = SharedPreferenceHelper.getInstance(this).getSaveUserLoginPassword(this);
+        Username = SharedPreferenceHelper.getInstance().getSaveUserLoginName(this);
+        Password = SharedPreferenceHelper.getInstance().getSaveUserLoginPassword(this);
         new Thread(() -> {
             userAccounts =
                     POSDatabase.getInstance(getApplicationContext()).getDao().checkUser(Username,
@@ -55,7 +55,7 @@ public class Login extends AppCompatActivity {
         Username = String.valueOf(binding.txtUsername.getText());
         Password = String.valueOf(binding.txtPassword.getText());
         if (Username.equals("Admin") && Password.equals("Admin")) {
-            SharedPreferenceHelper.getInstance(this).SaveDefaultUser(Username,Password,this);
+            SharedPreferenceHelper.getInstance().SaveDefaultUser(Username,Password,this);
             startActivity(new Intent(this, MainActivity.class));
         }
         new Thread(() -> {
@@ -65,7 +65,7 @@ public class Login extends AppCompatActivity {
             for (int i = 0; i < userAccounts.size(); i++) {
                 if (Username.equals(userAccounts.get(i).getUsername()) && Password.equals(userAccounts.get(i).getPassword())) {
                     UserRole = userAccounts.get(i).getUserRole();
-                    SharedPreferenceHelper.getInstance(this).SaveUserLogin(Username, Password,
+                    SharedPreferenceHelper.getInstance().SaveUserLogin(Username, Password,
                             UserRole, this);
                     startActivity(new Intent(this, MainActivity.class));
                     finish();
