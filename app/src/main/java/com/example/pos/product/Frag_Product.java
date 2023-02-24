@@ -20,6 +20,7 @@ import androidx.transition.TransitionManager;
 import com.example.pos.Database.Entity.Category;
 import com.example.pos.Database.Entity.Inventory;
 import com.example.pos.Database.Entity.Product;
+import com.example.pos.Database.Entity.Supplier;
 import com.example.pos.Database.POSDatabase;
 import com.example.pos.R;
 import com.example.pos.category.AdapterCategory;
@@ -40,7 +41,8 @@ public class Frag_Product extends Fragment {
     List<Product> productList;
     List<Inventory> inventoryList;
     List<Category> categoryList;
-    Category category;
+
+    List<Supplier> supplierList;
     Product product;
     Transition transition;
     Handler handler;
@@ -52,6 +54,7 @@ public class Frag_Product extends Fragment {
     int productQty;
     int inventoryId;
     int categoryId;
+    int supplierId;
     double productPrice;
     double productCost;
     double productTax;
@@ -102,8 +105,8 @@ public class Frag_Product extends Fragment {
         productPrice = Double.parseDouble(String.valueOf(binding.addProductPrice.getText()));
         productCost = Double.parseDouble(String.valueOf(binding.addProductCost.getText()));
         productTax = Double.parseDouble(String.valueOf(binding.addProductTax.getText()));
-        product = new Product(productName, productQty, productCode, productCost, productPrice,
-                productTax, inventoryId, categoryId, creator, createDate);
+//        product = new Product(productName, productQty, productCode, productCost, productPrice,
+//                productTax, inventoryId, categoryId, creator, createDate);
         handler = new Handler();
         new Thread(() -> {
             POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().createProduct(product);

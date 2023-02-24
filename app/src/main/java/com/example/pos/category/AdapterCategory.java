@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.example.pos.Database.Entity.Category;
-import com.example.pos.Database.Relationship.CategoryWithSupplier;
 import com.example.pos.databinding.CustomCategoryModelItemsBinding;
 
 import java.util.List;
@@ -46,7 +45,7 @@ public class AdapterCategory extends BaseAdapter {
             view = binding.getRoot();
         }
         binding.itemCategory.setText(categories.get(i).getCategoryName());
-        binding.categorySupplierName.setVisibility(View.GONE);
+        // binding.categorySupplierName.setVisibility(View.GONE);
         return view;
     }
 }

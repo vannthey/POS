@@ -15,16 +15,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.pos.CurrentDateHelper;
 import com.example.pos.Database.Entity.Inventory;
 import com.example.pos.Database.POSDatabase;
 import com.example.pos.R;
 import com.example.pos.databinding.FragmentFragInventoryBinding;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class Frag_inventory extends Fragment {
     private final String SaveUserLogin = "UserLogin";
@@ -89,14 +86,11 @@ public class Frag_inventory extends Fragment {
         if (inventoryName.isEmpty()) {
             Toast.makeText(requireContext(), "Please Input Inventory Name", Toast.LENGTH_SHORT).show();
         } else {
-            Date c = Calendar.getInstance().getTime();
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yyyy",
-                    Locale.getDefault());
-            String date = simpleDateFormat.format(c);
             Handler handler = new Handler();
             new Thread(() -> {
                 POSDatabase.getInstance(requireContext().getApplicationContext()).getDao()
-                        .createInventory(new Inventory(inventoryName, inventoryAddress, Username, date));
+                        .createInventory(new Inventory(inventoryName, inventoryAddress, Username,
+                                CurrentDateHelper.getCurrentDate()));
                 handler.post(() -> {
                     onShowAllInventory();
                     OnClearAllDataInAddInventory();

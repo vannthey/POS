@@ -18,6 +18,9 @@ public class Product {
     int productQty;
 
     @ColumnInfo
+    int productUnitId;
+
+    @ColumnInfo
     long productCode;
 
     @ColumnInfo
@@ -41,9 +44,10 @@ public class Product {
     @ColumnInfo
     String createDate;
 
-    public Product(String productName, int productQty, long productCode, double productCost, double productPrice, double productTax, int inventoryId, int categoryId, String creator, String createDate) {
+    public Product(String productName, int productQty, int productUnitId, long productCode, double productCost, double productPrice, double productTax, int inventoryId, int categoryId, String creator, String createDate) {
         this.productName = productName;
         this.productQty = productQty;
+        this.productUnitId = productUnitId;
         this.productCode = productCode;
         this.productCost = productCost;
         this.productPrice = productPrice;
@@ -52,23 +56,6 @@ public class Product {
         this.categoryId = categoryId;
         this.creator = creator;
         this.createDate = createDate;
-    }
-
-    @Override
-    public String toString() {
-        return "Product{" +
-                "productId=" + productId +
-                ", productName='" + productName + '\'' +
-                ", productQty=" + productQty +
-                ", productCode=" + productCode +
-                ", productCost=" + productCost +
-                ", productPrice=" + productPrice +
-                ", productTax=" + productTax +
-                ", inventoryId=" + inventoryId +
-                ", categoryId=" + categoryId +
-                ", creator='" + creator + '\'' +
-                ", createDate='" + createDate + '\'' +
-                '}';
     }
 
     public int getProductId() {
@@ -81,6 +68,10 @@ public class Product {
 
     public int getProductQty() {
         return productQty;
+    }
+
+    public int getProductUnitId() {
+        return productUnitId;
     }
 
     public long getProductCode() {

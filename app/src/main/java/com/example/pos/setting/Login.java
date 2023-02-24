@@ -1,7 +1,6 @@
 package com.example.pos.setting;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -12,29 +11,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.pos.Database.Entity.UserAccount;
 import com.example.pos.Database.POSDatabase;
 import com.example.pos.MainActivity;
+import com.example.pos.SharedPreferenceHelper;
 import com.example.pos.databinding.ActivityLoginBinding;
 
 import java.util.List;
 
 public class Login extends AppCompatActivity {
-
-    private final String SaveUserLogin = "UserLogin";
-    private final String SaveUsername = "Username";
-    private final String SaveUserRole = "SaveUserRole";
-    private final String SavePassword = "Password";
-    private final String DefaultUsername = "Admin";
-    private final String DefaultUser = "DefaultUser";
-    private final String DefaultPassword = "Admin";
-
-
-    private final String SaveUserFullName = "SaveUserFullName";
-
     String Username;
     String Password;
+    String UserRole;
     ActivityLoginBinding binding;
     List<UserAccount> userAccounts;
-    SharedPreferences sharedPreferences, sharedDefaultUser;
-    SharedPreferences.Editor editor,editorDefault;
     Handler handler;
 
     @Override
@@ -43,11 +30,10 @@ public class Login extends AppCompatActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         binding.btnLogin.setOnClickListener(this::btnLogin);
-        sharedPreferences = getSharedPreferences(SaveUserLogin, MODE_PRIVATE);
-        Username = sharedPreferences.getString(SaveUsername, "");
-        Password = sharedPreferences.getString(SavePassword, "");
-        // Toast.makeText(this, "" + Username + Password, Toast.LENGTH_SHORT).show();
         handler = new Handler();
+
+        Username = SharedPreferenceHelper.getInstance(this).getSaveUserLoginName(this);
+        Password = SharedPreferenceHelper.getInstance(this).getSaveUserLoginPassword(this);
         new Thread(() -> {
             userAccounts =
                     POSDatabase.getInstance(getApplicationContext()).getDao().checkUser(Username,
@@ -66,15 +52,10 @@ public class Login extends AppCompatActivity {
     }
 
     private void btnLogin(View view) {
-        sharedPreferences = getSharedPreferences(SaveUserLogin, MODE_PRIVATE);
-        sharedDefaultUser = getSharedPreferences(DefaultUser, MODE_PRIVATE);
-        editorDefault = sharedDefaultUser.edit();
-        editor = sharedPreferences.edit();
         Username = String.valueOf(binding.txtUsername.getText());
         Password = String.valueOf(binding.txtPassword.getText());
-        if (Username.equals(DefaultUsername) && Password.equals(DefaultPassword)) {
-            editorDefault.putString(DefaultUsername, "Admin");
-            editorDefault.commit();
+        if (Username.equals("Admin") && Password.equals("Admin")) {
+            SharedPreferenceHelper.getInstance(this).SaveDefaultUser(Username,Password,this);
             startActivity(new Intent(this, MainActivity.class));
         }
         new Thread(() -> {
@@ -83,14 +64,15 @@ public class Login extends AppCompatActivity {
                             Password);
             for (int i = 0; i < userAccounts.size(); i++) {
                 if (Username.equals(userAccounts.get(i).getUsername()) && Password.equals(userAccounts.get(i).getPassword())) {
-                    editor.putString(SaveUserFullName,
-                            userAccounts.get(i).getUsername() + " " + userAccounts.get(i).getLastname());
-                    editor.putString(SaveUsername, Username);
-                    editor.putString(SavePassword, Password);
-                    editor.putString(SaveUserRole, userAccounts.get(i).getUserRole());
-                    editor.commit();
+                    UserRole = userAccounts.get(i).getUserRole();
+                    SharedPreferenceHelper.getInstance(this).SaveUserLogin(Username, Password,
+                            UserRole, this);
                     startActivity(new Intent(this, MainActivity.class));
                     finish();
+                } else {
+                    handler.post(() -> {
+                        Toast.makeText(this, "Invalidate Login", Toast.LENGTH_SHORT).show();
+                    });
                 }
             }
         }).start();

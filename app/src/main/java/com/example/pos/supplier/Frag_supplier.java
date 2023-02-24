@@ -1,6 +1,5 @@
 package com.example.pos.supplier;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
@@ -17,24 +16,19 @@ import androidx.transition.Slide;
 import androidx.transition.Transition;
 import androidx.transition.TransitionManager;
 
+import com.example.pos.CurrentDateHelper;
 import com.example.pos.Database.Entity.Supplier;
 import com.example.pos.Database.POSDatabase;
 import com.example.pos.R;
+import com.example.pos.SharedPreferenceHelper;
 import com.example.pos.databinding.FragmentFragSupplierBinding;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class Frag_supplier extends Fragment {
-    private final String SaveUserLogin = "UserLogin";
-    private final String SaveUserRole = "SaveUserRole";
     FragmentFragSupplierBinding binding;
     Transition transitionAdd;
     Transition transitionList;
-    SharedPreferences preferences;
 
     List<Supplier> supplierList;
     Handler handler;
@@ -97,19 +91,13 @@ public class Frag_supplier extends Fragment {
         binding.btnDeleteSupplier.setVisibility(View.VISIBLE);
         binding.btnUpdateSupplier.setVisibility(View.VISIBLE);
         binding.btnSaveSupplier.setVisibility(View.GONE);
-        binding.btnUpdateSupplier.setOnClickListener(v->{
+        binding.btnUpdateSupplier.setOnClickListener(v -> {
             SupplierName = String.valueOf(binding.txtSupplierName.getText());
             SupplierPhone = String.valueOf(binding.txtSupplierPhone.getText());
             SupplierAddress = String.valueOf(binding.txtSupplierAddress.getText());
-            new Thread(()->{
-                POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().updateSupplierById(SupplierName,SupplierAddress,SupplierSex,SupplierPhone,supplierId);
-            }).start();
+            new Thread(() -> POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().updateSupplierById(SupplierName, SupplierAddress, SupplierSex, SupplierPhone, supplierId)).start();
         });
-        binding.btnDeleteSupplier.setOnClickListener(v->{
-            new Thread(()->{
-               POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().deleteSupplierById(supplierId);
-            }).start();
-        });
+        binding.btnDeleteSupplier.setOnClickListener(v -> new Thread(() -> POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().deleteSupplierById(supplierId)).start());
     }
 
     private void OnCancelSupplier(View view) {
@@ -153,13 +141,9 @@ public class Frag_supplier extends Fragment {
         SupplierName = String.valueOf(binding.txtSupplierName.getText());
         SupplierPhone = String.valueOf(binding.txtSupplierPhone.getText());
         SupplierAddress = String.valueOf(binding.txtSupplierAddress.getText());
-        preferences = requireContext().getSharedPreferences(SaveUserLogin, 0);
-        String UserRole = preferences.getString(SaveUserRole, "");
-        Date current = Calendar.getInstance().getTime();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yyyy",
-                Locale.getDefault());
-        String createDate = simpleDateFormat.format(current);
-        supplier = new Supplier(SupplierName, SupplierSex, SupplierPhone, SupplierAddress, UserRole, createDate);
+        supplier = new Supplier(SupplierName, SupplierSex, SupplierPhone, SupplierAddress,
+                SharedPreferenceHelper.getInstance(requireContext()).getSaveUserLoginName(requireContext()),
+                CurrentDateHelper.getCurrentDate());
         handler = new Handler();
         new Thread(() -> {
             POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().createSupplier(supplier);
@@ -178,9 +162,7 @@ public class Frag_supplier extends Fragment {
         new Thread(() -> {
             supplierList =
                     POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().getAllSupplier();
-            handler.post(() -> {
-                binding.listShowSupplier.setAdapter(new AdapterSupplier(supplierList, requireContext()));
-            });
+            handler.post(() -> binding.listShowSupplier.setAdapter(new AdapterSupplier(supplierList, requireContext())));
         }).start();
 
     }

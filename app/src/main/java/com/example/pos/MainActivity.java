@@ -67,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
                     binding.navDrawerView.getHeaderView(0).findViewById(R.id.userRoleOnNavDrawer);
             userRoleOnNavDrawer.setText("Default User");
             binding.mainFrameLayout.setVisibility(View.GONE);
+        }else {
+            onSetUserNameAndRoleOnNavDrawer();
         }
 
         drawerToggle = new ActionBarDrawerToggle(this,
@@ -90,12 +92,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onSetUserNameAndRoleOnNavDrawer() {
-        String fullName = sharedPreferences.getString(SaveUserFullName, "");
         TextView userOnNavDrawer =
                 binding.navDrawerView.getHeaderView(0).findViewById(R.id.userOnNavDrawer);
-        userOnNavDrawer.setText(fullName);
+        userOnNavDrawer.setText(SharedPreferenceHelper.getInstance(this).getSaveUserLoginName(this));
         TextView userRoleOnNavDrawer =
                 binding.navDrawerView.getHeaderView(0).findViewById(R.id.userRoleOnNavDrawer);
+        userRoleOnNavDrawer.setText(SharedPreferenceHelper.getInstance(this).getSaveUserLoginRole(this));
     }
 
     /*

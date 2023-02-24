@@ -18,7 +18,6 @@ import com.example.pos.Database.Entity.Product;
 import com.example.pos.Database.POSDatabase;
 import com.example.pos.R;
 import com.example.pos.databinding.FragmentFragDashboardBinding;
-import com.google.android.material.tabs.TabLayout;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
@@ -46,6 +45,8 @@ public class Frag_Dashboard extends Fragment {
                     POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().getAllProduct();
             handler.post(() -> binding.gridDashboard.setAdapter(new AdapterProductDashboard(productList, requireContext())));
         }).start();
+
+
         /*
         Select QR icon in edite text // 11/2/2023
          */
