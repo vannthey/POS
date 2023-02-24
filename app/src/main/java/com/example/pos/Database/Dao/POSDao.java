@@ -11,7 +11,6 @@ import com.example.pos.Database.Entity.Product;
 import com.example.pos.Database.Entity.Supplier;
 import com.example.pos.Database.Entity.Unit;
 import com.example.pos.Database.Entity.UserAccount;
-import com.example.pos.Database.Relationship.CategoryWithSupplier;
 
 import java.util.List;
 
@@ -47,13 +46,13 @@ public interface POSDao {
     @Query("SELECT * FROM Category")
     List<Category> getAllCategory();
 
-    @Transaction
-    @Query("SELECT Category.categoryId,Supplier.supplierId,Category.categoryName,Supplier.supplierName FROM Category" +
-            " JOIN " +
-            "Supplier ON " +
-            "Category" +
-            ".categoryId = Supplier.supplierId")
-    List<CategoryWithSupplier> getAllCategoryFtSupplier();
+//    @Transaction
+//    @Query("SELECT Category.categoryId,Supplier.supplierId,Category.categoryName,Supplier.supplierName FROM Category" +
+//            " JOIN " +
+//            "Supplier ON " +
+//            "Category" +
+//            ".categoryId = Supplier.supplierId")
+//    List<CategoryWithSupplier> getAllCategoryFtSupplier();
 
     @Query("SELECT * FROM Product")
     List<Product> getAllProduct();
