@@ -59,4 +59,12 @@ public interface POSDao {
     List<Supplier> getAllSupplier();
 
 
+    @Query("DELETE FROM Supplier WHERE supplierId Like :Id")
+    void deleteSupplierById(int Id);
+
+    @Query("Update Supplier SET supplierName=:supplierName,supplierAddress=:supplierAddress," +
+            "supplierSex=:supplierSex,supplierPhoneNumber=:supplierPhoneNumber WHERE supplierId " +
+            "Like :Id")
+    void updateSupplierById(String supplierName, String supplierAddress, String supplierSex,
+                            String supplierPhoneNumber, int Id);
 }

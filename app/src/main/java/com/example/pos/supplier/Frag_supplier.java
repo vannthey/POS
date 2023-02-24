@@ -47,6 +47,7 @@ public class Frag_supplier extends Fragment {
 
     String SupplierSex;
     Supplier supplier;
+    int supplierId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,6 +79,7 @@ public class Frag_supplier extends Fragment {
             binding.txtSupplierPhone.setText(supplierList.get(i).getSupplierPhoneNumber());
             binding.txtSupplierName.setText(supplierList.get(i).getSupplierName());
             binding.txtSupplierAddress.setText(supplierList.get(i).getSupplierAddress());
+            supplierId = supplierList.get(i).getSupplierId();
             String sex = supplierList.get(i).getSupplierSex();
             if (sex.contains("Male")) {
                 binding.supplierMale.setChecked(true);
@@ -95,6 +97,19 @@ public class Frag_supplier extends Fragment {
         binding.btnDeleteSupplier.setVisibility(View.VISIBLE);
         binding.btnUpdateSupplier.setVisibility(View.VISIBLE);
         binding.btnSaveSupplier.setVisibility(View.GONE);
+        binding.btnUpdateSupplier.setOnClickListener(v->{
+            SupplierName = String.valueOf(binding.txtSupplierName.getText());
+            SupplierPhone = String.valueOf(binding.txtSupplierPhone.getText());
+            SupplierAddress = String.valueOf(binding.txtSupplierAddress.getText());
+            new Thread(()->{
+                POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().updateSupplierById(SupplierName,SupplierAddress,SupplierSex,SupplierPhone,supplierId);
+            }).start();
+        });
+        binding.btnDeleteSupplier.setOnClickListener(v->{
+            new Thread(()->{
+               POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().deleteSupplierById(supplierId);
+            }).start();
+        });
     }
 
     private void OnCancelSupplier(View view) {

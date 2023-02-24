@@ -1,43 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".dasboard.Frag_Dashboard">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:gravity="center"
+        android:orientation="vertical"
         tools:ignore="UselessParent">
+
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_height="wrap_content">
+            android:layout_marginEnd="10dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/searchView_dashboard"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_search"
-                android:drawableEnd="@drawable/ic_qr_code_scanner"
-                android:layout_height="wrap_content" />
+                android:drawableEnd="@drawable/ic_qr_code_scanner" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayoutOnDashboard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:visibility="gone"
             app:tabIndicator="@drawable/tab_indicator"
             app:tabIndicatorAnimationMode="elastic"
             app:tabIndicatorColor="@color/purple_700"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
             app:tabIndicatorGravity="stretch"
             app:tabMode="auto"
             app:tabSelectedTextColor="@color/white"
@@ -47,7 +50,9 @@
             android:id="@+id/grid_dashboard"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:numColumns="2" />
+            android:layout_marginTop="10dp"
+            android:numColumns="2"
+            android:divider="@null" />
 
     </LinearLayout>
 

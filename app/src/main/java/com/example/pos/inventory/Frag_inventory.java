@@ -33,6 +33,7 @@ public class Frag_inventory extends Fragment {
     List<Inventory> warehouseList;
     Handler handler;
     SharedPreferences sharedPreferences;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,8 +50,23 @@ public class Frag_inventory extends Fragment {
         binding.btnSaveInventory.setOnClickListener(this::onSaveInventory);
 
         onShowAllInventory();
-
+        OnInventoryItemClickListener();
         return binding.getRoot();
+    }
+
+    private void OnInventoryItemClickListener() {
+        binding.listInventory.setOnItemClickListener((adapterView, view, i, l) -> {
+            binding.inventoryName.setText(warehouseList.get(i).getInventoryName());
+            binding.inventoryLocation.setText(warehouseList.get(i).getInventoryAddress());
+            OnSHowBtnDeleteUpdate();
+            OnShowAddInventory();
+        });
+    }
+
+    private void OnSHowBtnDeleteUpdate() {
+        binding.btnDeleteInventory.setVisibility(View.VISIBLE);
+        binding.btnUpdateInventory.setVisibility(View.VISIBLE);
+        binding.btnSaveInventory.setVisibility(View.GONE);
     }
 
     private void onShowAllInventory() {
@@ -67,9 +83,9 @@ public class Frag_inventory extends Fragment {
 
     private void onSaveInventory(View view) {
         String inventoryName = String.valueOf(binding.inventoryName.getText());
-        String inventoryAddress=String.valueOf(binding.inventoryLocation.getText());
-        sharedPreferences = requireContext().getSharedPreferences(SaveUserLogin,0);
-        String Username = sharedPreferences.getString(SaveUsername,"");
+        String inventoryAddress = String.valueOf(binding.inventoryLocation.getText());
+        sharedPreferences = requireContext().getSharedPreferences(SaveUserLogin, 0);
+        String Username = sharedPreferences.getString(SaveUsername, "");
         if (inventoryName.isEmpty()) {
             Toast.makeText(requireContext(), "Please Input Inventory Name", Toast.LENGTH_SHORT).show();
         } else {
@@ -80,18 +96,20 @@ public class Frag_inventory extends Fragment {
             Handler handler = new Handler();
             new Thread(() -> {
                 POSDatabase.getInstance(requireContext().getApplicationContext()).getDao()
-                 .createInventory(new Inventory(inventoryName,inventoryAddress,Username,date));
-            handler.post(()->{
-                onShowAllInventory();
-                binding.listInventory.setVisibility(View.VISIBLE);
-                binding.inventoryName.setText("");
-                binding.layoutAddInventory.setVisibility(View.GONE);
-            });
+                        .createInventory(new Inventory(inventoryName, inventoryAddress, Username, date));
+                handler.post(() -> {
+                    onShowAllInventory();
+                    OnClearAllDataInAddInventory();
+                });
             }).start();
         }
     }
 
     private void onCancelAddInventory(View view) {
+        OnClearAllDataInAddInventory();
+    }
+
+    private void OnClearAllDataInAddInventory() {
         binding.listInventory.setVisibility(View.VISIBLE);
         binding.inventoryName.setText("");
         binding.inventoryLocation.setText("");
@@ -101,10 +119,21 @@ public class Frag_inventory extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.add_inventory) {
-            binding.listInventory.setVisibility(View.GONE);
-            binding.layoutAddInventory.setVisibility(View.VISIBLE);
+            OnShowAddInventory();
+            OnHideBtnDeleteUpdate();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void OnHideBtnDeleteUpdate() {
+        binding.btnDeleteInventory.setVisibility(View.GONE);
+        binding.btnUpdateInventory.setVisibility(View.GONE);
+        binding.btnSaveInventory.setVisibility(View.VISIBLE);
+    }
+
+    private void OnShowAddInventory() {
+        binding.listInventory.setVisibility(View.GONE);
+        binding.layoutAddInventory.setVisibility(View.VISIBLE);
     }
 
     @Override

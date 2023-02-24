@@ -1,11 +1,10 @@
 package com.example.pos.dasboard;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -15,17 +14,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.pos.Database.Entity.Product;
+import com.example.pos.Database.POSDatabase;
 import com.example.pos.R;
 import com.example.pos.databinding.FragmentFragDashboardBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Frag_Dashboard extends Fragment {
-
+    List<Product> productList;
+    Handler handler;
     FragmentFragDashboardBinding binding;
 
     @Override
@@ -34,53 +35,48 @@ public class Frag_Dashboard extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentFragDashboardBinding.inflate(inflater, container, false);
-
+        handler = new Handler();
+        new Thread(() -> {
+            productList =
+                    POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().getAllProduct();
+            handler.post(() -> binding.gridDashboard.setAdapter(new AdapterProductDashboard(productList, requireContext())));
+        }).start();
         /*
         Select QR icon in edite text // 11/2/2023
          */
 
-        binding.searchViewDashboard.setOnTouchListener((view, motionEvent) -> {
-            final int DRAWABLE_RIGHT = 0;
-            if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                if (motionEvent.getRawX() >= (binding.searchViewDashboard.getRight() - binding.searchViewDashboard.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-
-                    launchQRScan();
-
-                }
-            }
-            return false;
-        });
-        List<DashboardModel> models = new ArrayList<>();
-
-        binding.gridDashboard.setAdapter(new DashboardAdapter(models, getContext()));
-//        binding.tabLayoutOnDashboard.addTab(binding.tabLayoutOnDashboard.newTab().setText("All"));
-//        binding.tabLayoutOnDashboard.addTab(binding.tabLayoutOnDashboard.newTab().setText("Drink"));
-//        binding.tabLayoutOnDashboard.addTab(binding.tabLayoutOnDashboard.newTab().setText("Soft Drink"));
-//        binding.tabLayoutOnDashboard.addTab(binding.tabLayoutOnDashboard.newTab().setText("Hot Drink"));
-//        binding.tabLayoutOnDashboard.addTab(binding.tabLayoutOnDashboard.newTab().setText("Food"));
-//        binding.tabLayoutOnDashboard.addTab(binding.tabLayoutOnDashboard.newTab().setText("Meal"));
-        binding.tabLayoutOnDashboard.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
+//        binding.searchViewDashboard.setOnTouchListener((view, motionEvent) -> {
+//            final int DRAWABLE_RIGHT = 0;
+//            if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+//                if (motionEvent.getRawX() >= (binding.searchViewDashboard.getRight() - binding.searchViewDashboard.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+//
+//                    launchQRScan();
+//
+//                }
+//            }
+//            return false;
+//        });
+//        binding.tabLayoutOnDashboard.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+//            @Override
+//            public void onTabSelected(TabLayout.Tab tab) {
+//
+//            }
+//
+//            @Override
+//            public void onTabUnselected(TabLayout.Tab tab) {
+//
+//            }
+//
+//            @Override
+//            public void onTabReselected(TabLayout.Tab tab) {
+//
+//            }
+//        });
 
         return binding.getRoot();
     }
