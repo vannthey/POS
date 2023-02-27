@@ -51,7 +51,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:buttonTint="@color/Blue"
+                android:buttonTint="@color/Egyptian_Blue"
                 android:id="@+id/supplierMale"
                 android:text="@string/male" />
 
@@ -59,7 +59,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:buttonTint="@color/Blue"
+                android:buttonTint="@color/Egyptian_Blue"
                 android:id="@+id/supplierFemale"
                 android:text="@string/female" />
         </LinearLayout>
@@ -110,7 +110,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                android:backgroundTint="@color/Red"
+                android:backgroundTint="@color/Coral_Red"
                 android:text="@string/delete"
                 android:textAllCaps="false"
                 android:visibility="gone" />
@@ -121,7 +121,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                android:backgroundTint="@color/Red"
+                android:backgroundTint="@color/Banana_Yellow"
                 android:text="@string/cancel"
                 android:textAllCaps="false" />
 
@@ -131,7 +131,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                android:backgroundTint="@color/Blue"
+                android:backgroundTint="@color/Egyptian_Blue"
                 android:text="@string/save"
                 android:textAllCaps="false" />
 
@@ -141,7 +141,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                android:backgroundTint="@color/Blue"
+                android:backgroundTint="@color/Lime_Green"
                 android:text="@string/update"
                 android:textAllCaps="false"
                 android:visibility="gone" />

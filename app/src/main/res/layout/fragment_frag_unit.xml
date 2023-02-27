@@ -72,7 +72,7 @@
                 android:layout_height="60dp"
                 android:layout_marginEnd="5dp"
                 android:layout_weight="1"
-                android:backgroundTint="@color/Red"
+                android:backgroundTint="@color/Lime_Green"
                 android:text="@string/update"
                 android:textAllCaps="false"
                 android:visibility="gone" />
@@ -83,7 +83,7 @@
                 android:layout_height="60dp"
                 android:layout_marginEnd="5dp"
                 android:layout_weight="1"
-                android:backgroundTint="@color/Red"
+                android:backgroundTint="@color/Banana_Yellow"
                 android:text="@string/cancel"
                 android:textAllCaps="false" />
 
@@ -93,7 +93,7 @@
                 android:layout_height="60dp"
                 android:layout_marginEnd="5dp"
                 android:layout_weight="1"
-                android:backgroundTint="@color/Red"
+                android:backgroundTint="@color/Coral_Red"
                 android:text="@string/delete"
                 android:textAllCaps="false"
                 android:visibility="gone" />
@@ -104,7 +104,7 @@
                 android:layout_height="60dp"
                 android:layout_marginStart="5dp"
                 android:layout_weight="1"
-                android:backgroundTint="@color/Blue"
+                android:backgroundTint="@color/Egyptian_Blue"
                 android:text="@string/save"
                 android:textAllCaps="false" />
         </LinearLayout>

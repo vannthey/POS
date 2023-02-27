@@ -12,15 +12,13 @@
         layout="@layout/custom_actionbar" />
 
     <ListView
-        android:id="@+id/show_list_all_user"
+        android:id="@+id/list_all_user"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@null"
-        android:scrollbars="none"
         android:visibility="visible" />
 
     <LinearLayout
-        android:id="@+id/layout_add_user"
+        android:id="@+id/form_add_user"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -46,7 +44,7 @@
                 android:layout_weight="1">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/add_first_name"
+                    android:id="@+id/txt_first_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/firstname" />
@@ -62,7 +60,7 @@
                 android:layout_weight="1">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/add_last_name"
+                    android:id="@+id/txt_last_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/lastname" />
@@ -85,7 +83,7 @@
                 android:layout_weight="1">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/add_user_name"
+                    android:id="@+id/txt_user_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/username" />
@@ -102,7 +100,7 @@
                 app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/add_user_password"
+                    android:id="@+id/txt_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/password"
@@ -134,32 +132,33 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/is_male"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:buttonTint="@color/Blue"
-                android:id="@+id/userMale"
+                android:buttonTint="@color/Egyptian_Blue"
                 android:text="@string/male" />
 
             <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/is_female"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:buttonTint="@color/Blue"
-                android:id="@+id/userFemale"
+                android:buttonTint="@color/Egyptian_Blue"
                 android:text="@string/female" />
+
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
                 android:layout_marginStart="30dp"
+                android:layout_marginEnd="10dp"
                 android:layout_weight="2">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txt_date_of_birth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/userDateOfBirth"
                     android:drawableEnd="@drawable/ic_date" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -179,9 +178,9 @@
             android:layout_marginEnd="10dp">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txt_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/userAddress"
                 android:maxHeight="100dp" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -202,7 +201,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:buttonTint="@color/Blue"
+                android:buttonTint="@color/Egyptian_Blue"
                 android:text="@string/admin" />
 
             <com.google.android.material.checkbox.MaterialCheckBox
@@ -210,7 +209,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:buttonTint="@color/Blue"
+                android:buttonTint="@color/Egyptian_Blue"
                 android:text="@string/manager" />
 
             <com.google.android.material.checkbox.MaterialCheckBox
@@ -218,7 +217,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:buttonTint="@color/Blue"
+                android:buttonTint="@color/Egyptian_Blue"
                 android:text="@string/seller" />
 
             <com.google.android.material.checkbox.MaterialCheckBox
@@ -226,7 +225,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:buttonTint="@color/Blue"
+                android:buttonTint="@color/Egyptian_Blue"
                 android:text="@string/cashier" />
         </LinearLayout>
 
@@ -246,7 +245,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:buttonTint="@color/Blue"
+                android:buttonTint="@color/Egyptian_Blue"
                 android:text="@string/discount" />
 
             <com.google.android.material.checkbox.MaterialCheckBox
@@ -254,7 +253,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:buttonTint="@color/Blue"
+                android:buttonTint="@color/Egyptian_Blue"
                 android:text="@string/update_item" />
 
             <com.google.android.material.checkbox.MaterialCheckBox
@@ -262,7 +261,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:buttonTint="@color/Blue"
+                android:buttonTint="@color/Egyptian_Blue"
                 android:text="@string/add_item" />
         </LinearLayout>
 
@@ -277,7 +276,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:buttonTint="@color/Blue"
+                android:buttonTint="@color/Egyptian_Blue"
                 android:text="@string/add_category" />
 
             <com.google.android.material.checkbox.MaterialCheckBox
@@ -285,16 +284,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:buttonTint="@color/Blue"
+                android:buttonTint="@color/Egyptian_Blue"
                 android:text="@string/delete_item" />
-
-            <com.google.android.material.checkbox.MaterialCheckBox
-                android:id="@+id/canDoAll"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:buttonTint="@color/Blue"
-                android:text="@string/allow_all" />
         </LinearLayout>
 
         <LinearLayout
@@ -308,7 +299,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                android:backgroundTint="@color/Red"
+                android:backgroundTint="@color/Banana_Yellow"
                 android:text="@string/cancel"
                 android:textAllCaps="false" />
 
@@ -318,9 +309,31 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                android:backgroundTint="@color/Blue"
+                android:backgroundTint="@color/Egyptian_Blue"
                 android:text="@string/save"
                 android:textAllCaps="false" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDeleteUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:backgroundTint="@color/Coral_Red"
+                android:text="@string/delete"
+                android:textAllCaps="false"
+                android:visibility="gone" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnUpdateUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:backgroundTint="@color/Lime_Green"
+                android:text="@string/update"
+                android:textAllCaps="false"
+                android:visibility="gone" />
         </LinearLayout>
     </LinearLayout>
 

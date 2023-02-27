@@ -63,7 +63,7 @@
         android:layout_height="wrap_content"
         app:cornerRadius="5dp"
         android:id="@+id/btnLogin"
-        android:backgroundTint="@color/Blue"
+        android:backgroundTint="@color/Egyptian_Blue"
         android:textAllCaps="false"
         android:text="@string/login"/>
 

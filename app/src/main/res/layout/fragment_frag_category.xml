@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -22,24 +21,6 @@
         android:visibility="gone"
         tools:context=".category.Frag_add_category">
 
-<!--        <TextView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:text="@string/supplier"-->
-<!--            android:textSize="16sp" />-->
-
-<!--        <com.google.android.material.card.MaterialCardView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="50dp"-->
-<!--            android:layout_margin="5dp"-->
-<!--            app:cardElevation="2dp">-->
-
-<!--            <Spinner-->
-<!--                android:id="@+id/spinner_supplier_category"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent" />-->
-<!--        </com.google.android.material.card.MaterialCardView>-->
 
         <TextView
             android:layout_width="match_parent"
@@ -70,7 +51,7 @@
                 android:layout_height="60dp"
                 android:layout_marginEnd="5dp"
                 android:layout_weight="1"
-                android:backgroundTint="@color/Red"
+                android:backgroundTint="@color/Coral_Red"
                 android:text="@string/cancel"
                 android:textAllCaps="false" />
 
@@ -80,7 +61,7 @@
                 android:layout_height="60dp"
                 android:layout_marginStart="5dp"
                 android:layout_weight="1"
-                android:backgroundTint="@color/Blue"
+                android:backgroundTint="@color/Egyptian_Blue"
                 android:text="@string/save"
                 android:textAllCaps="false" />
         </LinearLayout>

@@ -14,20 +14,15 @@ import androidx.transition.Slide;
 import androidx.transition.Transition;
 import androidx.transition.TransitionManager;
 
+import com.example.pos.CurrentDateHelper;
 import com.example.pos.Database.Entity.UserAccount;
 import com.example.pos.Database.POSDatabase;
 import com.example.pos.R;
 import com.example.pos.databinding.ActivityManageAccountBinding;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class ManageAccountActivity extends AppCompatActivity {
-
-    private static final String TAG = "User Role";
     ActivityManageAccountBinding binding;
     Transition transition;
     String UserRole;
@@ -46,21 +41,28 @@ public class ManageAccountActivity extends AppCompatActivity {
             canUpdateItem = false,
             canAddItem = false,
             canAddCategory = false,
-            canDeleteItem = false,
-            AllowAllPermission;
+            canDeleteItem = false;
     /*
     Sex
      */
     Boolean isMale = true,
             isFemale = true;
     String UserSex;
+    int UserId;
     UserAccount userAccount;
     String DateOfBirth;
     String day;
     String month;
     String year;
-    List<UserAccount> userAccountList;
+    List<UserAccount> ListUsers;
     Handler handler;
+
+    String Firstname;
+    String Lastname;
+    String Username;
+    String Password;
+    String Address;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,19 +74,135 @@ public class ManageAccountActivity extends AppCompatActivity {
         setTitle("Account Management");
         setContentView(binding.getRoot());
         OnAnimationChangeLayout();
-        binding.btnSaveCreateUser.setOnClickListener(this::OnSaveCreateUser);
-        binding.btnCancelCreateUser.setOnClickListener(this::OnCancelCreateUser);
-        OnStateCheckBox();
+        handler = new Handler();
+        binding.btnSaveCreateUser.setOnClickListener(v -> OnSaveCreateUser());
+        binding.btnCancelCreateUser.setOnClickListener(v -> OnCancelUser());
+        binding.btnUpdateUser.setOnClickListener(v -> OnUpdateUser());
+        binding.btnDeleteUser.setOnClickListener(v -> OnDeleteUser());
         OnCallAllUserFromDB();
         OnSetUserDateOfBird();
+        OnSelectUser();
+        OnStateCheckBox();
+    }
+
+    private void OnCancelUser() {
+        OnClearDataInView();
+        OnHideFormAddUser();
+    }
+
+    private void OnDeleteUser() {
+        new Thread(() -> {
+            POSDatabase.getInstance(getApplicationContext()).getDao().deleteUserById(UserId);
+            handler.post(() -> {
+                Toast.makeText(this, "User " + binding.txtUserName.getText() + " have been " +
+                                "deleted",
+                        Toast.LENGTH_SHORT).show();
+                OnHideBtnDeleteUpdate();
+                OnHideFormAddUser();
+                OnClearDataInView();
+                OnCallAllUserFromDB();
+            });
+        }).start();
+
+    }
+
+    private void OnSelectUser() {
+        binding.listAllUser.setOnItemClickListener((adapterView, view, i, l) -> {
+            OnShowFormAddUser();
+            OnShowBtnDeleteUpdate();
+            UserId = ListUsers.get(i).userId;
+            binding.txtFirstName.setText(ListUsers.get(i).getFirstname());
+            binding.txtLastName.setText(ListUsers.get(i).getLastname());
+            binding.txtPassword.setText(ListUsers.get(i).getPassword());
+            binding.txtUserName.setText(ListUsers.get(i).getUsername());
+            if (ListUsers.get(i).getSex() == null) {
+                binding.isMale.setChecked(false);
+                binding.isFemale.setChecked(false);
+            } else if (ListUsers.get(i).getSex().equals("Male")) {
+                binding.isMale.setChecked(true);
+            } else if (ListUsers.get(i).getSex().equals("Female")) {
+                binding.isFemale.setChecked(true);
+            }
+            binding.txtDateOfBirth.setText(ListUsers.get(i).getDOB());
+            binding.txtAddress.setText(ListUsers.get(i).getAddress());
+            switch (ListUsers.get(i).getUserRole()) {
+                case "Admin":
+                    binding.isAdmin.setChecked(true);
+                    break;
+                case "Seller":
+                    binding.isSeller.setChecked(true);
+                    break;
+                case "Cashier":
+                    binding.isCashier.setChecked(true);
+                    break;
+                case "Manager":
+                    binding.isManager.setChecked(true);
+                    break;
+            }
+
+            binding.canDiscount.setChecked(ListUsers.get(i).getCanDiscount());
+            binding.canUpdateItem.setChecked(ListUsers.get(i).getCanUpdate());
+            binding.canAddItem.setChecked(ListUsers.get(i).getCanAddItem());
+            binding.canAddCategory.setChecked(ListUsers.get(i).getCanAddCategory());
+            binding.canDeleteItem.setChecked(ListUsers.get(i).getCanDeleteItem());
+        });
+    }
+
+    private void OnGetAllDataFromForm() {
+
+        Firstname = String.valueOf(binding.txtFirstName.getText());
+        Lastname = String.valueOf(binding.txtLastName.getText());
+        Username = String.valueOf(binding.txtUserName.getText());
+        Password = String.valueOf(binding.txtPassword.getText());
+        Address = String.valueOf(binding.txtAddress.getText());
+        if (DateOfBirth == null) {
+            DateOfBirth = CurrentDateHelper.getCurrentDate();
+        }
+
+    }
+
+    private void OnShowFormAddUser() {
+        binding.listAllUser.setVisibility(View.GONE);
+        binding.formAddUser.setVisibility(View.VISIBLE);
+    }
+
+    private void OnHideBtnDeleteUpdate() {
+        binding.btnDeleteUser.setVisibility(View.GONE);
+        binding.btnUpdateUser.setVisibility(View.GONE);
+        binding.btnSaveCreateUser.setVisibility(View.VISIBLE);
+    }
+
+    private void OnShowBtnDeleteUpdate() {
+        binding.btnDeleteUser.setVisibility(View.VISIBLE);
+        binding.btnUpdateUser.setVisibility(View.VISIBLE);
+        binding.btnSaveCreateUser.setVisibility(View.GONE);
+    }
+
+    private void OnHideFormAddUser() {
+        binding.listAllUser.setVisibility(View.VISIBLE);
+        binding.formAddUser.setVisibility(View.GONE);
+    }
+
+    private void OnUpdateUser() {
+        OnGetAllDataFromForm();
+        new Thread(() -> {
+            POSDatabase.getInstance(getApplicationContext()).getDao().updateUserById(Firstname,
+                    Lastname, Username, Password, DateOfBirth, Address, UserSex, UserRole, canDiscount,
+                    canUpdateItem
+                    , canAddItem, canAddCategory, canDeleteItem, UserId);
+            handler.post(() -> {
+                Toast.makeText(this, "User have been updated", Toast.LENGTH_SHORT).show();
+                OnCallAllUserFromDB();
+            });
+        }).start();
+        OnHideBtnDeleteUpdate();
+        OnHideFormAddUser();
+        OnClearDataInView();
     }
 
     private void OnSetUserDateOfBird() {
-        Date current = Calendar.getInstance().getTime();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
-        String currentDate = dateFormat.format(current);
-        binding.userDateOfBirth.setText(currentDate);
-        binding.userDateOfBirth.setOnClickListener(v -> {
+        binding.txtDateOfBirth.setText(CurrentDateHelper.getCurrentDate());
+        binding.txtDateOfBirth.setOnClickListener(v -> {
             DatePickerDialog dialog = new DatePickerDialog(this);
             dialog.setOnDateSetListener((datePicker, i, i1, i2) -> {
                 switch (i1 + 1) {
@@ -128,7 +246,7 @@ public class ManageAccountActivity extends AppCompatActivity {
                 year = String.valueOf(i);
                 day = String.valueOf(i2);
                 DateOfBirth = day + "-" + month + "-" + year;
-                binding.userDateOfBirth.setText(DateOfBirth);
+                binding.txtDateOfBirth.setText(DateOfBirth);
             });
             dialog.show();
 
@@ -137,15 +255,14 @@ public class ManageAccountActivity extends AppCompatActivity {
     }
 
     private void OnAnimationChangeLayout() {
-        TransitionManager.beginDelayedTransition(binding.layoutAddUser, transition);
+        TransitionManager.beginDelayedTransition(binding.formAddUser, transition);
         transition = new Slide();
         transition.setDuration(6000);
     }
 
-    private void OnCancelCreateUser(View view) {
-        binding.userMale.setChecked(false);
-        binding.userFemale.setChecked(false);
-        binding.canDoAll.setChecked(false);
+    private void OnClearDataInView() {
+        binding.isMale.setChecked(false);
+        binding.isFemale.setChecked(false);
         binding.canDiscount.setChecked(false);
         binding.canUpdateItem.setChecked(false);
         binding.canAddItem.setChecked(false);
@@ -155,89 +272,55 @@ public class ManageAccountActivity extends AppCompatActivity {
         binding.isCashier.setChecked(false);
         binding.isManager.setChecked(false);
         binding.isSeller.setChecked(false);
-        binding.addFirstName.setText("");
-        binding.addLastName.setText("");
-        binding.addUserName.setText("");
-        binding.addUserPassword.setText("");
-        binding.userAddress.setText("");
-        binding.userDateOfBirth.setText("");
-        binding.showListAllUser.setVisibility(View.VISIBLE);
-        binding.layoutAddUser.setVisibility(View.GONE);
+        binding.txtFirstName.setText("");
+        binding.txtLastName.setText("");
+        binding.txtUserName.setText("");
+        binding.txtPassword.setText("");
+        binding.txtAddress.setText("");
+        binding.txtDateOfBirth.setText("");
     }
 
     private void OnCallAllUserFromDB() {
-        handler = new Handler();
         new Thread(() -> {
-            userAccountList =
+            ListUsers =
                     POSDatabase.getInstance(getApplicationContext()).getDao().userAccount();
-            handler.post(() ->{
-                binding.showListAllUser.setAdapter(new AdapterAccountManager(userAccountList,
-                        this));
-                binding.showListAllUser.setOnItemClickListener((adapterView, view, i, l) -> {
-                    Toast.makeText(this, ""+userAccountList.get(i).toString(), Toast.LENGTH_SHORT).show();
-                });
-            });
+            handler.post(() -> binding.listAllUser.setAdapter(new AdapterAccountManager(ListUsers,
+                    this)));
         }).start();
     }
 
-    private void OnSaveCreateUser(View view) {
-        Handler handler = new Handler();
-        Date current = Calendar.getInstance().getTime();
-        SimpleDateFormat simpleFormatter = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
-        String formattedDate = simpleFormatter.format(current);
-        String Firstname = String.valueOf(binding.addFirstName.getText());
-        String Lastname = String.valueOf(binding.addLastName.getText());
-        String Username = String.valueOf(binding.addUserName.getText());
-        String Password = String.valueOf(binding.addUserPassword.getText());
-        String Address = String.valueOf(binding.userAddress.getText());
+    private void OnSaveCreateUser() {
+        OnGetAllDataFromForm();
         userAccount = new UserAccount(Firstname, Lastname, UserSex, DateOfBirth, Address, Username,
                 Password, UserRole, canDiscount, canUpdateItem, canAddItem, canAddCategory,
-                canDeleteItem, formattedDate);
+                canDeleteItem, CurrentDateHelper.getCurrentDate());
         new Thread(() -> {
             POSDatabase.getInstance(getApplicationContext()).getDao().createUser(userAccount);
             handler.post(() -> {
-                binding.layoutAddUser.setVisibility(View.GONE);
-                binding.showListAllUser.setVisibility(View.VISIBLE);
-                binding.userMale.setChecked(false);
-                binding.userFemale.setChecked(false);
-                binding.canDoAll.setChecked(false);
-                binding.canDiscount.setChecked(false);
-                binding.canUpdateItem.setChecked(false);
-                binding.canAddItem.setChecked(false);
-                binding.canAddCategory.setChecked(false);
-                binding.canDeleteItem.setChecked(false);
-                binding.isAdmin.setChecked(false);
-                binding.isCashier.setChecked(false);
-                binding.isManager.setChecked(false);
-                binding.isSeller.setChecked(false);
-                binding.addFirstName.setText("");
-                binding.addLastName.setText("");
-                binding.addUserName.setText("");
-                binding.addUserPassword.setText("");
-                binding.userAddress.setText("");
-                binding.userDateOfBirth.setText("");
+                OnHideFormAddUser();
+                OnClearDataInView();
                 OnCallAllUserFromDB();
             });
         }).start();
     }
 
     private void OnStateCheckBox() {
-        binding.userMale.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (isMale = binding.userMale.isChecked()) {
+        binding.isMale.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (isMale = binding.isMale.isChecked()) {
                 UserSex = "Male";
-                binding.userFemale.setEnabled(false);
+                binding.isFemale.setEnabled(false);
             } else {
                 UserSex = null;
-                binding.userFemale.setEnabled(true);
+                binding.isFemale.setEnabled(true);
             }
         });
-        binding.userFemale.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (isFemale = binding.userFemale.isChecked()) {
+        binding.isFemale.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (isFemale = binding.isFemale.isChecked()) {
                 UserSex = "Female";
-                binding.userMale.setEnabled(false);
+                binding.isMale.setEnabled(false);
             } else {
                 UserSex = null;
-                binding.userMale.setEnabled(true);
+                binding.isMale.setEnabled(true);
             }
         });
         binding.isAdmin.setOnCheckedChangeListener((compoundButton, b) -> {
@@ -318,79 +401,20 @@ public class ManageAccountActivity extends AppCompatActivity {
             }
         });
 
-        binding.canDiscount.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (canDiscount = binding.canDiscount.isChecked()) {
-            } else {
-                canDiscount = false;
-            }
-        });
-        binding.canAddCategory.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (canAddCategory = binding.canAddCategory.isChecked()) {
-            } else {
-                canAddCategory = false;
-            }
+        binding.canDiscount.setOnCheckedChangeListener((compoundButton, b) -> canDiscount = binding.canDiscount.isChecked());
+        binding.canAddCategory.setOnCheckedChangeListener((compoundButton, b) -> canAddCategory = binding.canAddCategory.isChecked());
+        binding.canAddItem.setOnCheckedChangeListener((compoundButton, b) -> canAddItem = binding.canAddItem.isChecked());
 
-        });
-        binding.canAddItem.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (canAddItem = binding.canAddItem.isChecked()) {
-            } else {
-                canAddItem = false;
-            }
-        });
-
-        binding.canDeleteItem.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (canDeleteItem = binding.canDeleteItem.isChecked()) {
-            } else {
-                canDeleteItem = false;
-            }
-        });
-        binding.canUpdateItem.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (canUpdateItem = binding.canUpdateItem.isChecked()) {
-            } else {
-                canUpdateItem = false;
-            }
-        });
-        binding.canDoAll.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (AllowAllPermission = binding.canDoAll.isChecked()) {
-                binding.canAddItem.setChecked(false);
-                binding.canAddCategory.setChecked(false);
-                binding.canDiscount.setChecked(false);
-                binding.canUpdateItem.setChecked(false);
-                binding.canDeleteItem.setChecked(false);
-
-                binding.canAddCategory.setEnabled(false);
-                binding.canAddItem.setEnabled(false);
-                binding.canDiscount.setEnabled(false);
-                binding.canDeleteItem.setEnabled(false);
-                binding.canUpdateItem.setEnabled(false);
-
-                canDiscount = true;
-                canAddCategory = true;
-                canAddItem = true;
-                canUpdateItem = true;
-                canDeleteItem = true;
-            } else {
-                canDiscount = false;
-                canAddCategory = false;
-                canAddItem = false;
-                canUpdateItem = false;
-                canDeleteItem = false;
-
-                binding.canAddCategory.setEnabled(true);
-                binding.canAddItem.setEnabled(true);
-                binding.canDiscount.setEnabled(true);
-                binding.canDeleteItem.setEnabled(true);
-                binding.canUpdateItem.setEnabled(true);
-            }
-        });
+        binding.canDeleteItem.setOnCheckedChangeListener((compoundButton, b) -> canDeleteItem = binding.canDeleteItem.isChecked());
+        binding.canUpdateItem.setOnCheckedChangeListener((compoundButton, b) -> canUpdateItem = binding.canUpdateItem.isChecked());
 
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.add_user) {
-            binding.showListAllUser.setVisibility(View.GONE);
-            binding.layoutAddUser.setVisibility(View.VISIBLE);
+            OnShowFormAddUser();
+            OnClearDataInView();
         }
         return super.onOptionsItemSelected(item);
     }

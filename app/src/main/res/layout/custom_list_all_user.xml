@@ -29,16 +29,6 @@
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/userPassword"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Password"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
-
-        <TextView
             android:id="@+id/userRole"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -49,6 +39,7 @@
             android:textSize="16sp" />
 
         <ImageView
+            android:id="@+id/ic_edit_user"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginEnd="10dp"
@@ -56,17 +47,16 @@
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
             android:src="@drawable/ic_edit"
-            android:id="@+id/ic_edit_user"
             android:visibility="gone" />
 
         <ImageView
+            android:id="@+id/ic_delete_user"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
             android:src="@drawable/ic_delete"
-            android:id="@+id/ic_delete_user"
             android:visibility="gone" />
 
     </LinearLayout>

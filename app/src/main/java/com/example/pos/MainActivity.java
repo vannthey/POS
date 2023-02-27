@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.pos.account.ManageAccountActivity;
 import com.example.pos.category.Frag_category;
+import com.example.pos.customer.Frag_customer;
 import com.example.pos.dasboard.Frag_Dashboard;
 import com.example.pos.databinding.ActivityMainBinding;
 import com.example.pos.inventory.Frag_inventory;
@@ -135,6 +136,10 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.supplier:
                     setTitle(R.string.supplier);
                     setStateFragment(new Frag_supplier());
+                    break;
+                case R.id.customer:
+                    setTitle(R.string.customer);
+                    setStateFragment(new Frag_customer());
                     break;
                 case R.id.unit:
                     setTitle(R.string.unit);

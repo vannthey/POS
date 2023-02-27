@@ -31,6 +31,7 @@ public interface POSDao {
 
     @Insert
     void createProduct(Product product);
+
     @Insert
     void createUnit(Unit unit);
 
@@ -69,8 +70,22 @@ public interface POSDao {
             "Like :Id")
     void updateSupplierById(String supplierName, String supplierAddress, String supplierSex,
                             String supplierPhoneNumber, int Id);
+
     @Query("SELECT * FROM Unit")
     List<Unit> getAllUnit();
 
 
+    @Transaction
+    @Query("Update UserAccount SET Firstname=:FirstName,Lastname=:LastName,Username=:UserName," +
+            "Password=:Password,DOB=:DOB,Address=:Address,Sex=:Sex,UserRole=:Role," +
+            "canDiscount=:canDiscount," +
+            "canUpdate=:canUpdate,canAddItem=:canAddItem,canAddCategory=:canAddCategory," +
+            "canDeleteItem=:canDeleteItem WHERE userId LIKE :Id")
+    void updateUserById(String FirstName, String LastName, String UserName, String Password,
+                        String DOB, String Address, String Sex, String Role, boolean canDiscount,
+                        boolean canUpdate,
+                        boolean canAddItem, boolean canAddCategory, boolean canDeleteItem, int Id);
+
+    @Query("DELETE FROM UserAccount WHERE userId LIKE :userId")
+    void deleteUserById(int userId);
 }

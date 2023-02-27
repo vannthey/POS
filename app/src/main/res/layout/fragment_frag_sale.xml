@@ -112,7 +112,6 @@
                 android:layout_margin="5dp"
                 android:layout_weight="1"
                 android:text="Cancel"
-                android:backgroundTint="@color/Red"
                 android:textAllCaps="false"
                 android:textSize="12sp" />
 
@@ -130,7 +129,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:backgroundTint="@color/Orange"
                 android:text="Pay Type"
                 android:textAllCaps="false"
                 android:textSize="12sp" />
@@ -141,7 +139,6 @@
                 android:layout_margin="5dp"
                 android:layout_weight="1"
                 android:text="Payment"
-                android:backgroundTint="@color/Green"
                 android:textAllCaps="false"
                 android:textSize="12sp" />
         </LinearLayout>
