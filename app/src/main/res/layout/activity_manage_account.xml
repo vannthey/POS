@@ -295,17 +295,19 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnCancelCreateUser"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                app:rippleColor="@color/gray"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                android:backgroundTint="@color/Banana_Yellow"
                 android:text="@string/cancel"
                 android:textAllCaps="false" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSaveCreateUser"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
@@ -315,7 +317,8 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnDeleteUser"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
@@ -326,7 +329,8 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnUpdateUser"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"

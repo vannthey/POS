@@ -1,10 +1,12 @@
 package com.example.pos.dasboard;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -18,6 +20,7 @@ import com.example.pos.Database.Entity.Product;
 import com.example.pos.Database.POSDatabase;
 import com.example.pos.R;
 import com.example.pos.databinding.FragmentFragDashboardBinding;
+import com.google.android.material.tabs.TabLayout;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
@@ -26,6 +29,7 @@ import java.util.List;
 public class Frag_Dashboard extends Fragment {
     List<Product> productList;
     Handler handler;
+    int numCount = 0;
     FragmentFragDashboardBinding binding;
 
     @Override
@@ -34,6 +38,7 @@ public class Frag_Dashboard extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -45,41 +50,44 @@ public class Frag_Dashboard extends Fragment {
                     POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().getAllProduct();
             handler.post(() -> binding.gridDashboard.setAdapter(new AdapterProductDashboard(productList, requireContext())));
         }).start();
-
-
+        OnSendItemToSale();
         /*
         Select QR icon in edite text // 11/2/2023
          */
+        binding.searchViewDashboard.setOnTouchListener((view, motionEvent) -> {
+            final int DRAWABLE_RIGHT = 0;
+            if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                if (motionEvent.getRawX() >= (binding.searchViewDashboard.getRight() - binding.searchViewDashboard.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                    launchQRScan();
+                }
+            }
+            return false;
+        });
+        binding.tabLayoutOnDashboard.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
 
-//        binding.searchViewDashboard.setOnTouchListener((view, motionEvent) -> {
-//            final int DRAWABLE_RIGHT = 0;
-//            if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-//                if (motionEvent.getRawX() >= (binding.searchViewDashboard.getRight() - binding.searchViewDashboard.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-//
-//                    launchQRScan();
-//
-//                }
-//            }
-//            return false;
-//        });
-//        binding.tabLayoutOnDashboard.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-//            @Override
-//            public void onTabSelected(TabLayout.Tab tab) {
-//
-//            }
-//
-//            @Override
-//            public void onTabUnselected(TabLayout.Tab tab) {
-//
-//            }
-//
-//            @Override
-//            public void onTabReselected(TabLayout.Tab tab) {
-//
-//            }
-//        });
+            }
 
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
         return binding.getRoot();
+    }
+
+    private void OnSendItemToSale() {
+        binding.gridDashboard.setOnItemClickListener((adapterView, view, i, l) -> {
+            binding.floatActionbarSale.setVisibility(View.VISIBLE);
+            binding.floatActionbarSale.setText(String.valueOf(numCount += 1));
+        });
+
     }
 
     private void launchQRScan() {

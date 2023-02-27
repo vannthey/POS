@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                     setStateFragment(new Frag_Dashboard());
                     break;
                 case R.id.sale:
-                    setTitle(R.string.dashboard);
+                    setTitle(R.string.sale);
                     setStateFragment(new Frag_sale());
                     break;
                 case R.id.category:

@@ -12,7 +12,7 @@
 
     <!-- Dummy item name -->
     <string name="hamburger">Hamburger</string>
-    <string name="price">10$</string>
+    <string name="price">Price</string>
     <string name="name_user">VAN-THEY</string>
 
     <!-- Product in Navigation drawer -->
@@ -67,7 +67,7 @@
     <string name="permission">Permission</string>
     <string name="delete_item">Delete Item</string>
     <string name="allow_all">Allow All</string>
-    <string name="discount">Discount</string>
+    <string name="discount">Dist</string>
     <string name="update_item">Update Item</string>
     <string name="add_item">Add Item</string>
     <string name="date_of_birth">Date Of Birth</string>
@@ -81,13 +81,21 @@
     <string name="add_supplier">Add Supplier</string>
     <string name="supplier_sex">Supplier Sex</string>
     <string name="payment">Payment</string>
-    <string name="inventory_location">Invantory Location</string>
+    <string name="inventory_location">Inventory Location</string>
     <string name="inventory_title">Title</string>
     <string name="product_tax">Product Tax</string>
     <string name="language">Language</string>
     <string name="unit">Unit</string>
     <string name="dot">.</string>
     <string name="add_unit">Add Unit</string>
-    <string name="qty">Quantity</string>
+    <string name="qty">Qty</string>
+    <string name="no">No</string>
+    <string name="item">Item</string>
+    <string name="subtotal">Sub</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="purchase_date">Purchase Date</string>
+    <string name="invoice_number">Invoice Number</string>
+    <string name="pay">Pay</string>
+    <string name="item_count">0</string>
 
 </resources>
