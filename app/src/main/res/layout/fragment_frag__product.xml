@@ -7,6 +7,14 @@
     android:orientation="vertical"
     tools:context=".product.Frag_Product">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/no_product"
+        android:id="@+id/txt_no_product_found"
+        android:textSize="32sp"
+        android:gravity="center"/>
+
     <LinearLayout
         android:id="@+id/layout_add_product"
         android:layout_width="match_parent"
@@ -64,6 +72,7 @@
                         android:id="@+id/addProductQty"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:textSize="16sp"
                         android:hint="@string/product_qty" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -117,11 +126,20 @@
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:paddingTop="10dp">
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/add_product_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_image"
+                    android:contentDescription="@null"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:text="@string/inventory"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
@@ -135,12 +153,14 @@
                     <Spinner
                         android:id="@+id/spinnerProductInventory"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:importantForAccessibility="no" />
                 </com.google.android.material.card.MaterialCardView>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:text="@string/category"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
@@ -154,12 +174,14 @@
                     <Spinner
                         android:id="@+id/spinnerProductCategory"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:importantForAccessibility="no"/>
                 </com.google.android.material.card.MaterialCardView>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:text="@string/unit"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
@@ -173,12 +195,14 @@
                     <Spinner
                         android:id="@+id/spinnerProductUnit"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:importantForAccessibility="no" />
                 </com.google.android.material.card.MaterialCardView>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:text="@string/supplier"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
@@ -192,9 +216,12 @@
                     <Spinner
                         android:id="@+id/spinnerProductSupplier"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:importantForAccessibility="no"/>
                 </com.google.android.material.card.MaterialCardView>
+
             </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout
@@ -242,6 +269,7 @@
                 android:id="@+id/btnSaveProduct"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
+                android:maxWidth="300dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
@@ -266,6 +294,7 @@
             android:layout_height="32dp"
             android:layout_gravity="end"
             android:layout_marginEnd="10dp"
+            android:visibility="gone"
             android:contentDescription="@null"
             android:src="@drawable/ic_sort" />
 
@@ -273,6 +302,7 @@
             android:id="@+id/list_show_product"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="gone"
             android:scrollbars="none" />
     </LinearLayout>
 

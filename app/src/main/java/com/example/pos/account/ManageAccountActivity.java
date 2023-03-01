@@ -415,6 +415,7 @@ public class ManageAccountActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.add_user) {
             OnShowFormAddUser();
             OnClearDataInView();
+            OnHideBtnDeleteUpdate();
         }
         return super.onOptionsItemSelected(item);
     }

@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 
 import com.example.pos.CurrentDateHelper;
@@ -24,55 +24,69 @@ import com.example.pos.databinding.FragmentFragInventoryBinding;
 import java.util.List;
 
 public class Frag_inventory extends Fragment {
-    private final String SaveUserLogin = "UserLogin";
-    private final String SaveUsername = "Username";
     FragmentFragInventoryBinding binding;
     List<Inventory> warehouseList;
     Handler handler;
     SharedPreferences sharedPreferences;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentFragInventoryBinding.inflate(inflater, container, false);
-
         binding.btnCancelInventory.setOnClickListener(this::onCancelAddInventory);
         binding.btnSaveInventory.setOnClickListener(this::onSaveInventory);
-
+        handler = new Handler();
+        onCreateMenu();
         onShowAllInventory();
         OnInventoryItemClickListener();
         return binding.getRoot();
+    }
+
+    private void onCreateMenu() {
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menuInflater.inflate(R.menu.option_menu, menu);
+                menu.findItem(R.id.add_inventory).setVisible(true);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.add_inventory) {
+                    OnShowAddInventory();
+                    OnHideBtnDeleteUpdate();
+                }
+                return true;
+            }
+        }, getViewLifecycleOwner());
     }
 
     private void OnInventoryItemClickListener() {
         binding.listInventory.setOnItemClickListener((adapterView, view, i, l) -> {
             binding.inventoryName.setText(warehouseList.get(i).getInventoryName());
             binding.inventoryLocation.setText(warehouseList.get(i).getInventoryAddress());
-            OnSHowBtnDeleteUpdate();
+            OnShowBtnDeleteUpdate();
             OnShowAddInventory();
         });
     }
 
-    private void OnSHowBtnDeleteUpdate() {
+    private void OnShowBtnDeleteUpdate() {
         binding.btnDeleteInventory.setVisibility(View.VISIBLE);
         binding.btnUpdateInventory.setVisibility(View.VISIBLE);
         binding.btnSaveInventory.setVisibility(View.GONE);
     }
 
     private void onShowAllInventory() {
-        handler = new Handler();
         new Thread(() -> {
             warehouseList =
                     POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().getAllInventory();
             handler.post(() -> {
-                binding.listInventory.setAdapter(new AdapterInventory(warehouseList, requireContext()));
+                if (warehouseList.size() != 0) {
+                    binding.txtNoInventoryFound.setVisibility(View.GONE);
+                    binding.listInventory.setVisibility(View.VISIBLE);
+                    binding.listInventory.setAdapter(new AdapterInventory(warehouseList, requireContext()));
+                }
             });
         }).start();
 
@@ -81,8 +95,10 @@ public class Frag_inventory extends Fragment {
     private void onSaveInventory(View view) {
         String inventoryName = String.valueOf(binding.inventoryName.getText());
         String inventoryAddress = String.valueOf(binding.inventoryLocation.getText());
-        sharedPreferences = requireContext().getSharedPreferences(SaveUserLogin, 0);
-        String Username = sharedPreferences.getString(SaveUsername, "");
+        String saveUserLogin = "UserLogin";
+        sharedPreferences = requireContext().getSharedPreferences(saveUserLogin, 0);
+        String saveUsername = "Username";
+        String Username = sharedPreferences.getString(saveUsername, "");
         if (inventoryName.isEmpty()) {
             Toast.makeText(requireContext(), "Please Input Inventory Name", Toast.LENGTH_SHORT).show();
         } else {
@@ -110,14 +126,6 @@ public class Frag_inventory extends Fragment {
         binding.layoutAddInventory.setVisibility(View.GONE);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.add_inventory) {
-            OnShowAddInventory();
-            OnHideBtnDeleteUpdate();
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     private void OnHideBtnDeleteUpdate() {
         binding.btnDeleteInventory.setVisibility(View.GONE);
@@ -130,10 +138,4 @@ public class Frag_inventory extends Fragment {
         binding.layoutAddInventory.setVisibility(View.VISIBLE);
     }
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.option_menu, menu);
-        menu.findItem(R.id.add_inventory).setVisible(true);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
 }

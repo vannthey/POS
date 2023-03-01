@@ -58,8 +58,15 @@ public class Frag_category extends Fragment {
         new Thread(() -> {
             categoryList =
                     POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().getAllCategory();
-            handler.post(() -> binding.gridCategory.setAdapter(new AdapterCategory(categoryList,
-                    requireContext())));
+            handler.post(() -> {
+                if (categoryList.size() != 0) {
+                    binding.txtNoCategoryFound.setVisibility(View.GONE);
+                    binding.gridCategory.setAdapter(new AdapterCategory(categoryList,
+                            requireContext()));
+                    binding.gridCategory.setVisibility(View.VISIBLE);
+                }
+
+            });
 
         }).start();
     }

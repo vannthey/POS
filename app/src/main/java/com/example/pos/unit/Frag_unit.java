@@ -53,7 +53,7 @@ public class Frag_unit extends Fragment {
             POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().createUnit
                     (new Unit(uniTitle, unitQty,
                             SharedPreferenceHelper.getInstance().getSaveUserLoginName(requireContext()), CurrentDateHelper.getCurrentDate()));
-            handler.post(()->{
+            handler.post(() -> {
                 OnShowAllUnit();
                 OnShowStateChangeView();
             });
@@ -65,7 +65,13 @@ public class Frag_unit extends Fragment {
         new Thread(() -> {
             unitList =
                     POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().getAllUnit();
-            handler.post(() -> binding.listUnit.setAdapter(new AdapterUnit(unitList, requireContext())));
+            handler.post(() -> {
+                if (unitList.size() != 0) {
+                    binding.txtNoUnitFound.setVisibility(View.GONE);
+                    binding.listUnit.setVisibility(View.VISIBLE);
+                    binding.listUnit.setAdapter(new AdapterUnit(unitList, requireContext()));
+                }
+            });
         }).start();
     }
 

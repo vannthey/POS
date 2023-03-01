@@ -13,17 +13,17 @@ import java.util.List;
 
 public class AdapterInventory extends BaseAdapter {
     CustomInventoryItemBinding binding;
-    List<Inventory> warehouseList;
+    List<Inventory> inventoryList;
     Context ctx;
 
-    public AdapterInventory(List<Inventory> warehouseList, Context ctx) {
-        this.warehouseList = warehouseList;
+    public AdapterInventory(List<Inventory> inventoryList, Context ctx) {
+        this.inventoryList = inventoryList;
         this.ctx = ctx;
     }
 
     @Override
     public int getCount() {
-        return warehouseList.size();
+        return inventoryList.size();
     }
 
     @Override
@@ -42,7 +42,7 @@ public class AdapterInventory extends BaseAdapter {
             binding = CustomInventoryItemBinding.inflate(LayoutInflater.from(ctx), viewGroup, false);
             view = binding.getRoot();
         }
-        binding.inventoryName.setText(warehouseList.get(i).getInventoryName());
+        binding.inventoryName.setText(inventoryList.get(i).getInventoryName());
         return view;
     }
 }

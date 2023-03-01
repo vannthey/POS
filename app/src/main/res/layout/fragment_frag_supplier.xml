@@ -6,12 +6,20 @@
     android:orientation="vertical"
     tools:context=".supplier.Frag_supplier">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/no_supplier"
+        android:id="@+id/txt_no_supplier_found"
+        android:textSize="32sp"
+        android:gravity="center"/>
+
     <ListView
         android:id="@+id/list_show_supplier"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/layout_add_supplier"

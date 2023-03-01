@@ -6,12 +6,20 @@
     android:orientation="vertical"
     tools:context=".inventory.Frag_inventory">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/no_inventory"
+        android:id="@+id/txt_no_inventory_found"
+        android:textSize="32sp"
+        android:gravity="center"/>
+
     <ListView
         android:id="@+id/list_inventory"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/layout_add_inventory"

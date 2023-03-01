@@ -2,6 +2,7 @@ package com.example.pos.Database;
 
 import android.content.Context;
 
+import androidx.room.AutoMigration;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
@@ -16,9 +17,10 @@ import com.example.pos.Database.Entity.Stock;
 import com.example.pos.Database.Entity.Supplier;
 import com.example.pos.Database.Entity.Unit;
 import com.example.pos.Database.Entity.UserAccount;
+import com.example.pos.Database.Entity.SaleTransaction;
 
 @Database(entities = {UserAccount.class, Category.class, Product.class, Inventory.class,
-        Supplier.class, PayType.class, Customer.class, Unit.class, Stock.class},
+        Supplier.class, PayType.class, Customer.class, Unit.class, Stock.class, SaleTransaction.class},
         version = 1)
 public abstract class POSDatabase extends RoomDatabase {
 
@@ -32,7 +34,6 @@ public abstract class POSDatabase extends RoomDatabase {
 
             INSTANCE = Room.databaseBuilder(context.getApplicationContext(), POSDatabase.class,
                     "POS_DATABASE").fallbackToDestructiveMigration().build();
-
         }
 
         return INSTANCE;

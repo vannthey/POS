@@ -22,9 +22,6 @@ public class Supplier {
     @ColumnInfo
     public String createDate;
 
-    public Supplier() {
-    }
-
     public Supplier(String supplierName, String supplierSex, String supplierPhoneNumber, String supplierAddress, String creator, String createDate) {
         this.supplierName = supplierName;
         this.supplierSex = supplierSex;

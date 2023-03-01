@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import com.bumptech.glide.Glide;
 import com.example.pos.Database.Entity.Product;
 import com.example.pos.databinding.CustomProductItemBinding;
 
@@ -13,17 +14,17 @@ import java.util.List;
 
 public class AdapterProduct extends BaseAdapter {
     CustomProductItemBinding binding;
-    List<Product> itemList;
+    List<Product> productList;
     Context ctx;
 
-    public AdapterProduct(List<Product> itemList, Context ctx) {
-        this.itemList = itemList;
+    public AdapterProduct(List<Product> productList, Context ctx) {
+        this.productList = productList;
         this.ctx = ctx;
     }
 
     @Override
     public int getCount() {
-        return itemList.size();
+        return productList.size();
     }
 
     @Override
@@ -46,12 +47,16 @@ public class AdapterProduct extends BaseAdapter {
             view = binding.getRoot();
         }
 
-        binding.customProductName.setText(itemList.get(i).getProductName());
-        binding.customProductPrice.setText(String.valueOf(itemList.get(i).getProductPrice()));
-        binding.customProductQty.setText(String.valueOf(itemList.get(i).getProductQty()));
-        long numRow = getItemId(i)+1;
+        binding.customProductName.setText(productList.get(i).getProductName());
+        binding.customProductPrice.setText(String.valueOf(productList.get(i).getProductPrice()));
+        binding.customProductQty.setText(String.valueOf(productList.get(i).getProductQty()));
+        Glide.with(ctx).load(productList.get(i).getImagePath()).into(binding.rowImageProduct);
+        if ((productList.get(i).getProductQty() > 0)) {
+            binding.customCheckProductQty.setText("x");
+        } else if (productList.get(i).getProductQty() == 0){
+            binding.customCheckProductQty.setText("<");
+        }
 
-            binding.numRowProduct.setText(String.valueOf(numRow));
 
         return view;
     }

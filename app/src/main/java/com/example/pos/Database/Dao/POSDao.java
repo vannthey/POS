@@ -3,11 +3,11 @@ package com.example.pos.Database.Dao;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
-import androidx.room.Transaction;
 
 import com.example.pos.Database.Entity.Category;
 import com.example.pos.Database.Entity.Inventory;
 import com.example.pos.Database.Entity.Product;
+import com.example.pos.Database.Entity.SaleTransaction;
 import com.example.pos.Database.Entity.Supplier;
 import com.example.pos.Database.Entity.Unit;
 import com.example.pos.Database.Entity.UserAccount;
@@ -34,6 +34,9 @@ public interface POSDao {
 
     @Insert
     void createUnit(Unit unit);
+
+    @Insert
+    void createSaleTransaction(SaleTransaction transactionList);
 
     @Query("SELECT * FROM UserAccount")
     List<UserAccount> userAccount();
@@ -74,8 +77,10 @@ public interface POSDao {
     @Query("SELECT * FROM Unit")
     List<Unit> getAllUnit();
 
+    @Query("SELECT * FROM SaleTransaction")
+    List<SaleTransaction> getAllSaleTransaction();
 
-    @Transaction
+
     @Query("Update UserAccount SET Firstname=:FirstName,Lastname=:LastName,Username=:UserName," +
             "Password=:Password,DOB=:DOB,Address=:Address,Sex=:Sex,UserRole=:Role," +
             "canDiscount=:canDiscount," +
@@ -86,6 +91,17 @@ public interface POSDao {
                         boolean canUpdate,
                         boolean canAddItem, boolean canAddCategory, boolean canDeleteItem, int Id);
 
+//    @Query("Update SaleTransaction SET productPrice=:price, productQty=:qty WHERE productId LIKE " +
+//            ":id")
+//    void editProductOnSaleById(double price, int qty, double dist, int id);
+
     @Query("DELETE FROM UserAccount WHERE userId LIKE :userId")
     void deleteUserById(int userId);
+
+    @Query("DELETE FROM Product WHERE productId LIKE :productId")
+    void deleteProductById(int productId);
+
+    @Query("DELETE FROM SaleTransaction WHERE saleId LIKE :saleId")
+    void deleteSaleTransactionById(int saleId);
+
 }

@@ -26,9 +26,6 @@ public class PayType {
         this.createDate = createDate;
     }
 
-    public PayType() {
-    }
-
     public int getPayId() {
         return payId;
     }

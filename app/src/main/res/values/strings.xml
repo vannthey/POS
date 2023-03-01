@@ -91,11 +91,20 @@
     <string name="qty">Qty</string>
     <string name="no">No</string>
     <string name="item">Item</string>
-    <string name="subtotal">Sub</string>
+    <string name="subtotal">Subtotal</string>
     <string name="phone_number">Phone Number</string>
     <string name="purchase_date">Purchase Date</string>
     <string name="invoice_number">Invoice Number</string>
     <string name="pay">Pay</string>
     <string name="item_count">0</string>
+    <string name="add">+</string>
+    <string name="subStruct">-</string>
+    <string name="dollar">$</string>
+    <string name="out">Out</string>
+    <string name="no_product">No Product</string>
+    <string name="no_category">No Category</string>
+    <string name="no_inventory">No Inventory</string>
+    <string name="no_supplier">No Supplier</string>
+    <string name="no_unit">No Unit</string>
 
 </resources>

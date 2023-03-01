@@ -28,9 +28,6 @@ public class Customer {
     @ColumnInfo
     public String createDate;
 
-    public Customer() {
-    }
-
     public Customer(String customerName, String customerSex, String customerPhoneNumber, String customerNote, String creator, String createDate) {
         this.customerName = customerName;
         this.customerSex = customerSex;

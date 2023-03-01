@@ -34,7 +34,7 @@ android {
 
 dependencies {
 
-    implementation 'androidx.appcompat:appcompat:1.6.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
@@ -44,7 +44,6 @@ dependencies {
     /*
     Add room database to project
      */
-
     def room_version = "2.5.0"
 
     implementation "androidx.room:room-runtime:$room_version"
@@ -68,13 +67,15 @@ dependencies {
     implementation "com.airbnb.android:lottie:3.4.0"
 
     /*
-    Live Data And View Model
+    Image Picker
      */
-        def lifecycle_version = "2.5.1"
-        def arch_version = "2.1.0"
+    def libVersion = "2.3.22"
+    implementation "com.github.Drjacky:ImagePicker:$libVersion"
 
-        // ViewModel
-        implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
-        // LiveData
-        implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
+    /*
+    load image from memory
+     */
+    implementation 'com.github.bumptech.glide:glide:4.15.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.15.0'
+
 }

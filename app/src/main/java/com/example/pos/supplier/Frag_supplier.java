@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.transition.Slide;
 import androidx.transition.Transition;
@@ -44,28 +45,41 @@ public class Frag_supplier extends Fragment {
     int supplierId;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentFragSupplierBinding.inflate(getLayoutInflater(), container, false);
+        handler = new Handler();
         transitionAdd = new Slide(Gravity.END);
         transitionList = new Slide(Gravity.START);
         transitionAdd.setDuration(500);
         transitionList.setDuration(500);
         binding.btnCancelSupplier.setOnClickListener(v -> OnClearDataSupplier());
         binding.btnSaveSupplier.setOnClickListener(this::OnSaveSupplier);
-
+        OnCreateMenu();
         OnGetAllSupplier();
         OnCheckSupplierSex();
         OnSupplierItemClick();
 
         return binding.getRoot();
+    }
+
+    private void OnCreateMenu() {
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menuInflater.inflate(R.menu.option_menu, menu);
+                menu.findItem(R.id.add_supplier).setVisible(true);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.add_supplier) {
+                    OnShowListAtSupplier();
+                }
+                return true;
+            }
+        });
     }
 
     private void OnSupplierItemClick() {
@@ -91,14 +105,13 @@ public class Frag_supplier extends Fragment {
         binding.btnDeleteSupplier.setVisibility(View.VISIBLE);
         binding.btnUpdateSupplier.setVisibility(View.VISIBLE);
         binding.btnSaveSupplier.setVisibility(View.GONE);
-        handler = new Handler();
         binding.btnUpdateSupplier.setOnClickListener(v -> {
             SupplierName = String.valueOf(binding.txtSupplierName.getText());
             SupplierPhone = String.valueOf(binding.txtSupplierPhone.getText());
             SupplierAddress = String.valueOf(binding.txtSupplierAddress.getText());
             new Thread(() -> {
                 POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().updateSupplierById(SupplierName, SupplierAddress, SupplierSex, SupplierPhone, supplierId);
-                handler.post(()->{
+                handler.post(() -> {
                     OnClearDataSupplier();
                     OnHideDeleteUpdate();
                 });
@@ -106,7 +119,7 @@ public class Frag_supplier extends Fragment {
         });
         binding.btnDeleteSupplier.setOnClickListener(v -> new Thread(() -> {
             POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().deleteSupplierById(supplierId);
-            handler.post(()->{
+            handler.post(() -> {
                 OnHideDeleteUpdate();
                 OnClearDataSupplier();
             });
@@ -178,23 +191,21 @@ public class Frag_supplier extends Fragment {
     }
 
     private void OnGetAllSupplier() {
-        handler = new Handler();
         new Thread(() -> {
             supplierList =
                     POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().getAllSupplier();
-            handler.post(() -> binding.listShowSupplier.setAdapter(new AdapterSupplier(supplierList, requireContext())));
+            handler.post(() -> {
+                if (supplierList.size() != 0) {
+                    binding.txtNoSupplierFound.setVisibility(View.GONE);
+                    binding.listShowSupplier.setVisibility(View.VISIBLE);
+                    binding.listShowSupplier.setAdapter(new AdapterSupplier(supplierList,
+                            requireContext()));
+                }
+            });
         }).start();
 
     }
 
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.add_supplier) {
-            OnShowListAtSupplier();
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     private void OnShowListAtSupplier() {
         TransitionManager.beginDelayedTransition(binding.layoutAddSupplier, transitionAdd);
@@ -202,12 +213,5 @@ public class Frag_supplier extends Fragment {
         binding.layoutAddSupplier.setVisibility(binding.layoutAddSupplier.getVisibility() ==
                 View.GONE ? View.VISIBLE : View.GONE);
         binding.listShowSupplier.setVisibility(binding.listShowSupplier.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.option_menu, menu);
-        menu.findItem(R.id.add_supplier).setVisible(true);
-        super.onCreateOptionsMenu(menu, inflater);
     }
 }
