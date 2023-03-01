@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-
     tools:context=".sale.Frag_sale">
 
     <LinearLayout
@@ -21,11 +20,16 @@
             android:textColor="@color/black"
             android:textSize="16sp" />
 
+        <Space
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="5dp"
+            android:contentDescription="@null" />
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_weight="3"
+            android:layout_weight="1"
             android:text="@string/item"
             android:textColor="@color/black"
             android:textSize="16sp" />
@@ -58,63 +62,109 @@
             android:textSize="16sp" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="@string/subtotal"
             android:textColor="@color/black"
             android:textSize="16sp" />
 
         <Space
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="5dp" />
-
-
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:contentDescription="@null" />
     </LinearLayout>
 
     <ListView
         android:id="@+id/list_item_sale"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="none" />
+        android:scrollbars="none"
+        android:visibility="visible" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/subtotal"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:baselineAligned="false">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Discount % "
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="end"
+                android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Total  "
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sale_subtotal"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sale_discount"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/total"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/sale_subtotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sale_subtotal"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/sale_discount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sale_discount"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/sale_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/total"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <com.google.android.material.button.MaterialButton
-                android:layout_width="0dp"
+                android:id="@+id/btn_sale_pay"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:layout_weight="1"
                 android:text="@string/pay"
                 android:textAllCaps="false"
                 android:textSize="12sp" />

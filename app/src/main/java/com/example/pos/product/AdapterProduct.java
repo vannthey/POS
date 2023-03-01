@@ -8,12 +8,12 @@ import android.widget.BaseAdapter;
 
 import com.bumptech.glide.Glide;
 import com.example.pos.Database.Entity.Product;
-import com.example.pos.databinding.CustomProductItemBinding;
+import com.example.pos.databinding.CustomProductModelBinding;
 
 import java.util.List;
 
 public class AdapterProduct extends BaseAdapter {
-    CustomProductItemBinding binding;
+    CustomProductModelBinding binding;
     List<Product> productList;
     Context ctx;
 
@@ -42,7 +42,7 @@ public class AdapterProduct extends BaseAdapter {
 
 
         if (view == null) {
-            binding = CustomProductItemBinding.inflate(LayoutInflater.from(ctx), viewGroup,
+            binding = CustomProductModelBinding.inflate(LayoutInflater.from(ctx), viewGroup,
                     false);
             view = binding.getRoot();
         }
@@ -53,7 +53,7 @@ public class AdapterProduct extends BaseAdapter {
         Glide.with(ctx).load(productList.get(i).getImagePath()).into(binding.rowImageProduct);
         if ((productList.get(i).getProductQty() > 0)) {
             binding.customCheckProductQty.setText("x");
-        } else if (productList.get(i).getProductQty() == 0){
+        } else if (productList.get(i).getProductQty() == 0) {
             binding.customCheckProductQty.setText("<");
         }
 

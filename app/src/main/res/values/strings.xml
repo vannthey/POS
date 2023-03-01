@@ -91,7 +91,7 @@
     <string name="qty">Qty</string>
     <string name="no">No</string>
     <string name="item">Item</string>
-    <string name="subtotal">Subtotal</string>
+    <string name="subtotal">Sub</string>
     <string name="phone_number">Phone Number</string>
     <string name="purchase_date">Purchase Date</string>
     <string name="invoice_number">Invoice Number</string>
@@ -106,5 +106,9 @@
     <string name="no_inventory">No Inventory</string>
     <string name="no_supplier">No Supplier</string>
     <string name="no_unit">No Unit</string>
+    <string name="product_discount">Product Discount</string>
+    <string name="sale_discount">Sale Discount</string>
+    <string name="total">Total</string>
+    <string name="sale_subtotal">Subtotal</string>
 
 </resources>

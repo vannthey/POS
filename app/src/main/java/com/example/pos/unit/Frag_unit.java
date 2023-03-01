@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 
 import com.example.pos.CurrentDateHelper;
@@ -25,13 +26,6 @@ public class Frag_unit extends Fragment {
     FragmentFragUnitBinding binding;
     List<Unit> unitList;
     Handler handler;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -39,10 +33,28 @@ public class Frag_unit extends Fragment {
         binding = FragmentFragUnitBinding.inflate(inflater, container, false);
         handler = new Handler();
         binding.btnSaveUnit.setOnClickListener(this::OnSaveUnit);
-
         OnShowAllUnit();
-
+        OnCreateMenu();
         return binding.getRoot();
+    }
+
+    private void OnCreateMenu() {
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menuInflater.inflate(R.menu.option_menu, menu);
+                menu.findItem(R.id.add_unit).setVisible(true);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.add_unit) {
+                    binding.txtNoUnitFound.setVisibility(View.GONE);
+                    OnHideStateChangeView();
+                }
+                return true;
+            }
+        },getViewLifecycleOwner());
     }
 
     private void OnSaveUnit(View view) {
@@ -75,13 +87,6 @@ public class Frag_unit extends Fragment {
         }).start();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.add_unit) {
-            OnHideStateChangeView();
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     private void OnHideStateChangeView() {
         binding.listUnit.setVisibility(View.GONE);
@@ -95,12 +100,5 @@ public class Frag_unit extends Fragment {
         binding.layoutAddUnit.setVisibility(View.GONE);
         binding.unitQty.setText(null);
         binding.unitTitle.setText(null);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.option_menu, menu);
-        menu.findItem(R.id.add_unit).setVisible(true);
-        super.onCreateOptionsMenu(menu, inflater);
     }
 }

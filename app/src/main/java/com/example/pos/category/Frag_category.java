@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 
 import com.example.pos.CurrentDateHelper;
@@ -50,8 +51,28 @@ public class Frag_category extends Fragment {
         binding.btnSaveCategory.setOnClickListener(this::onSaveCategory);
         sharedPreferences = requireContext().getSharedPreferences(SaveUserLogin, Context.MODE_PRIVATE);
         onShowAllCategory();
-
+        OnCreateMenu();
         return binding.getRoot();
+    }
+
+    private void OnCreateMenu() {
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menuInflater.inflate(R.menu.option_menu, menu);
+                menu.findItem(R.id.add_category).setVisible(true);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.add_category) {
+                    binding.layoutAddCategory.setVisibility(View.VISIBLE);
+                    binding.gridCategory.setVisibility(View.GONE);
+                    binding.txtNoCategoryFound.setVisibility(View.GONE);
+                }
+                return true;
+            }
+        },getViewLifecycleOwner());
     }
 
     private void onShowAllCategory() {
@@ -97,21 +118,5 @@ public class Frag_category extends Fragment {
     private void onCancelSaveCategory(View view) {
         binding.layoutAddCategory.setVisibility(View.GONE);
         binding.gridCategory.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.add_category) {
-            binding.layoutAddCategory.setVisibility(View.VISIBLE);
-            binding.gridCategory.setVisibility(View.GONE);
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.option_menu, menu);
-        menu.findItem(R.id.add_category).setVisible(true);
-        super.onCreateOptionsMenu(menu, inflater);
     }
 }

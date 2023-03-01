@@ -91,9 +91,11 @@ public interface POSDao {
                         boolean canUpdate,
                         boolean canAddItem, boolean canAddCategory, boolean canDeleteItem, int Id);
 
-//    @Query("Update SaleTransaction SET productPrice=:price, productQty=:qty WHERE productId LIKE " +
-//            ":id")
-//    void editProductOnSaleById(double price, int qty, double dist, int id);
+    @Query("Update SaleTransaction SET productPrice=:price, productQty=:qty,productDiscount=:dist " +
+            "WHERE productId " +
+            "LIKE " +
+            ":id")
+    void editProductOnSaleById(double price, int qty, double dist, int id);
 
     @Query("DELETE FROM UserAccount WHERE userId LIKE :userId")
     void deleteUserById(int userId);

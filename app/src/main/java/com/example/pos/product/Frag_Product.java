@@ -140,10 +140,10 @@ public class Frag_Product extends Fragment {
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 if (menuItem.getItemId() == R.id.add_product) {
+                    binding.txtNoProductFound.setVisibility(View.GONE);
                     OnShowAddProduct();
                     OnClearAllDataInView();
                     OnHideBtnDeleteUpdate();
-                    Toast.makeText(requireContext(), "Adding product", Toast.LENGTH_SHORT).show();
                 }
                 return true;
             }

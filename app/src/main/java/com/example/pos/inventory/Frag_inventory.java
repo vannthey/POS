@@ -54,6 +54,7 @@ public class Frag_inventory extends Fragment {
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 if (menuItem.getItemId() == R.id.add_inventory) {
+                    binding.txtNoInventoryFound.setVisibility(View.GONE);
                     OnShowAddInventory();
                     OnHideBtnDeleteUpdate();
                 }

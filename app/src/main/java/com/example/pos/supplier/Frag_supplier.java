@@ -2,7 +2,6 @@ package com.example.pos.supplier;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,7 +12,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
-import androidx.transition.Slide;
 import androidx.transition.Transition;
 import androidx.transition.TransitionManager;
 
@@ -50,10 +48,6 @@ public class Frag_supplier extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentFragSupplierBinding.inflate(getLayoutInflater(), container, false);
         handler = new Handler();
-        transitionAdd = new Slide(Gravity.END);
-        transitionList = new Slide(Gravity.START);
-        transitionAdd.setDuration(500);
-        transitionList.setDuration(500);
         binding.btnCancelSupplier.setOnClickListener(v -> OnClearDataSupplier());
         binding.btnSaveSupplier.setOnClickListener(this::OnSaveSupplier);
         OnCreateMenu();
@@ -75,11 +69,12 @@ public class Frag_supplier extends Fragment {
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 if (menuItem.getItemId() == R.id.add_supplier) {
-                    OnShowListAtSupplier();
+                    binding.txtNoSupplierFound.setVisibility(View.GONE);
+                    OnShowAddSupplier();
                 }
                 return true;
             }
-        });
+        }, getViewLifecycleOwner());
     }
 
     private void OnSupplierItemClick() {
@@ -97,7 +92,7 @@ public class Frag_supplier extends Fragment {
                 binding.supplierFemale.setChecked(true);
             }
             OnShowDeleteUpdateBtn();
-            OnShowListAtSupplier();
+            OnShowAddSupplier();
         });
     }
 
@@ -139,15 +134,12 @@ public class Frag_supplier extends Fragment {
         binding.txtSupplierPhone.setText(null);
         binding.txtSupplierAddress.setText(null);
         OnHideDeleteUpdate();
-        OnHideListAtSupplier();
+        OnHideAddSupplier();
     }
 
-    private void OnHideListAtSupplier() {
-        TransitionManager.beginDelayedTransition(binding.layoutAddSupplier, transitionAdd);
-        TransitionManager.beginDelayedTransition(binding.listShowSupplier, transitionList);
-        binding.layoutAddSupplier.setVisibility(binding.layoutAddSupplier.getVisibility() ==
-                View.VISIBLE ? View.GONE : View.VISIBLE);
-        binding.listShowSupplier.setVisibility(binding.listShowSupplier.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+    private void OnHideAddSupplier() {
+        binding.layoutAddSupplier.setVisibility(View.GONE);
+        binding.listShowSupplier.setVisibility(View.VISIBLE);
 
     }
 
@@ -180,7 +172,6 @@ public class Frag_supplier extends Fragment {
         supplier = new Supplier(SupplierName, SupplierSex, SupplierPhone, SupplierAddress,
                 SharedPreferenceHelper.getInstance().getSaveUserLoginName(requireContext()),
                 CurrentDateHelper.getCurrentDate());
-        handler = new Handler();
         new Thread(() -> {
             POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().createSupplier(supplier);
             handler.post(() -> {
@@ -207,11 +198,8 @@ public class Frag_supplier extends Fragment {
     }
 
 
-    private void OnShowListAtSupplier() {
-        TransitionManager.beginDelayedTransition(binding.layoutAddSupplier, transitionAdd);
-        TransitionManager.beginDelayedTransition(binding.listShowSupplier, transitionList);
-        binding.layoutAddSupplier.setVisibility(binding.layoutAddSupplier.getVisibility() ==
-                View.GONE ? View.VISIBLE : View.GONE);
-        binding.listShowSupplier.setVisibility(binding.listShowSupplier.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+    private void OnShowAddSupplier() {
+        binding.layoutAddSupplier.setVisibility(View.VISIBLE);
+        binding.listShowSupplier.setVisibility(View.GONE);
     }
 }
