@@ -8,12 +8,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
-import androidx.transition.Transition;
-import androidx.transition.TransitionManager;
 
 import com.example.pos.CurrentDateHelper;
 import com.example.pos.Database.Entity.Supplier;
@@ -26,8 +25,6 @@ import java.util.List;
 
 public class Frag_supplier extends Fragment {
     FragmentFragSupplierBinding binding;
-    Transition transitionAdd;
-    Transition transitionList;
 
     List<Supplier> supplierList;
     Handler handler;
@@ -35,6 +32,7 @@ public class Frag_supplier extends Fragment {
     String SupplierPhone;
     String SupplierAddress;
 
+    Thread thread;
     boolean isMale = true;
     boolean isFemale = true;
 
@@ -56,6 +54,12 @@ public class Frag_supplier extends Fragment {
         OnSupplierItemClick();
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onDetach() {
+        thread.interrupt();
+        super.onDetach();
     }
 
     private void OnCreateMenu() {
@@ -104,21 +108,30 @@ public class Frag_supplier extends Fragment {
             SupplierName = String.valueOf(binding.txtSupplierName.getText());
             SupplierPhone = String.valueOf(binding.txtSupplierPhone.getText());
             SupplierAddress = String.valueOf(binding.txtSupplierAddress.getText());
-            new Thread(() -> {
-                POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().updateSupplierById(SupplierName, SupplierAddress, SupplierSex, SupplierPhone, supplierId);
-                handler.post(() -> {
-                    OnClearDataSupplier();
-                    OnHideDeleteUpdate();
+            if (SupplierName != null) {
+                thread = new Thread(() -> {
+                    POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().updateSupplierById(SupplierName, SupplierAddress, SupplierSex, SupplierPhone, supplierId);
+                    handler.post(() -> {
+                        OnClearDataSupplier();
+                        OnHideDeleteUpdate();
+                    });
                 });
-            }).start();
+                thread.start();
+            } else {
+                Toast.makeText(requireContext(), R.string.Please_Input_Supplier,
+                        Toast.LENGTH_SHORT).show();
+            }
         });
-        binding.btnDeleteSupplier.setOnClickListener(v -> new Thread(() -> {
-            POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().deleteSupplierById(supplierId);
-            handler.post(() -> {
-                OnHideDeleteUpdate();
-                OnClearDataSupplier();
+        binding.btnDeleteSupplier.setOnClickListener(v -> {
+            thread = new Thread(() -> {
+                POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().deleteSupplierById(supplierId);
+                handler.post(() -> {
+                    OnHideDeleteUpdate();
+                    OnClearDataSupplier();
+                });
             });
-        }).start());
+            thread.start();
+        });
     }
 
     private void OnHideDeleteUpdate() {
@@ -172,13 +185,18 @@ public class Frag_supplier extends Fragment {
         supplier = new Supplier(SupplierName, SupplierSex, SupplierPhone, SupplierAddress,
                 SharedPreferenceHelper.getInstance().getSaveUserLoginName(requireContext()),
                 CurrentDateHelper.getCurrentDate());
-        new Thread(() -> {
-            POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().createSupplier(supplier);
-            handler.post(() -> {
-                OnGetAllSupplier();
-                OnClearDataSupplier();
+        if (SupplierName != null) {
+            thread = new Thread(() -> {
+                POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().createSupplier(supplier);
+                handler.post(() -> {
+                    OnGetAllSupplier();
+                    OnClearDataSupplier();
+                });
             });
-        }).start();
+            thread.start();
+        } else {
+            Toast.makeText(requireContext(), R.string.Please_Input_Supplier, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void OnGetAllSupplier() {

@@ -110,5 +110,8 @@
     <string name="sale_discount">Sale Discount</string>
     <string name="total">Total</string>
     <string name="sale_subtotal">Subtotal</string>
+    <string name="Please_Input_Unit_Name">Please Input Unit Name</string>
+    <string name="Please_Input_Category_Name">Please Input Category Name</string>
+    <string name="Please_Input_Supplier">Please Input Supplier</string>
 
 </resources>

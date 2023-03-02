@@ -4,16 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".category.Frag_category">
+
     <TextView
+        android:id="@+id/txt_no_category_found"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:text="@string/no_category"
-        android:id="@+id/txt_no_category_found"
-        android:textSize="32sp"
-        android:gravity="center"/>
+        android:textSize="32sp" />
 
     <ListView
-        android:id="@+id/grid_category"
+        android:id="@+id/list_category"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone" />
@@ -58,7 +59,7 @@
                 android:layout_height="60dp"
                 android:layout_marginEnd="5dp"
                 android:layout_weight="1"
-                android:backgroundTint="@color/Coral_Red"
+                android:backgroundTint="@color/Deep_Saffron"
                 android:text="@string/cancel"
                 android:textAllCaps="false" />
 
@@ -71,6 +72,28 @@
                 android:backgroundTint="@color/Egyptian_Blue"
                 android:text="@string/save"
                 android:textAllCaps="false" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnUpdateCategory"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/Lime_Green"
+                android:text="@string/update"
+                android:textAllCaps="false"
+                android:visibility="gone" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDeleteCategory"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/Coral_Red"
+                android:text="@string/delete"
+                android:textAllCaps="false"
+                android:visibility="gone" />
         </LinearLayout>
 
 

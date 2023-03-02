@@ -68,11 +68,6 @@ public interface POSDao {
     @Query("DELETE FROM Supplier WHERE supplierId Like :Id")
     void deleteSupplierById(int Id);
 
-    @Query("Update Supplier SET supplierName=:supplierName,supplierAddress=:supplierAddress," +
-            "supplierSex=:supplierSex,supplierPhoneNumber=:supplierPhoneNumber WHERE supplierId " +
-            "Like :Id")
-    void updateSupplierById(String supplierName, String supplierAddress, String supplierSex,
-                            String supplierPhoneNumber, int Id);
 
     @Query("SELECT * FROM Unit")
     List<Unit> getAllUnit();
@@ -93,11 +88,26 @@ public interface POSDao {
                         boolean canUpdate,
                         boolean canAddItem, boolean canAddCategory, boolean canDeleteItem, int Id);
 
+    @Query("Update Supplier SET supplierName=:supplierName,supplierAddress=:supplierAddress," +
+            "supplierSex=:supplierSex,supplierPhoneNumber=:supplierPhoneNumber WHERE supplierId " +
+            "Like :Id")
+    void updateSupplierById(String supplierName, String supplierAddress, String supplierSex,
+                            String supplierPhoneNumber, int Id);
+
     @Query("Update SaleTransaction SET productPrice=:price, productQty=:qty,productDiscount=:dist " +
             "WHERE productId " +
             "LIKE " +
             ":id")
     void editProductOnSaleById(double price, int qty, double dist, int id);
+
+    @Query("Update Unit SET unitTitle=:unitTitle, unitQty=:unitQty WHERE unitId LIKE :unitId")
+    void updateUnitById(String unitTitle, double unitQty, int unitId);
+
+    @Query("Update Category SET categoryName=:categoryName WHERE categoryId LIKE :categoryId")
+    void updateCategoryById(String categoryName, int categoryId);
+
+    @Query("DELETE FROM Category WHERE categoryId LIKE :categoryId")
+    void deleteCategoryById(int categoryId);
 
     @Query("DELETE FROM UserAccount WHERE userId LIKE :userId")
     void deleteUserById(int userId);
@@ -111,7 +121,7 @@ public interface POSDao {
     @Query("DELETE FROM SaleTransaction")
     void deleteAfterPay();
 
-    @Query("Update Unit SET unitTitle=:unitTitle, unitQty=:unitQty WHERE unitId LIKE :unitId")
-    void updateUnitById(String unitTitle, double unitQty, int unitId);
 
+    @Query("DELETE FROM Unit WHERE unitId Like :unitId")
+    void deleteUnitById(int unitId);
 }
