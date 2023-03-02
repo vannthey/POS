@@ -16,10 +16,21 @@ public class AdapterProduct extends BaseAdapter {
     CustomProductModelBinding binding;
     List<Product> productList;
     Context ctx;
+    Holder holder;
 
     public AdapterProduct(List<Product> productList, Context ctx) {
         this.productList = productList;
         this.ctx = ctx;
+    }
+
+    static class Holder {
+        View convertView;
+        CustomProductModelBinding modelBinding;
+
+        public Holder(CustomProductModelBinding modelBinding) {
+            this.modelBinding = modelBinding;
+            this.convertView = modelBinding.getRoot();
+        }
     }
 
     @Override
@@ -39,25 +50,27 @@ public class AdapterProduct extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-
-
         if (view == null) {
             binding = CustomProductModelBinding.inflate(LayoutInflater.from(ctx), viewGroup,
                     false);
-            view = binding.getRoot();
+            holder = new Holder(binding);
+            holder.convertView = binding.getRoot();
+            holder.convertView.setTag(holder);
+        } else {
+            holder = (Holder) view.getTag();
         }
 
-        binding.customProductName.setText(productList.get(i).getProductName());
-        binding.customProductPrice.setText(String.valueOf(productList.get(i).getProductPrice()));
-        binding.customProductQty.setText(String.valueOf(productList.get(i).getProductQty()));
-        Glide.with(ctx).load(productList.get(i).getImagePath()).into(binding.rowImageProduct);
+        holder.modelBinding.customProductName.setText(productList.get(i).getProductName());
+        holder.modelBinding.customProductPrice.setText(String.valueOf(productList.get(i).getProductPrice()));
+        holder.modelBinding.customProductQty.setText(String.valueOf(productList.get(i).getProductQty()));
+        Glide.with(ctx).load(productList.get(i).getImagePath()).into(holder.modelBinding.rowImageProduct);
         if ((productList.get(i).getProductQty() > 0)) {
-            binding.customCheckProductQty.setText("x");
+            holder.modelBinding.customCheckProductQty.setText("x");
         } else if (productList.get(i).getProductQty() == 0) {
-            binding.customCheckProductQty.setText("<");
+            holder.modelBinding.customCheckProductQty.setText("<");
         }
 
 
-        return view;
+        return holder.convertView;
     }
 }

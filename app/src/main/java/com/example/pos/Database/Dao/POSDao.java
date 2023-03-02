@@ -83,11 +83,13 @@ public interface POSDao {
 
     @Query("Update UserAccount SET Firstname=:FirstName,Lastname=:LastName,Username=:UserName," +
             "Password=:Password,DOB=:DOB,Address=:Address,Sex=:Sex,UserRole=:Role," +
+            "ProfilePath=:profilePath," +
             "canDiscount=:canDiscount," +
             "canUpdate=:canUpdate,canAddItem=:canAddItem,canAddCategory=:canAddCategory," +
             "canDeleteItem=:canDeleteItem WHERE userId LIKE :Id")
     void updateUserById(String FirstName, String LastName, String UserName, String Password,
-                        String DOB, String Address, String Sex, String Role, boolean canDiscount,
+                        String DOB, String Address, String Sex, String Role, String profilePath,
+                        boolean canDiscount,
                         boolean canUpdate,
                         boolean canAddItem, boolean canAddCategory, boolean canDeleteItem, int Id);
 
@@ -108,5 +110,8 @@ public interface POSDao {
 
     @Query("DELETE FROM SaleTransaction")
     void deleteAfterPay();
+
+    @Query("Update Unit SET unitTitle=:unitTitle, unitQty=:unitQty WHERE unitId LIKE :unitId")
+    void updateUnitById(String unitTitle, double unitQty, int unitId);
 
 }

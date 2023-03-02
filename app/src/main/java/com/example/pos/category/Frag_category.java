@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 
@@ -34,12 +33,7 @@ public class Frag_category extends Fragment {
     List<Category> categoryList;
     Category category;
     Handler handler;
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
+    Thread thread;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -53,6 +47,12 @@ public class Frag_category extends Fragment {
         onShowAllCategory();
         OnCreateMenu();
         return binding.getRoot();
+    }
+
+    @Override
+    public void onDetach() {
+        thread.interrupt();
+        super.onDetach();
     }
 
     private void OnCreateMenu() {
@@ -72,11 +72,11 @@ public class Frag_category extends Fragment {
                 }
                 return true;
             }
-        },getViewLifecycleOwner());
+        }, getViewLifecycleOwner());
     }
 
     private void onShowAllCategory() {
-        new Thread(() -> {
+        thread = new Thread(() -> {
             categoryList =
                     POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().getAllCategory();
             handler.post(() -> {
@@ -89,7 +89,8 @@ public class Frag_category extends Fragment {
 
             });
 
-        }).start();
+        });
+        thread.start();
     }
 
     private void onSaveCategory(View view) {
@@ -100,7 +101,7 @@ public class Frag_category extends Fragment {
             category = new Category(categoryName,
                     SharedPreferenceHelper.getInstance().getSaveUserLoginName(requireContext()),
                     CurrentDateHelper.getCurrentDate());
-            new Thread(() -> {
+            thread = new Thread(() -> {
                 POSDatabase.getInstance(requireContext().getApplicationContext()).getDao()
                         .createCategory(category);
                 handler.post(() -> {
@@ -108,8 +109,8 @@ public class Frag_category extends Fragment {
                     binding.layoutAddCategory.setVisibility(View.GONE);
                     binding.gridCategory.setVisibility(View.VISIBLE);
                 });
-            }
-            ).start();
+            });
+            thread.start();
         }
 
 

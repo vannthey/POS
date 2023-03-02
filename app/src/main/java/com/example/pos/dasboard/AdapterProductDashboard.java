@@ -16,10 +16,24 @@ public class AdapterProductDashboard extends BaseAdapter {
     CustomDashboardModelItemsBinding binding;
     List<Product> productList;
     Context ctx;
+    Holder holder;
 
     public AdapterProductDashboard(List<Product> productList, Context ctx) {
         this.productList = productList;
         this.ctx = ctx;
+    }
+
+    /*
+    Hold view
+     */
+    static class Holder {
+        View convertView;
+        CustomDashboardModelItemsBinding modelItemsBinding;
+
+        public Holder(CustomDashboardModelItemsBinding modelItemsBinding) {
+            this.modelItemsBinding = modelItemsBinding;
+            this.convertView = modelItemsBinding.getRoot();
+        }
     }
 
     @Override
@@ -29,7 +43,7 @@ public class AdapterProductDashboard extends BaseAdapter {
 
     @Override
     public Object getItem(int i) {
-        return i;
+        return null;
     }
 
     @Override
@@ -39,17 +53,19 @@ public class AdapterProductDashboard extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-
-
         if (view == null) {
-            binding = CustomDashboardModelItemsBinding.inflate(LayoutInflater.from(ctx), viewGroup,
-                    false);
-            view = binding.getRoot();
+            binding = CustomDashboardModelItemsBinding.inflate(LayoutInflater.from(ctx), viewGroup, false);
+            holder = new Holder(binding);
+            holder.convertView = binding.getRoot();
+            holder.convertView.setTag(holder);
+        } else {
+            holder = (Holder) view.getTag();
         }
-        binding.productNameDashboard.setText(productList.get(i).getProductName());
-        binding.productPriceDashboard.setText(String.valueOf(productList.get(i).getProductPrice()));
-        Glide.with(ctx).load(productList.get(i).getImagePath()).into(binding.productImageDashboard);
 
-        return view;
+        holder.modelItemsBinding.productNameDashboard.setText(productList.get(i).getProductName());
+        holder.modelItemsBinding.productPriceDashboard.setText(String.valueOf(productList.get(i).getProductPrice()));
+        Glide.with(ctx).load(productList.get(i).getImagePath()).into(holder.modelItemsBinding.productImageDashboard);
+
+        return holder.convertView;
     }
 }

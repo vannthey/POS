@@ -64,6 +64,7 @@ public class ManageAccountActivity extends AppCompatActivity {
     String year;
     List<UserAccount> ListUsers;
     Handler handler;
+    Thread thread;
 
     String Firstname;
     String Lastname;
@@ -81,7 +82,10 @@ public class ManageAccountActivity extends AppCompatActivity {
         setSupportActionBar(binding.customActionbarManageAccount.customActionbar);
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        binding.customActionbarManageAccount.customActionbar.setNavigationOnClickListener(v -> finish());
+        binding.customActionbarManageAccount.customActionbar.setNavigationOnClickListener(v -> {
+            thread.interrupt();
+            finish();
+        });
         setTitle("Account Management");
         setContentView(binding.getRoot());
         OnAnimationChangeLayout();
@@ -130,7 +134,7 @@ public class ManageAccountActivity extends AppCompatActivity {
     }
 
     private void OnDeleteUser() {
-        new Thread(() -> {
+        thread = new Thread(() -> {
             POSDatabase.getInstance(getApplicationContext()).getDao().deleteUserById(UserId);
             handler.post(() -> {
                 Toast.makeText(this, "User " + binding.txtUserName.getText() + " have been " +
@@ -141,15 +145,16 @@ public class ManageAccountActivity extends AppCompatActivity {
                 OnClearDataInView();
                 OnCallAllUserFromDB();
             });
-        }).start();
+        });
+        thread.start();
 
     }
 
     private void OnSelectUser() {
         binding.listAllUser.setOnItemClickListener((adapterView, view, i, l) -> {
+            UserId = ListUsers.get(i).userId;
             OnShowFormAddUser();
             OnShowBtnDeleteUpdate();
-            UserId = ListUsers.get(i).userId;
             binding.txtFirstName.setText(ListUsers.get(i).getFirstname());
             binding.txtLastName.setText(ListUsers.get(i).getLastname());
             binding.txtPassword.setText(ListUsers.get(i).getPassword());
@@ -179,7 +184,7 @@ public class ManageAccountActivity extends AppCompatActivity {
                     binding.isManager.setChecked(true);
                     break;
             }
-
+            profilePath = ListUsers.get(i).getProfilePath();
             binding.canDiscount.setChecked(ListUsers.get(i).getCanDiscount());
             binding.canUpdateItem.setChecked(ListUsers.get(i).getCanUpdate());
             binding.canAddItem.setChecked(ListUsers.get(i).getCanAddItem());
@@ -225,16 +230,18 @@ public class ManageAccountActivity extends AppCompatActivity {
 
     private void OnUpdateUser() {
         OnGetAllDataFromForm();
-        new Thread(() -> {
+        thread = new Thread(() -> {
             POSDatabase.getInstance(getApplicationContext()).getDao().updateUserById(Firstname,
-                    Lastname, Username, Password, DateOfBirth, Address, UserSex, UserRole, canDiscount,
+                    Lastname, Username, Password, DateOfBirth, Address, UserSex, UserRole, profilePath,
+                    canDiscount,
                     canUpdateItem
                     , canAddItem, canAddCategory, canDeleteItem, UserId);
             handler.post(() -> {
                 Toast.makeText(this, "User have been updated", Toast.LENGTH_SHORT).show();
                 OnCallAllUserFromDB();
             });
-        }).start();
+        });
+        thread.start();
         OnHideBtnDeleteUpdate();
         OnHideFormAddUser();
         OnClearDataInView();
@@ -320,12 +327,13 @@ public class ManageAccountActivity extends AppCompatActivity {
     }
 
     private void OnCallAllUserFromDB() {
-        new Thread(() -> {
+        thread = new Thread(() -> {
             ListUsers =
                     POSDatabase.getInstance(getApplicationContext()).getDao().userAccount();
             handler.post(() -> binding.listAllUser.setAdapter(new AdapterAccountManager(ListUsers,
                     this)));
-        }).start();
+        });
+        thread.start();
     }
 
     private void OnSaveCreateUser() {
@@ -333,14 +341,15 @@ public class ManageAccountActivity extends AppCompatActivity {
         userAccount = new UserAccount(Firstname, Lastname, UserSex, DateOfBirth, Address, Username,
                 Password, UserRole, profilePath, canDiscount, canUpdateItem, canAddItem, canAddCategory,
                 canDeleteItem, CurrentDateHelper.getCurrentDate());
-        new Thread(() -> {
+        thread = new Thread(() -> {
             POSDatabase.getInstance(getApplicationContext()).getDao().createUser(userAccount);
             handler.post(() -> {
                 OnHideFormAddUser();
                 OnClearDataInView();
                 OnCallAllUserFromDB();
             });
-        }).start();
+        });
+        thread.start();
     }
 
     private void OnStateCheckBox() {

@@ -26,6 +26,8 @@ public class Frag_unit extends Fragment {
     FragmentFragUnitBinding binding;
     List<Unit> unitList;
     Handler handler;
+    int unitId;
+    Thread thread;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -33,9 +35,25 @@ public class Frag_unit extends Fragment {
         binding = FragmentFragUnitBinding.inflate(inflater, container, false);
         handler = new Handler();
         binding.btnSaveUnit.setOnClickListener(this::OnSaveUnit);
+        binding.btnCancelUnit.setOnClickListener(this::OnCancelUnit);
+        binding.btnDeleteUnit.setOnClickListener(this::OnDeleteUnit);
         OnShowAllUnit();
         OnCreateMenu();
         return binding.getRoot();
+    }
+
+    private void OnDeleteUnit(View view) {
+        OnHideAddUnit();
+    }
+
+    private void OnCancelUnit(View view) {
+        OnHideAddUnit();
+    }
+
+    @Override
+    public void onDetach() {
+        thread.interrupt();
+        super.onDetach();
     }
 
     private void OnCreateMenu() {
@@ -50,7 +68,7 @@ public class Frag_unit extends Fragment {
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 if (menuItem.getItemId() == R.id.add_unit) {
                     binding.txtNoUnitFound.setVisibility(View.GONE);
-                    OnHideStateChangeView();
+                    OnShowAddUnit();
                 }
                 return true;
             }
@@ -61,20 +79,21 @@ public class Frag_unit extends Fragment {
         String uniTitle = String.valueOf(binding.unitTitle.getText());
         String QtyStr = String.valueOf(binding.unitQty.getText());
         int unitQty = Integer.parseInt(QtyStr);
-        new Thread(() -> {
+        thread = new Thread(() -> {
             POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().createUnit
                     (new Unit(uniTitle, unitQty,
                             SharedPreferenceHelper.getInstance().getSaveUserLoginName(requireContext()), CurrentDateHelper.getCurrentDate()));
             handler.post(() -> {
                 OnShowAllUnit();
-                OnShowStateChangeView();
+                OnHideAddUnit();
             });
-        }).start();
+        });
+        thread.start();
 
     }
 
     private void OnShowAllUnit() {
-        new Thread(() -> {
+        thread = new Thread(() -> {
             unitList =
                     POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().getAllUnit();
             handler.post(() -> {
@@ -84,21 +103,25 @@ public class Frag_unit extends Fragment {
                     binding.listUnit.setAdapter(new AdapterUnit(unitList, requireContext()));
                 }
             });
-        }).start();
+            onClickListUnit();
+        });
+        thread.start();
+    }
+
+    private void onClickListUnit() {
+        binding.listUnit.setOnItemClickListener((adapterView, view, i, l) -> {
+            unitId = unitList.get(i).getUnitId();
+        });
     }
 
 
-    private void OnHideStateChangeView() {
+    private void OnShowAddUnit() {
         binding.listUnit.setVisibility(View.GONE);
         binding.layoutAddUnit.setVisibility(View.VISIBLE);
-        binding.unitQty.setText(null);
-        binding.unitTitle.setText(null);
     }
 
-    private void OnShowStateChangeView() {
+    private void OnHideAddUnit() {
         binding.listUnit.setVisibility(View.VISIBLE);
         binding.layoutAddUnit.setVisibility(View.GONE);
-        binding.unitQty.setText(null);
-        binding.unitTitle.setText(null);
     }
 }

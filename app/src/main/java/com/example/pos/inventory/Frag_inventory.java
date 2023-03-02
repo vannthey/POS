@@ -28,6 +28,7 @@ public class Frag_inventory extends Fragment {
     List<Inventory> warehouseList;
     Handler handler;
     SharedPreferences sharedPreferences;
+    Thread thread;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -41,6 +42,12 @@ public class Frag_inventory extends Fragment {
         onShowAllInventory();
         OnInventoryItemClickListener();
         return binding.getRoot();
+    }
+
+    @Override
+    public void onDetach() {
+        thread.interrupt();
+        super.onDetach();
     }
 
     private void onCreateMenu() {
@@ -79,7 +86,7 @@ public class Frag_inventory extends Fragment {
     }
 
     private void onShowAllInventory() {
-        new Thread(() -> {
+        thread = new Thread(() -> {
             warehouseList =
                     POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().getAllInventory();
             handler.post(() -> {
@@ -89,8 +96,8 @@ public class Frag_inventory extends Fragment {
                     binding.listInventory.setAdapter(new AdapterInventory(warehouseList, requireContext()));
                 }
             });
-        }).start();
-
+        });
+        thread.start();
     }
 
     private void onSaveInventory(View view) {
@@ -104,7 +111,7 @@ public class Frag_inventory extends Fragment {
             Toast.makeText(requireContext(), "Please Input Inventory Name", Toast.LENGTH_SHORT).show();
         } else {
             Handler handler = new Handler();
-            new Thread(() -> {
+           thread = new Thread(() -> {
                 POSDatabase.getInstance(requireContext().getApplicationContext()).getDao()
                         .createInventory(new Inventory(inventoryName, inventoryAddress, Username,
                                 CurrentDateHelper.getCurrentDate()));
@@ -112,7 +119,8 @@ public class Frag_inventory extends Fragment {
                     onShowAllInventory();
                     OnClearAllDataInAddInventory();
                 });
-            }).start();
+            });
+           thread.start();
         }
     }
 

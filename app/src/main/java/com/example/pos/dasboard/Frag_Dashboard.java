@@ -49,7 +49,7 @@ public class Frag_Dashboard extends Fragment {
     int productUnit;
     double productPrice;
     double productDiscount = 0;
-
+    Thread thread;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -69,6 +69,11 @@ public class Frag_Dashboard extends Fragment {
         OnScanQR();
 
         return binding.getRoot();
+    }
+    @Override
+    public void onDetach() {
+        thread.interrupt();
+        super.onDetach();
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -120,8 +125,8 @@ public class Frag_Dashboard extends Fragment {
             addToCartBinding.productQtyBottomSheet.setText("0");
             bottomSheetDialog.dismiss();
             binding.floatActionbarSale.setText(String.valueOf(cartCount += 1));
-            new Thread(() -> POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().createSaleTransaction(saleTransaction)).start();
-
+            thread = new Thread(() -> POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().createSaleTransaction(saleTransaction));
+            thread.start();
         }
     }
 
@@ -169,11 +174,15 @@ public class Frag_Dashboard extends Fragment {
     }
 
     private void OnGetAllProduct() {
-        new Thread(() -> {
+        thread = new Thread(() -> {
             productList =
                     POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().getAllProduct();
-            handler.post(() -> binding.gridDashboard.setAdapter(new AdapterProductDashboard(productList, requireContext())));
-        }).start();
+            handler.post(() -> {
+                binding.gridDashboard.setAdapter(new AdapterProductDashboard(productList,
+                        requireContext()));
+            });
+        });
+        thread.start();
     }
 
     private void OnAddItemToCart() {

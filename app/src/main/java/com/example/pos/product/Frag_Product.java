@@ -52,6 +52,7 @@ public class Frag_Product extends Fragment {
     List<Supplier> supplierList;
     Product product;
     Handler handler;
+    Thread thread;
     Random rnd;
     String productName;
     int productId;
@@ -85,11 +86,18 @@ public class Frag_Product extends Fragment {
         return binding.getRoot();
     }
 
+    @Override
+    public void onDetach() {
+        thread.interrupt();
+        super.onDetach();
+    }
+
     private void OnDeleteProduct(View view) {
-        new Thread(() -> {
+        thread = new Thread(() -> {
             POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().deleteProductById(productId);
             handler.post(() -> Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show());
-        }).start();
+        });
+        thread.start();
         OnHideAddProduct();
         onShowAllProduct();
     }
@@ -215,15 +223,16 @@ public class Frag_Product extends Fragment {
         productCost = Double.parseDouble(String.valueOf(binding.addProductCost.getText()));
         productTax = Double.parseDouble(String.valueOf(binding.addProductTax.getText()));
         product = new Product(productName, productQty, unitId, productCode, productCost, productPrice, productTax, inventoryId, categoryId, supplierId, file.toString(), SharedPreferenceHelper.getInstance().getSaveUserLoginName(requireContext()), CurrentDateHelper.getCurrentDate());
-        new Thread(() -> {
+        thread = new Thread(() -> {
             POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().createProduct(product);
             handler.post(this::onShowAllProduct);
-        }).start();
+        });
+        thread.start();
 
     }
 
     private void onShowAllProduct() {
-        new Thread(() -> {
+        thread = new Thread(() -> {
             productList = POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().getAllProduct();
             handler.post(() -> {
                 if (productList.size() != 0) {
@@ -233,27 +242,31 @@ public class Frag_Product extends Fragment {
                     binding.listShowProduct.setVisibility(View.VISIBLE);
                 }
             });
-        }).start();
-
+        });
+        thread.start();
     }
 
     private void OnGetAllSpinnerData() {
-        new Thread(() -> {
+        thread = new Thread(() -> {
             categoryList = POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().getAllCategory();
             handler.post(() -> binding.spinnerProductCategory.setAdapter(new AdapterCategory(categoryList, requireContext())));
-        }).start();
-        new Thread(() -> {
+        });
+        thread.start();
+        thread = new Thread(() -> {
             inventoryList = POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().getAllInventory();
             handler.post(() -> binding.spinnerProductInventory.setAdapter(new AdapterInventory(inventoryList, requireContext())));
-        }).start();
-        new Thread(() -> {
+        });
+        thread.start();
+        thread = new Thread(() -> {
             supplierList = POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().getAllSupplier();
             handler.post(() -> binding.spinnerProductSupplier.setAdapter(new AdapterSupplier(supplierList, requireContext())));
-        }).start();
-        new Thread(() -> {
+        });
+        thread.start();
+        thread = new Thread(() -> {
             unitList = POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().getAllUnit();
             handler.post(() -> binding.spinnerProductUnit.setAdapter(new AdapterUnit(unitList, requireContext())));
-        }).start();
+        });
+        thread.start();
         binding.spinnerProductUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
