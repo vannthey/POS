@@ -46,9 +46,17 @@ public class SharedPreferenceHelper {
     public String getSaveUserLoginRole(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SavedUserLogin,
                 Context.MODE_PRIVATE);
-        String savedRole = "UserRole";
-        return sharedPreferences.getString(savedRole, "");
+        String Role = "UserRole";
+        return sharedPreferences.getString(Role, "");
     }
+
+    public String getSaveUserProfilePath(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SavedUserLogin,
+                Context.MODE_PRIVATE);
+        String Path = "ProfilePath";
+        return sharedPreferences.getString(Path, "");
+    }
+
 
     public String getSaveUserLoginPassword(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SavedUserLogin,
@@ -58,6 +66,7 @@ public class SharedPreferenceHelper {
     }
 
     public void SaveUserLogin(String txtUsername, String txtPassword, String txtUserRole,
+                              String txtProfilePath,
                               Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SavedUserLogin,
                 Context.MODE_PRIVATE);
@@ -68,6 +77,8 @@ public class SharedPreferenceHelper {
         editor.putString(password, txtPassword);
         String Role = "UserRole";
         editor.putString(Role, txtUserRole);
+        String Path = "ProfilePath";
+        editor.putString(Path, txtProfilePath);
         editor.apply();
 
     }

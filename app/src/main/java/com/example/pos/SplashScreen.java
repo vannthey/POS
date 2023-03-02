@@ -3,7 +3,6 @@ package com.example.pos;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,10 +17,9 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivitySpashScreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        new Handler().postDelayed(() -> {
+        new Handler().post(() -> {
             startActivity(new Intent(this, Login.class));
             this.finish();
-        }, 3000);
+        });
     }
 }

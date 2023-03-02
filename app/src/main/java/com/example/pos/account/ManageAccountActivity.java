@@ -1,6 +1,8 @@
 package com.example.pos.account;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -8,18 +10,24 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.transition.Slide;
 import androidx.transition.Transition;
 import androidx.transition.TransitionManager;
 
+import com.bumptech.glide.Glide;
 import com.example.pos.CurrentDateHelper;
 import com.example.pos.Database.Entity.UserAccount;
 import com.example.pos.Database.POSDatabase;
 import com.example.pos.R;
 import com.example.pos.databinding.ActivityManageAccountBinding;
+import com.github.drjacky.imagepicker.ImagePicker;
 
+import java.io.File;
 import java.util.List;
 
 public class ManageAccountActivity extends AppCompatActivity {
@@ -62,6 +70,9 @@ public class ManageAccountActivity extends AppCompatActivity {
     String Username;
     String Password;
     String Address;
+    Uri uri;
+    File file;
+    String profilePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,11 +90,39 @@ public class ManageAccountActivity extends AppCompatActivity {
         binding.btnCancelCreateUser.setOnClickListener(v -> OnCancelUser());
         binding.btnUpdateUser.setOnClickListener(v -> OnUpdateUser());
         binding.btnDeleteUser.setOnClickListener(v -> OnDeleteUser());
+        binding.userImageProfile.setOnClickListener(v -> OnGetImage());
         OnCallAllUserFromDB();
         OnSetUserDateOfBird();
         OnSelectUser();
         OnStateCheckBox();
     }
+
+    private void OnGetImage() {
+        launcher.launch(
+                ImagePicker.Companion.with(this)
+                        .maxResultSize(1080, 1080, true)
+                        .crop().galleryOnly()
+                        .createIntent()
+
+        );
+
+    }
+
+    ActivityResultLauncher<Intent> launcher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), (ActivityResult result) -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    assert result.getData() != null;
+                    uri = result.getData().getData();
+                    file = new File(uri.getPath());
+                    profilePath = file.toString();
+                    // Use the uri to load the image
+                    binding.userImageProfile.setImageURI(uri);
+                } else if (result.getResultCode() == ImagePicker.RESULT_ERROR) {
+                    Toast.makeText(this, "No Image Pick", Toast.LENGTH_SHORT).show();
+                    // Use ImagePicker.Companion.getError(result.getData()) to show an error
+                }
+            });
+
 
     private void OnCancelUser() {
         OnClearDataInView();
@@ -115,6 +154,7 @@ public class ManageAccountActivity extends AppCompatActivity {
             binding.txtLastName.setText(ListUsers.get(i).getLastname());
             binding.txtPassword.setText(ListUsers.get(i).getPassword());
             binding.txtUserName.setText(ListUsers.get(i).getUsername());
+            Glide.with(this).load(ListUsers.get(i).getProfilePath()).into(binding.userImageProfile);
             if (ListUsers.get(i).getSex() == null) {
                 binding.isMale.setChecked(false);
                 binding.isFemale.setChecked(false);
@@ -277,7 +317,6 @@ public class ManageAccountActivity extends AppCompatActivity {
         binding.txtUserName.setText("");
         binding.txtPassword.setText("");
         binding.txtAddress.setText("");
-        binding.txtDateOfBirth.setText("");
     }
 
     private void OnCallAllUserFromDB() {
@@ -292,7 +331,7 @@ public class ManageAccountActivity extends AppCompatActivity {
     private void OnSaveCreateUser() {
         OnGetAllDataFromForm();
         userAccount = new UserAccount(Firstname, Lastname, UserSex, DateOfBirth, Address, Username,
-                Password, UserRole, canDiscount, canUpdateItem, canAddItem, canAddCategory,
+                Password, UserRole, profilePath, canDiscount, canUpdateItem, canAddItem, canAddCategory,
                 canDeleteItem, CurrentDateHelper.getCurrentDate());
         new Thread(() -> {
             POSDatabase.getInstance(getApplicationContext()).getDao().createUser(userAccount);

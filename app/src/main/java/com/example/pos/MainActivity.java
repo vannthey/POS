@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.pos.account.ManageAccountActivity;
 import com.example.pos.category.Frag_category;
 import com.example.pos.customer.Frag_customer;
@@ -92,6 +94,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onSetUserNameAndRoleOnNavDrawer() {
+        ImageView userProfileOnNavDrawer =
+                binding.navDrawerView.getHeaderView(0).findViewById(R.id.image_profile_user);
+        String path = SharedPreferenceHelper.getInstance().getSaveUserProfilePath(this);
+        Glide.with(this).load(path).into(userProfileOnNavDrawer);
         TextView userOnNavDrawer =
                 binding.navDrawerView.getHeaderView(0).findViewById(R.id.userOnNavDrawer);
         userOnNavDrawer.setText(SharedPreferenceHelper.getInstance().getSaveUserLoginName(this));
@@ -179,7 +185,8 @@ public class MainActivity extends AppCompatActivity {
                 replace(R.id.main_frame_layout, fragment).
                 commit();
     }
-    public void SaleNavigator(){
+
+    public void SaleNavigator() {
         View view = binding.navDrawerView.findViewById(R.id.sale);
         view.callOnClick();
     }

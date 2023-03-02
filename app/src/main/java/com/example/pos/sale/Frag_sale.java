@@ -29,6 +29,12 @@ public class Frag_sale extends Fragment implements DeleteProductCallBack {
     double productDiscount;
     int productQty;
     Handler handler;
+    double saleTotal;
+    double saleDiscount;
+    double saleSubtotal;
+    double saleProductDiscount;
+    double saleProductPrice;
+    int saleProductQty;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -37,21 +43,25 @@ public class Frag_sale extends Fragment implements DeleteProductCallBack {
         binding.btnSalePay.setOnClickListener(this::OnSalePay);
         handler = new Handler();
         onGetAllSaleProduct();
-        onClickListProductSale();
         onCreateBottomDialog();
         return binding.getRoot();
     }
 
-    private void OnSalePay(View view) {
-
-    }
-
-    private void onCreateBottomDialog() {
-        SaleBinding = CustomEditProductOnSaleBinding.inflate(getLayoutInflater());
-        bottomSheetDialog = new BottomSheetDialog(requireContext());
-        bottomSheetDialog.setContentView(SaleBinding.getRoot());
-        SaleBinding.customBtnCancelEditProduct.setOnClickListener(v -> bottomSheetDialog.dismiss());
-
+    private void onCalculateProductSale() {
+        for (int i = 0; i < transactionList.size(); i++) {
+            saleProductDiscount = transactionList.get(i).getProductDiscount() / 100;
+            saleProductQty = transactionList.get(i).getProductQty();
+            saleProductPrice = transactionList.get(i).getProductPrice();
+            saleProductDiscount = transactionList.get(i).getProductDiscount();
+            //Find Subtotal
+            if (saleProductDiscount == 0) {
+                saleSubtotal += (saleProductPrice * saleProductQty);
+                onSetFinalPrice();
+            } else  {
+                saleSubtotal += (saleProductPrice * saleProductQty) - saleProductDiscount;
+                onSetFinalPrice();
+            }
+        }
     }
 
     private void onClickListProductSale() {
@@ -73,6 +83,8 @@ public class Frag_sale extends Fragment implements DeleteProductCallBack {
                             (productPrice, productQty, productDiscount, productId);
                     handler.post(() -> {
                         bottomSheetDialog.dismiss();
+                        onClearSaleTotal();
+                        onResetData();
                         onGetAllSaleProduct();
                     });
                 }).start();
@@ -81,11 +93,52 @@ public class Frag_sale extends Fragment implements DeleteProductCallBack {
         });
     }
 
+    private void onResetData() {
+        saleSubtotal = 0;
+        saleProductDiscount = 0;
+        saleProductPrice = 0;
+        saleProductQty = 0;
+        saleDiscount = 0;
+    }
+
+    private void onSetFinalPrice() {
+        binding.saleTotal.setText(String.valueOf(saleSubtotal));
+        binding.saleDiscount.setText("");
+        binding.saleSubtotal.setText(String.valueOf(saleSubtotal));
+    }
+
+    private void OnSalePay(View view) {
+        new Thread(() -> {
+            POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().deleteAfterPay();
+            handler.post(this::onGetAllSaleProduct);
+        }).start();
+        onClearSaleTotal();
+    }
+
+    private void onClearSaleTotal() {
+        binding.saleTotal.setText("");
+        binding.saleDiscount.setText("");
+        binding.saleSubtotal.setText("");
+    }
+
+    private void onCreateBottomDialog() {
+        SaleBinding = CustomEditProductOnSaleBinding.inflate(getLayoutInflater());
+        bottomSheetDialog = new BottomSheetDialog(requireContext());
+        bottomSheetDialog.setContentView(SaleBinding.getRoot());
+        SaleBinding.customBtnCancelEditProduct.setOnClickListener(v -> bottomSheetDialog.dismiss());
+
+    }
+
+
     private void onGetAllSaleProduct() {
         new Thread(() -> {
             transactionList = POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().getAllSaleTransaction();
             handler.post(() -> binding.listItemSale.setAdapter(new AdapterSale(this, requireContext(),
                     transactionList)));
+            handler.post(() -> {
+                onClickListProductSale();
+                onCalculateProductSale();
+            });
         }).start();
     }
 

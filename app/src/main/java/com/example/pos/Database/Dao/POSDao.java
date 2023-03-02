@@ -106,4 +106,7 @@ public interface POSDao {
     @Query("DELETE FROM SaleTransaction WHERE saleId LIKE :saleId")
     void deleteSaleTransactionById(int saleId);
 
+    @Query("DELETE FROM SaleTransaction")
+    void deleteAfterPay();
+
 }

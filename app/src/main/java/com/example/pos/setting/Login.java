@@ -20,6 +20,7 @@ public class Login extends AppCompatActivity {
     String Username;
     String Password;
     String UserRole;
+    String ProfilePath;
     ActivityLoginBinding binding;
     List<UserAccount> userAccounts;
     Handler handler;
@@ -65,8 +66,9 @@ public class Login extends AppCompatActivity {
             for (int i = 0; i < userAccounts.size(); i++) {
                 if (Username.equals(userAccounts.get(i).getUsername()) && Password.equals(userAccounts.get(i).getPassword())) {
                     UserRole = userAccounts.get(i).getUserRole();
+                    ProfilePath = userAccounts.get(i).getProfilePath();
                     SharedPreferenceHelper.getInstance().SaveUserLogin(Username, Password,
-                            UserRole, this);
+                            UserRole,ProfilePath, this);
                     startActivity(new Intent(this, MainActivity.class));
                     finish();
                 } else {
