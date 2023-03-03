@@ -15,25 +15,20 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.pos.CurrentDateHelper;
 import com.example.pos.Database.Entity.Category;
-import com.example.pos.Database.POSDatabase;
 import com.example.pos.R;
 import com.example.pos.SharedPreferenceHelper;
 import com.example.pos.databinding.FragmentFragCategoryBinding;
 
-import java.util.List;
-
 public class Frag_category extends Fragment {
     FragmentFragCategoryBinding binding;
     SharedPreferences sharedPreferences;
-    private final String SaveUserLogin = "UserLogin";
-    List<Category> categoryList;
-    Category category;
+    CategoryViewModel categoryViewModel;
 
     Handler handler;
-    Thread thread;
     String categoryName;
     int categoryId;
 
@@ -43,47 +38,43 @@ public class Frag_category extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentFragCategoryBinding.inflate(inflater, container, false);
         handler = new Handler();
+        categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
         binding.btnCancelCategory.setOnClickListener(this::onCancelSaveCategory);
         binding.btnSaveCategory.setOnClickListener(this::onSaveCategory);
         binding.btnUpdateCategory.setOnClickListener(this::onUpdateCategory);
         binding.btnDeleteCategory.setOnClickListener(this::onDeleteCategory);
-        sharedPreferences = requireContext().getSharedPreferences(SaveUserLogin, Context.MODE_PRIVATE);
+        String saveUserLogin = "UserLogin";
+        sharedPreferences = requireContext().getSharedPreferences(saveUserLogin, Context.MODE_PRIVATE);
         OnShowAllCategory();
         OnCreateMenu();
         return binding.getRoot();
     }
 
     private void onDeleteCategory(View view) {
-        thread = new Thread(() -> {
-            POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().deleteCategoryById(categoryId);
-            handler.post(() -> {
-                onHideAddUnit();
-                OnShowAllCategory();
-            });
-        });
-        thread.start();
+        new Thread(() -> {
+            categoryViewModel.deleteCategoryById(categoryId);
+            handler.post(this::OnUpdateUI);
+        }).start();
+    }
+
+    private void OnUpdateUI() {
+        binding.layoutAddCategory.setVisibility(View.GONE);
+        binding.listCategory.setVisibility(View.VISIBLE);
+        binding.btnSaveCategory.setVisibility(View.VISIBLE);
+        binding.btnDeleteCategory.setVisibility(View.GONE);
+        binding.btnUpdateCategory.setVisibility(View.GONE);
     }
 
     private void onUpdateCategory(View view) {
-        onGetData();
-        thread = new Thread(() -> {
+        new Thread(() -> {
             if (binding.categoryName.getText() != null) {
-                POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().updateCategoryById(categoryName, categoryId);
-                handler.post(() -> {
-                    onHideAddUnit();
-                    OnShowAllCategory();
-                });
+                categoryViewModel.updateCategoryById(categoryName =
+                        String.valueOf(binding.categoryName.getText()), categoryId);
+                handler.post(this::OnUpdateUI);
             } else {
                 Toast.makeText(requireContext(), R.string.Please_Input_Category_Name, Toast.LENGTH_SHORT).show();
             }
-        });
-        thread.start();
-    }
-
-    @Override
-    public void onDetach() {
-        thread.interrupt();
-        super.onDetach();
+        }).start();
     }
 
     private void OnCreateMenu() {
@@ -100,7 +91,9 @@ public class Frag_category extends Fragment {
                     onShowAddUnit();
                     binding.categoryName.setText(null);
                     binding.txtNoCategoryFound.setVisibility(View.GONE);
-                    onHideDeleteUpdate();
+                    binding.btnSaveCategory.setVisibility(View.VISIBLE);
+                    binding.btnDeleteCategory.setVisibility(View.GONE);
+                    binding.btnUpdateCategory.setVisibility(View.GONE);
                 }
                 return true;
             }
@@ -108,84 +101,45 @@ public class Frag_category extends Fragment {
     }
 
     private void OnShowAllCategory() {
-        thread = new Thread(() -> {
-            categoryList =
-                    POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().getAllCategory();
-            handler.post(() -> {
-                if (categoryList.size() != 0) {
-                    binding.txtNoCategoryFound.setVisibility(View.GONE);
-                    binding.listCategory.setAdapter(new AdapterCategory(categoryList,
-                            requireContext()));
-                    binding.listCategory.setVisibility(View.VISIBLE);
-                }
-                onClickCategory();
+        categoryViewModel.getAllCategory().observe(getViewLifecycleOwner(), categories -> {
+            if (categories.size() != 0) {
+                binding.txtNoCategoryFound.setVisibility(View.GONE);
+                binding.listCategory.setAdapter(new AdapterCategory(categories,
+                        requireContext()));
+                binding.listCategory.setVisibility(View.VISIBLE);
+            }
+            binding.listCategory.setOnItemClickListener((adapterView, view, i, l) -> {
+                categoryId = categories.get(i).getCategoryId();
+                categoryName = categories.get(i).getCategoryName();
+                binding.categoryName.setText(categoryName);
+                onShowAddUnit();
+                onShowDeleteUpdate();
+
             });
-
         });
-        thread.start();
     }
 
-    private void OnGetData() {
-        categoryName = String.valueOf(binding.categoryName.getText());
-    }
 
     private void onSaveCategory(View view) {
-        OnGetData();
         if (binding.categoryName.getText() != null) {
-            category = new Category(categoryName,
-                    SharedPreferenceHelper.getInstance().getSaveUserLoginName(requireContext()),
-                    CurrentDateHelper.getCurrentDate());
-            thread = new Thread(() -> {
-                POSDatabase.getInstance(requireContext().getApplicationContext()).getDao()
-                        .createCategory(category);
-                handler.post(() -> {
-                    OnShowAllCategory();
-                    onHideAddUnit();
-                });
-            });
-            thread.start();
+
+            new Thread(() -> {
+                categoryViewModel.createCategory(new Category(String.valueOf(binding.categoryName.getText()),
+                        SharedPreferenceHelper.getInstance().getSaveUserLoginName(requireContext()),
+                        CurrentDateHelper.getCurrentDate()));
+                handler.post(this::OnUpdateUI);
+            }).start();
         } else {
             Toast.makeText(requireContext(), R.string.Please_Input_Category_Name,
                     Toast.LENGTH_SHORT).show();
         }
-
-
     }
 
-    private void onClickCategory() {
-        binding.listCategory.setOnItemClickListener((adapterView, view, i, l) -> {
-            categoryId = categoryList.get(i).getCategoryId();
-            categoryName = categoryList.get(i).getCategoryName();
-            onSetData();
-            onShowAddUnit();
-            onShowDeleteUpdate();
-
-        });
-    }
-
-    private void onSetData() {
-        binding.categoryName.setText(categoryName);
-    }
-
-    private void onGetData() {
-        categoryName = String.valueOf(binding.categoryName.getText());
-    }
-
-    private void onHideDeleteUpdate() {
-        binding.btnSaveCategory.setVisibility(View.VISIBLE);
-        binding.btnDeleteCategory.setVisibility(View.GONE);
-        binding.btnUpdateCategory.setVisibility(View.GONE);
-    }
 
     private void onShowDeleteUpdate() {
         binding.btnDeleteCategory.setVisibility(View.VISIBLE);
         binding.btnUpdateCategory.setVisibility(View.VISIBLE);
         binding.btnSaveCategory.setVisibility(View.GONE);
-    }
-
-    private void onHideAddUnit() {
-        binding.layoutAddCategory.setVisibility(View.GONE);
-        binding.listCategory.setVisibility(View.VISIBLE);
     }
 
     private void onShowAddUnit() {
@@ -194,6 +148,6 @@ public class Frag_category extends Fragment {
     }
 
     private void onCancelSaveCategory(View view) {
-        onHideAddUnit();
+        OnUpdateUI();
     }
 }

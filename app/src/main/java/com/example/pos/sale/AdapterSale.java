@@ -8,7 +8,6 @@ import android.widget.BaseAdapter;
 
 import com.bumptech.glide.Glide;
 import com.example.pos.Database.Entity.SaleTransaction;
-import com.example.pos.Database.POSDatabase;
 import com.example.pos.databinding.CustomProductSaleBinding;
 
 import java.util.List;
@@ -70,11 +69,7 @@ public class AdapterSale extends BaseAdapter {
         binding.customQtyItemSale.setText(String.valueOf(transactionList.get(i).productQty));
         binding.customNumRowItemSale.setText(String.valueOf(numRow));
         binding.customDeleteItemSale.setOnClickListener(view1 -> {
-            new Thread(() -> {
-                POSDatabase.getInstance(context.getApplicationContext()).getDao().deleteSaleTransactionById(transactionList.get(i).getSaleId());
-                productCallBack.doRefresh();
-            }).start();
-
+                productCallBack.doDelete(transactionList.get(i).saleId);
         });
         return view;
     }

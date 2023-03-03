@@ -11,15 +11,13 @@ public class Unit {
     public int unitId;
     @ColumnInfo
     public String unitTitle;
-    public int unitQty;
     @ColumnInfo
     public String creator;
     @ColumnInfo
     public String createDate;
 
-    public Unit(String unitTitle, int unitQty, String creator, String createDate) {
+    public Unit(String unitTitle, String creator, String createDate) {
         this.unitTitle = unitTitle;
-        this.unitQty = unitQty;
         this.creator = creator;
         this.createDate = createDate;
     }
@@ -32,15 +30,21 @@ public class Unit {
         return unitTitle;
     }
 
-    public int getUnitQty() {
-        return unitQty;
-    }
-
     public String getCreator() {
         return creator;
     }
 
     public String getCreateDate() {
         return createDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Unit{" +
+                "unitId=" + unitId +
+                ", unitTitle='" + unitTitle + '\'' +
+                ", creator='" + creator + '\'' +
+                ", createDate='" + createDate + '\'' +
+                '}';
     }
 }

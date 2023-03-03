@@ -16,24 +16,24 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
-import com.example.pos.Database.Entity.Product;
 import com.example.pos.Database.Entity.SaleTransaction;
-import com.example.pos.Database.POSDatabase;
 import com.example.pos.MainActivity;
 import com.example.pos.R;
 import com.example.pos.databinding.BottomSheetDialogAddToCartBinding;
 import com.example.pos.databinding.FragmentFragDashboardBinding;
+import com.example.pos.product.ProductViewModel;
+import com.example.pos.sale.SaleTransactionViewModel;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
-import java.util.List;
-
 public class Frag_Dashboard extends Fragment {
-    List<Product> productList;
+    ProductViewModel productViewModel;
+    SaleTransactionViewModel saleTransactionViewModel;
     Handler handler;
     int cartCount = 0;
     int itemCount = 0;
@@ -41,7 +41,6 @@ public class Frag_Dashboard extends Fragment {
 
     BottomSheetDialog bottomSheetDialog;
     BottomSheetDialogAddToCartBinding addToCartBinding;
-    SaleTransaction saleTransaction;
     String productImagePath;
     String productName;
     int productId;
@@ -49,7 +48,6 @@ public class Frag_Dashboard extends Fragment {
     int productUnit;
     double productPrice;
     double productDiscount = 0;
-    Thread thread;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -57,10 +55,11 @@ public class Frag_Dashboard extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentFragDashboardBinding.inflate(inflater, container, false);
         handler = new Handler();
+        saleTransactionViewModel = new ViewModelProvider(this).get(SaleTransactionViewModel.class);
+        productViewModel = new ViewModelProvider(this).get(ProductViewModel.class);
         bottomSheetDialog = new BottomSheetDialog(requireContext());
         OnCreateMenu();
         OnGetAllProduct();
-        OnAddItemToCart();
         OnTabLayout();
         OnBottomSheetDialog();
         /*
@@ -70,10 +69,12 @@ public class Frag_Dashboard extends Fragment {
 
         return binding.getRoot();
     }
+
     @Override
-    public void onDetach() {
-        thread.interrupt();
-        super.onDetach();
+    public void onDestroyView() {
+        productViewModel.getAllProduct().removeObservers(getViewLifecycleOwner());
+        saleTransactionViewModel.getAllSaleTransaction().removeObservers(getViewLifecycleOwner());
+        super.onDestroyView();
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -119,14 +120,13 @@ public class Frag_Dashboard extends Fragment {
                     Toast.LENGTH_SHORT).show();
         } else {
             productQty = Integer.parseInt(String.valueOf(addToCartBinding.productQtyBottomSheet.getText()));
-            saleTransaction = new SaleTransaction(productId, productName, productImagePath,
-                    productQty, productUnit, productPrice, productDiscount);
             binding.floatActionbarSale.setVisibility(View.VISIBLE);
             addToCartBinding.productQtyBottomSheet.setText("0");
             bottomSheetDialog.dismiss();
             binding.floatActionbarSale.setText(String.valueOf(cartCount += 1));
-            thread = new Thread(() -> POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().createSaleTransaction(saleTransaction));
-            thread.start();
+            new Thread(() -> saleTransactionViewModel.createSaleTransaction(new SaleTransaction(productId, productName,
+                    productImagePath,
+                    productQty, productUnit, productPrice, productDiscount))).start();
         }
     }
 
@@ -174,33 +174,27 @@ public class Frag_Dashboard extends Fragment {
     }
 
     private void OnGetAllProduct() {
-        thread = new Thread(() -> {
-            productList =
-                    POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().getAllProduct();
-            handler.post(() -> {
-                binding.gridDashboard.setAdapter(new AdapterProductDashboard(productList,
+        productViewModel.getAllProduct().observe(getViewLifecycleOwner(), products -> {
+            if (products != null) {
+                binding.gridDashboard.setAdapter(new AdapterProductDashboard(products,
                         requireContext()));
-            });
+                binding.gridDashboard.setOnItemClickListener((adapterView, view, i, l) -> {
+                    itemCount = 0;
+                    addToCartBinding.productQtyBottomSheet.setText("0");
+                    productImagePath = products.get(i).getImagePath();
+                    productUnit = products.get(i).getProductUnitId();
+                    productId = products.get(i).getProductId();
+                    productPrice = products.get(i).getProductPrice();
+                    productName = products.get(i).getProductName();
+                    Glide.with(requireContext()).load(productImagePath).into(addToCartBinding.imageProductBottomSheet);
+                    addToCartBinding.productNameBottomSheet.setText(products.get(i).getProductName());
+                    bottomSheetDialog.show();
+                });
+            }
         });
-        thread.start();
-    }
-
-    private void OnAddItemToCart() {
-        binding.gridDashboard.setOnItemClickListener((adapterView, view, i, l) -> {
-            itemCount = 0;
-            addToCartBinding.productQtyBottomSheet.setText("0");
-            productImagePath = productList.get(i).getImagePath();
-            productUnit = productList.get(i).getProductUnitId();
-            productId = productList.get(i).getProductId();
-            productPrice = productList.get(i).getProductPrice();
-            productName = productList.get(i).getProductName();
-            Glide.with(requireContext()).load(productImagePath).into(addToCartBinding.imageProductBottomSheet);
-            addToCartBinding.productNameBottomSheet.setText(productList.get(i).getProductName());
-            bottomSheetDialog.show();
-        });
-        /*
-        invoke method of navigation view in MainActivity to select Sale Fragment
-         */
+                 /*
+    invoke method of navigation view in MainActivity to select Sale Fragment
+     */
         binding.floatActionbarSale.setOnClickListener(view -> {
             MainActivity mainActivity = (MainActivity) requireActivity();
             mainActivity.SaleNavigator();

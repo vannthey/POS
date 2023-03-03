@@ -45,6 +45,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:drawableEnd="@drawable/ic_product"
+                        android:inputType="text"
                         android:hint="@string/product_name" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -72,6 +73,7 @@
                         android:id="@+id/addProductQty"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:inputType="number"
                         android:textSize="16sp"
                         android:hint="@string/product_qty" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -87,6 +89,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:drawableEnd="@drawable/ic_percent"
+                        android:inputType="number"
                         android:hint="@string/product_tax" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -100,6 +103,7 @@
                         android:id="@+id/addProductCost"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:inputType="number"
                         android:drawableEnd="@drawable/ic_dollar"
                         android:hint="@string/product_cost" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -115,6 +119,7 @@
                         android:id="@+id/addProductPrice"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:inputType="number"
                         android:drawableEnd="@drawable/ic_dollar"
                         android:hint="@string/product_price" />
                 </com.google.android.material.textfield.TextInputLayout>

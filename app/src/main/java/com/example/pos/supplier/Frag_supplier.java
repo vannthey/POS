@@ -13,26 +13,21 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.pos.CurrentDateHelper;
 import com.example.pos.Database.Entity.Supplier;
-import com.example.pos.Database.POSDatabase;
 import com.example.pos.R;
 import com.example.pos.SharedPreferenceHelper;
 import com.example.pos.databinding.FragmentFragSupplierBinding;
 
-import java.util.List;
-
 public class Frag_supplier extends Fragment {
     FragmentFragSupplierBinding binding;
-
-    List<Supplier> supplierList;
+    SupplierViewModel viewModel;
     Handler handler;
     String SupplierName;
     String SupplierPhone;
     String SupplierAddress;
-
-    Thread thread;
     boolean isMale = true;
     boolean isFemale = true;
 
@@ -40,26 +35,41 @@ public class Frag_supplier extends Fragment {
     Supplier supplier;
     int supplierId;
 
+
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentFragSupplierBinding.inflate(getLayoutInflater(), container, false);
+        viewModel = new ViewModelProvider(this).get(SupplierViewModel.class);
         handler = new Handler();
-        binding.btnCancelSupplier.setOnClickListener(v -> OnClearDataSupplier());
+        binding.btnCancelSupplier.setOnClickListener(v -> OnUpdateUI());
         binding.btnSaveSupplier.setOnClickListener(this::OnSaveSupplier);
+        binding.btnUpdateSupplier.setOnClickListener(this::OnUpdateSupplier);
+        binding.btnDeleteSupplier.setOnClickListener(this::OnDeleteSupplier);
         OnCreateMenu();
-        OnGetAllSupplier();
-        OnCheckSupplierSex();
-        OnSupplierItemClick();
-
+        OnShowAllSupplier();
         return binding.getRoot();
     }
 
-    @Override
-    public void onDetach() {
-        thread.interrupt();
-        super.onDetach();
+    private void OnDeleteSupplier(View view) {
+        new Thread(() -> {
+            viewModel.deleteSupplierById(supplierId);
+            handler.post(this::OnUpdateUI);
+        }).start();
+    }
+
+    private void OnUpdateSupplier(View view) {
+        SupplierName = String.valueOf(binding.txtSupplierName.getText());
+        SupplierPhone = String.valueOf(binding.txtSupplierPhone.getText());
+        SupplierAddress = String.valueOf(binding.txtSupplierAddress.getText());
+        if (SupplierName != null) {
+            new Thread(() -> {
+                viewModel.updateSupplierById(SupplierName, SupplierAddress, SupplierSex, SupplierPhone, supplierId);
+                handler.post(this::OnUpdateUI);
+            }).start();
+        } else {
+            Toast.makeText(requireContext(), R.string.Please_Input_Supplier, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void OnCreateMenu() {
@@ -74,86 +84,25 @@ public class Frag_supplier extends Fragment {
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 if (menuItem.getItemId() == R.id.add_supplier) {
                     binding.txtNoSupplierFound.setVisibility(View.GONE);
+                    binding.btnDeleteSupplier.setVisibility(View.GONE);
+                    binding.btnUpdateSupplier.setVisibility(View.GONE);
+                    binding.supplierMale.setChecked(false);
+                    binding.supplierFemale.setChecked(false);
+                    binding.txtSupplierPhone.setText(null);
+                    binding.txtSupplierAddress.setText(null);
+                    binding.txtSupplierName.setText(null);
                     OnShowAddSupplier();
+                    OnCheckSupplierSex();
                 }
                 return true;
             }
         }, getViewLifecycleOwner());
     }
 
-    private void OnSupplierItemClick() {
-        binding.listShowSupplier.setOnItemClickListener((adapterView, view, i, l) -> {
-            binding.txtSupplierPhone.setText(supplierList.get(i).getSupplierPhoneNumber());
-            binding.txtSupplierName.setText(supplierList.get(i).getSupplierName());
-            binding.txtSupplierAddress.setText(supplierList.get(i).getSupplierAddress());
-            supplierId = supplierList.get(i).getSupplierId();
-            String sex = supplierList.get(i).getSupplierSex();
-            if (sex.contains("Male")) {
-                binding.supplierMale.setChecked(true);
-                binding.supplierFemale.setChecked(false);
-            } else if (sex.contains("Female")) {
-                binding.supplierMale.setChecked(false);
-                binding.supplierFemale.setChecked(true);
-            }
-            OnShowDeleteUpdateBtn();
-            OnShowAddSupplier();
-        });
-    }
-
-    private void OnShowDeleteUpdateBtn() {
+    private void OnShowDeleteUpdate() {
         binding.btnDeleteSupplier.setVisibility(View.VISIBLE);
         binding.btnUpdateSupplier.setVisibility(View.VISIBLE);
         binding.btnSaveSupplier.setVisibility(View.GONE);
-        binding.btnUpdateSupplier.setOnClickListener(v -> {
-            SupplierName = String.valueOf(binding.txtSupplierName.getText());
-            SupplierPhone = String.valueOf(binding.txtSupplierPhone.getText());
-            SupplierAddress = String.valueOf(binding.txtSupplierAddress.getText());
-            if (SupplierName != null) {
-                thread = new Thread(() -> {
-                    POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().updateSupplierById(SupplierName, SupplierAddress, SupplierSex, SupplierPhone, supplierId);
-                    handler.post(() -> {
-                        OnClearDataSupplier();
-                        OnHideDeleteUpdate();
-                    });
-                });
-                thread.start();
-            } else {
-                Toast.makeText(requireContext(), R.string.Please_Input_Supplier,
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-        binding.btnDeleteSupplier.setOnClickListener(v -> {
-            thread = new Thread(() -> {
-                POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().deleteSupplierById(supplierId);
-                handler.post(() -> {
-                    OnHideDeleteUpdate();
-                    OnClearDataSupplier();
-                });
-            });
-            thread.start();
-        });
-    }
-
-    private void OnHideDeleteUpdate() {
-        binding.btnDeleteSupplier.setVisibility(View.GONE);
-        binding.btnUpdateSupplier.setVisibility(View.GONE);
-        binding.btnSaveSupplier.setVisibility(View.VISIBLE);
-    }
-
-    private void OnClearDataSupplier() {
-        binding.supplierMale.setChecked(false);
-        binding.supplierFemale.setChecked(false);
-        binding.txtSupplierName.setText(null);
-        binding.txtSupplierPhone.setText(null);
-        binding.txtSupplierAddress.setText(null);
-        OnHideDeleteUpdate();
-        OnHideAddSupplier();
-    }
-
-    private void OnHideAddSupplier() {
-        binding.layoutAddSupplier.setVisibility(View.GONE);
-        binding.listShowSupplier.setVisibility(View.VISIBLE);
-
     }
 
     private void OnCheckSupplierSex() {
@@ -182,39 +131,55 @@ public class Frag_supplier extends Fragment {
         SupplierName = String.valueOf(binding.txtSupplierName.getText());
         SupplierPhone = String.valueOf(binding.txtSupplierPhone.getText());
         SupplierAddress = String.valueOf(binding.txtSupplierAddress.getText());
-        supplier = new Supplier(SupplierName, SupplierSex, SupplierPhone, SupplierAddress,
-                SharedPreferenceHelper.getInstance().getSaveUserLoginName(requireContext()),
-                CurrentDateHelper.getCurrentDate());
+        supplier = new Supplier(SupplierName, SupplierSex, SupplierPhone, SupplierAddress, SharedPreferenceHelper.getInstance().getSaveUserLoginName(requireContext()), CurrentDateHelper.getCurrentDate());
         if (SupplierName != null) {
-            thread = new Thread(() -> {
-                POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().createSupplier(supplier);
-                handler.post(() -> {
-                    OnGetAllSupplier();
-                    OnClearDataSupplier();
-                });
-            });
-            thread.start();
+            new Thread(() -> {
+                viewModel.createSupplier(supplier);
+                handler.post(this::OnUpdateUI);
+            }).start();
         } else {
             Toast.makeText(requireContext(), R.string.Please_Input_Supplier, Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void OnGetAllSupplier() {
-        new Thread(() -> {
-            supplierList =
-                    POSDatabase.getInstance(requireContext().getApplicationContext()).getDao().getAllSupplier();
-            handler.post(() -> {
-                if (supplierList.size() != 0) {
-                    binding.txtNoSupplierFound.setVisibility(View.GONE);
-                    binding.listShowSupplier.setVisibility(View.VISIBLE);
-                    binding.listShowSupplier.setAdapter(new AdapterSupplier(supplierList,
-                            requireContext()));
+    private void OnShowAllSupplier() {
+        viewModel.getAllSupplier().observe(getViewLifecycleOwner(), suppliers -> {
+            if (suppliers.size() != 0) {
+                binding.txtNoSupplierFound.setVisibility(View.GONE);
+                binding.listShowSupplier.setVisibility(View.VISIBLE);
+                binding.listShowSupplier.setAdapter(new AdapterSupplier(suppliers, requireActivity()));
+            }
+            binding.listShowSupplier.setOnItemClickListener((adapterView, view, i, l) -> {
+                binding.txtSupplierPhone.setText(suppliers.get(i).getSupplierPhoneNumber());
+                binding.txtSupplierName.setText(suppliers.get(i).getSupplierName());
+                binding.txtSupplierAddress.setText(suppliers.get(i).getSupplierAddress());
+                supplierId = suppliers.get(i).getSupplierId();
+                OnShowDeleteUpdate();
+                String sex = suppliers.get(i).getSupplierSex();
+                if (sex.contains("Male")) {
+                    binding.supplierMale.setChecked(true);
+                    binding.supplierFemale.setChecked(false);
+                } else if (sex.contains("Female")) {
+                    binding.supplierMale.setChecked(false);
+                    binding.supplierFemale.setChecked(true);
                 }
+                OnShowAddSupplier();
             });
-        }).start();
-
+        });
     }
 
+    private void OnUpdateUI() {
+        binding.layoutAddSupplier.setVisibility(View.GONE);
+        binding.listShowSupplier.setVisibility(View.VISIBLE);
+        binding.btnDeleteSupplier.setVisibility(View.GONE);
+        binding.btnUpdateSupplier.setVisibility(View.GONE);
+        binding.btnSaveSupplier.setVisibility(View.VISIBLE);
+        binding.supplierMale.setChecked(false);
+        binding.supplierFemale.setChecked(false);
+        binding.txtSupplierName.setText(null);
+        binding.txtSupplierPhone.setText(null);
+        binding.txtSupplierAddress.setText(null);
+    }
 
     private void OnShowAddSupplier() {
         binding.layoutAddSupplier.setVisibility(View.VISIBLE);

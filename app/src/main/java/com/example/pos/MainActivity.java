@@ -27,19 +27,15 @@ import com.example.pos.report.Frag_report;
 import com.example.pos.sale.Frag_sale;
 import com.example.pos.setting.Preference;
 import com.example.pos.supplier.Frag_supplier;
+import com.example.pos.supplier.SupplierViewModel;
 import com.example.pos.unit.Frag_unit;
 
 public class MainActivity extends AppCompatActivity {
-
+    SupplierViewModel viewModel;
     ActivityMainBinding binding;
     ActionBarDrawerToggle drawerToggle;
-    boolean doubleBackToExitPressedOnce = false;
     SharedPreferences sharedPreferences, sharedDefault;
     SharedPreferences.Editor editor, editorDefault;
-    private final String SaveUserLogin = "UserLogin";
-    private final String SaveUserFullName = "SaveUserFullName";
-    private final String DefaultUsername = "Admin";
-    private final String DefaultUser = "DefaultUser";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +44,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         setSupportActionBar(binding.actionBar.customActionbar);
         setTitle("Dashboard");
-        sharedDefault = getSharedPreferences(DefaultUser, MODE_PRIVATE);
-        sharedPreferences = getSharedPreferences(SaveUserLogin, MODE_PRIVATE);
-        String DefaultUserLogin = sharedDefault.getString(DefaultUsername, "");
+        String defaultUser = "DefaultUser";
+        sharedDefault = getSharedPreferences(defaultUser, MODE_PRIVATE);
+        String saveUserLogin = "UserLogin";
+        sharedPreferences = getSharedPreferences(saveUserLogin, MODE_PRIVATE);
+        String defaultUsername = "Admin";
+        String DefaultUserLogin = sharedDefault.getString(defaultUsername, "");
         if (DefaultUserLogin.contains("Admin")) {
             binding.navDrawerView.getMenu().findItem(R.id.item).setVisible(false);
             binding.navDrawerView.getMenu().findItem(R.id.category).setVisible(false);

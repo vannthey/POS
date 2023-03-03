@@ -113,5 +113,6 @@
     <string name="Please_Input_Unit_Name">Please Input Unit Name</string>
     <string name="Please_Input_Category_Name">Please Input Category Name</string>
     <string name="Please_Input_Supplier">Please Input Supplier</string>
+    <string name="Please_Input_Product">Please Input Product</string>
 
 </resources>

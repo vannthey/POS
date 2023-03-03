@@ -1,5 +1,6 @@
 package com.example.pos.Database.Dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
@@ -17,65 +18,76 @@ import java.util.List;
 @Dao
 public interface POSDao {
 
+    /*
+    Operation On Product
+     */
     @Insert
-    void createUser(UserAccount userAccount);
+    void createProduct(Product product);
 
-    @Insert
-    void createInventory(Inventory warehouse);
+    @Query("SELECT * FROM Product")
+    LiveData<List<Product>> getAllProduct();
 
+    @Query("DELETE FROM Product WHERE productId LIKE :productId")
+    void deleteProductById(int productId);
+
+    /*
+    Operation On Category
+     */
     @Insert
     void createCategory(Category category);
+
+    @Query("SELECT * FROM Category")
+    LiveData<List<Category>> getAllCategory();
+
+    @Query("Update Category SET categoryName=:categoryName WHERE categoryId LIKE :categoryId")
+    void updateCategoryById(String categoryName, int categoryId);
+
+    @Query("DELETE FROM Category WHERE categoryId LIKE :categoryId")
+    void deleteCategoryById(int categoryId);
+
+    /*
+    Operation On Sale Transaction
+     */
+    @Insert
+    void createSaleTransaction(SaleTransaction transactionList);
+
+    @Query("SELECT * FROM SaleTransaction")
+    LiveData<List<SaleTransaction>> getAllSaleTransaction();
+
+    @Query("Update SaleTransaction SET productPrice=:price, productQty=:qty,productDiscount=:dist " +
+            "WHERE productId " +
+            "LIKE " +
+            ":id")
+    void editProductOnSaleById(double price, int qty, double dist, int id);
+
+    @Query("DELETE FROM SaleTransaction WHERE saleId LIKE :saleId")
+    void deleteSaleTransactionById(int saleId);
+
+    @Query("DELETE FROM SaleTransaction")
+    void deleteAfterPay();
+
+    /*
+    Operation On Supplier
+     */
+    @Query("Update Supplier SET supplierName=:supplierName,supplierAddress=:supplierAddress," +
+            "supplierSex=:supplierSex,supplierPhoneNumber=:supplierPhoneNumber WHERE supplierId " +
+            "Like :Id")
+    void updateSupplierById(String supplierName, String supplierAddress, String supplierSex,
+                            String supplierPhoneNumber, int Id);
 
     @Insert
     void createSupplier(Supplier supplier);
 
-    @Insert
-    void createProduct(Product product);
-
-    @Insert
-    void createUnit(Unit unit);
-
-    @Insert
-    void createSaleTransaction(SaleTransaction transactionList);
-
-    @Query("SELECT * FROM UserAccount")
-    List<UserAccount> userAccount();
-
-    @Query("SELECT * FROM Inventory")
-    List<Inventory> getAllInventory();
-
-    @Query("SELECT * FROM UserAccount Where Username =:username AND Password =:password")
-    List<UserAccount> checkUser(String username, String password);
-
-    @Query("SELECT * FROM Category")
-    List<Category> getAllCategory();
-
-//    @Transaction
-//    @Query("SELECT Category.categoryId,Supplier.supplierId,Category.categoryName,Supplier.supplierName FROM Category" +
-//            " JOIN " +
-//            "Supplier ON " +
-//            "Category" +
-//            ".categoryId = Supplier.supplierId")
-//    List<CategoryWithSupplier> getAllCategoryFtSupplier();
-
-    @Query("SELECT * FROM Product")
-    List<Product> getAllProduct();
-
     @Query("SELECT * FROM Supplier")
-    List<Supplier> getAllSupplier();
+    LiveData<List<Supplier>> getAllSupplier();
 
 
     @Query("DELETE FROM Supplier WHERE supplierId Like :Id")
     void deleteSupplierById(int Id);
 
-
-    @Query("SELECT * FROM Unit")
-    List<Unit> getAllUnit();
-
-    @Query("SELECT * FROM SaleTransaction")
-    List<SaleTransaction> getAllSaleTransaction();
-
-
+    /*
+    Operation On User
+     */
     @Query("Update UserAccount SET Firstname=:FirstName,Lastname=:LastName,Username=:UserName," +
             "Password=:Password,DOB=:DOB,Address=:Address,Sex=:Sex,UserRole=:Role," +
             "ProfilePath=:profilePath," +
@@ -88,40 +100,39 @@ public interface POSDao {
                         boolean canUpdate,
                         boolean canAddItem, boolean canAddCategory, boolean canDeleteItem, int Id);
 
-    @Query("Update Supplier SET supplierName=:supplierName,supplierAddress=:supplierAddress," +
-            "supplierSex=:supplierSex,supplierPhoneNumber=:supplierPhoneNumber WHERE supplierId " +
-            "Like :Id")
-    void updateSupplierById(String supplierName, String supplierAddress, String supplierSex,
-                            String supplierPhoneNumber, int Id);
-
-    @Query("Update SaleTransaction SET productPrice=:price, productQty=:qty,productDiscount=:dist " +
-            "WHERE productId " +
-            "LIKE " +
-            ":id")
-    void editProductOnSaleById(double price, int qty, double dist, int id);
-
-    @Query("Update Unit SET unitTitle=:unitTitle, unitQty=:unitQty WHERE unitId LIKE :unitId")
-    void updateUnitById(String unitTitle, double unitQty, int unitId);
-
-    @Query("Update Category SET categoryName=:categoryName WHERE categoryId LIKE :categoryId")
-    void updateCategoryById(String categoryName, int categoryId);
-
-    @Query("DELETE FROM Category WHERE categoryId LIKE :categoryId")
-    void deleteCategoryById(int categoryId);
-
     @Query("DELETE FROM UserAccount WHERE userId LIKE :userId")
     void deleteUserById(int userId);
 
-    @Query("DELETE FROM Product WHERE productId LIKE :productId")
-    void deleteProductById(int productId);
+    @Insert
+    void createUser(UserAccount userAccount);
 
-    @Query("DELETE FROM SaleTransaction WHERE saleId LIKE :saleId")
-    void deleteSaleTransactionById(int saleId);
+    @Query("SELECT * FROM UserAccount")
+    List<UserAccount> userAccount();
 
-    @Query("DELETE FROM SaleTransaction")
-    void deleteAfterPay();
+    @Query("SELECT * FROM UserAccount Where Username =:username AND Password =:password")
+    List<UserAccount> checkUser(String username, String password);
 
+    /*
+    Operation On Unit
+     */
+    @Insert
+    void createUnit(Unit unit);
+
+    @Query("SELECT * FROM Unit")
+    LiveData<List<Unit>> getAllUnit();
+
+    @Query("Update Unit SET unitTitle=:unitTitle WHERE unitId LIKE :unitId")
+    void updateUnitById(String unitTitle, int unitId);
 
     @Query("DELETE FROM Unit WHERE unitId Like :unitId")
     void deleteUnitById(int unitId);
+
+    /*
+    Operation On Inventory
+     */
+    @Insert
+    void createInventory(Inventory inventory);
+
+    @Query("SELECT * FROM Inventory")
+    LiveData<List<Inventory>> getAllInventory();
 }
