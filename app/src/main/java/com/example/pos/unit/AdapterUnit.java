@@ -10,6 +10,7 @@ import com.example.pos.Database.Entity.Unit;
 import com.example.pos.databinding.CustomUnitItemBinding;
 
 import java.util.List;
+import java.util.Objects;
 
 public class AdapterUnit extends BaseAdapter {
     CustomUnitItemBinding binding;
@@ -44,5 +45,16 @@ public class AdapterUnit extends BaseAdapter {
         }
         binding.customUnitName.setText(unitList.get(i).getUnitTitle());
         return view;
+    }
+
+    public int getPosition(int position) {
+        int index = -1;
+        for (int i = 0; i < unitList.size(); i++) {
+            if (Objects.equals(unitList.get(i).getUnitId(), position)) {
+                index = i;
+            }
+        }
+
+        return index;
     }
 }

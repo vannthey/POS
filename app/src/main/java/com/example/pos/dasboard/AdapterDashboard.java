@@ -15,14 +15,14 @@ import com.example.pos.databinding.CustomDashboardModelItemsBinding;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdapterProductDashboard extends BaseAdapter implements Filterable {
+public class AdapterDashboard extends BaseAdapter implements Filterable {
     CustomDashboardModelItemsBinding binding;
     List<Product> productList;
     List<Product> newProductList;
     Context ctx;
     Holder holder;
 
-    public AdapterProductDashboard(List<Product> productList, Context ctx) {
+    public AdapterDashboard(List<Product> productList, Context ctx) {
         this.productList = productList;
         this.ctx = ctx;
         this.newProductList = new ArrayList<>(productList);

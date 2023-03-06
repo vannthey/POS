@@ -10,6 +10,7 @@ import com.example.pos.Database.Entity.Supplier;
 import com.example.pos.databinding.CustomSupplierListBinding;
 
 import java.util.List;
+import java.util.Objects;
 
 public class AdapterSupplier extends BaseAdapter {
     CustomSupplierListBinding binding;
@@ -45,5 +46,16 @@ public class AdapterSupplier extends BaseAdapter {
         }
         binding.customSupplierName.setText(suppliers.get(i).getSupplierName());
         return view;
+    }
+
+    public int getPosition(int position) {
+        int index = -1;
+        for (int i = 0; i < suppliers.size(); i++) {
+            if (Objects.equals(suppliers.get(i).getSupplierId(), position)) {
+                index = i;
+            }
+        }
+
+        return index;
     }
 }

@@ -67,7 +67,7 @@
     <string name="permission">Permission</string>
     <string name="delete_item">Delete Item</string>
     <string name="allow_all">Allow All</string>
-    <string name="discount">Dist</string>
+    <string name="discount">Discount</string>
     <string name="update_item">Update Item</string>
     <string name="add_item">Add Item</string>
     <string name="date_of_birth">Date Of Birth</string>
@@ -91,7 +91,7 @@
     <string name="qty">Qty</string>
     <string name="no">No</string>
     <string name="item">Item</string>
-    <string name="subtotal">Sub</string>
+    <string name="subtotal">Amount</string>
     <string name="phone_number">Phone Number</string>
     <string name="purchase_date">Purchase Date</string>
     <string name="invoice_number">Invoice Number</string>
@@ -114,5 +114,10 @@
     <string name="Please_Input_Category_Name">Please Input Category Name</string>
     <string name="Please_Input_Supplier">Please Input Supplier</string>
     <string name="Please_Input_Product">Please Input Product</string>
+    <string name="add_to_cart">Add To Cart</string>
+    <string name="riel">៛</string>
+    <string name="equal">=</string>
+    <string name="riel_money">Riel</string>
+    <string name="Description">Description</string>
 
 </resources>

@@ -32,18 +32,18 @@ public class Frag_unit extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentFragUnitBinding.inflate(inflater, container, false);
         handler = new Handler();
-        binding.btnSaveUnit.setOnClickListener(this::OnSaveUnit);
-        binding.btnCancelUnit.setOnClickListener(this::OnCancelUnit);
-        binding.btnDeleteUnit.setOnClickListener(this::OnDeleteUnit);
-        binding.btnUpdateUnit.setOnClickListener(this::OnUpdateUnit);
+        binding.btnSaveUnit.setOnClickListener(this::SaveUnit);
+        binding.btnCancelUnit.setOnClickListener(this::CancelUnit);
+        binding.btnDeleteUnit.setOnClickListener(this::DeleteUnit);
+        binding.btnUpdateUnit.setOnClickListener(this::UpdateUnit);
         viewModel = new ViewModelProvider(this).get(UnitViewModel.class);
-        OnShowAllUnit();
+        GetAllProduct();
         OnCreateMenu();
         return binding.getRoot();
     }
 
 
-    private void OnUpdateUnit(View view) {
+    private void UpdateUnit(View view) {
         if (binding.unitTitle.getText() != null) {
             new Thread(() -> {
                 viewModel.updateUnitById(String.valueOf(binding.unitTitle.getText()), unitId);
@@ -54,14 +54,25 @@ public class Frag_unit extends Fragment {
         }
     }
 
-    private void OnDeleteUnit(View view) {
+    private void DeleteUnit(View view) {
         new Thread(() -> {
             viewModel.deleteUnitById(unitId);
             handler.post(this::OnUpdateUI);
         }).start();
     }
 
-    private void OnCancelUnit(View view) {
+    private void SaveUnit(View view) {
+        if (binding.unitTitle.getText() != null) {
+            new Thread(() -> {
+                viewModel.createUnit(new Unit(String.valueOf(binding.unitTitle.getText()), SharedPreferenceHelper.getInstance().getSaveUserLoginName(requireContext()), CurrentDateHelper.getCurrentDate()));
+                handler.post(this::OnUpdateUI);
+            }).start();
+        } else {
+            Toast.makeText(requireContext(), R.string.Please_Input_Unit_Name, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void CancelUnit(View view) {
         OnUpdateUI();
     }
 
@@ -77,26 +88,14 @@ public class Frag_unit extends Fragment {
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 if (menuItem.getItemId() == R.id.add_unit) {
                     binding.txtNoUnitFound.setVisibility(View.GONE);
-                    binding.unitTitle.setText(null);
-                    OnShowAddUnit();
+                    LayoutSaveUnit();
                 }
                 return true;
             }
         }, getViewLifecycleOwner());
     }
 
-    private void OnSaveUnit(View view) {
-        if (binding.unitTitle.getText() != null) {
-            new Thread(() -> {
-                viewModel.createUnit(new Unit(String.valueOf(binding.unitTitle.getText()), SharedPreferenceHelper.getInstance().getSaveUserLoginName(requireContext()), CurrentDateHelper.getCurrentDate()));
-                handler.post(this::OnUpdateUI);
-            }).start();
-        } else {
-            Toast.makeText(requireContext(), R.string.Please_Input_Unit_Name, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void OnShowAllUnit() {
+    private void GetAllProduct() {
         viewModel.getAllUnit().observe(getViewLifecycleOwner(), unitList -> {
             if (unitList.size() != 0) {
                 binding.txtNoUnitFound.setVisibility(View.GONE);
@@ -106,20 +105,20 @@ public class Frag_unit extends Fragment {
             binding.listUnit.setOnItemClickListener((adapterView, view, i, l) -> {
                 unitId = unitList.get(i).getUnitId();
                 binding.unitTitle.setText(unitList.get(i).unitTitle);
-                OnShowAddUnit();
-                OnShowDeleteUpdate();
+                LayoutSaveUnit();
+                DeleteAndUpdate();
             });
         });
     }
 
-    private void OnShowDeleteUpdate() {
+    private void DeleteAndUpdate() {
         binding.btnSaveUnit.setVisibility(View.GONE);
         binding.btnUpdateUnit.setVisibility(View.VISIBLE);
         binding.btnDeleteUnit.setVisibility(View.VISIBLE);
     }
 
 
-    private void OnShowAddUnit() {
+    private void LayoutSaveUnit() {
         binding.listUnit.setVisibility(View.GONE);
         binding.layoutAddUnit.setVisibility(View.VISIBLE);
     }

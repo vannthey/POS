@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.bumptech.glide.Glide;
 import com.example.pos.Database.Entity.SaleTransaction;
 import com.example.pos.databinding.CustomProductSaleBinding;
 
@@ -60,16 +59,12 @@ public class AdapterSale extends BaseAdapter {
             subtotal = subtotal - discount;
             binding.customSubtotalItemSale.setText(String.valueOf(subtotal));
         }
-
-        Glide.with(context).load(transactionList.get(i).getProductImagePath()).into(binding
-                .customImageItemSale);
         binding.customDiscountItemSale.setText(String.valueOf(transactionList.get(i).getProductDiscount()));
         binding.customNameItemSale.setText(transactionList.get(i).getProductName());
         binding.customPriceItemSale.setText(String.valueOf(transactionList.get(i).getProductPrice()));
         binding.customQtyItemSale.setText(String.valueOf(transactionList.get(i).productQty));
-        binding.customNumRowItemSale.setText(String.valueOf(numRow));
         binding.customDeleteItemSale.setOnClickListener(view1 -> {
-                productCallBack.doDelete(transactionList.get(i).saleId);
+            productCallBack.doDelete(transactionList.get(i).saleId);
         });
         return view;
     }

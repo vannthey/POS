@@ -58,10 +58,10 @@ public class Frag_Product extends Fragment {
     String productName;
     int productId;
     int productQty;
-    int inventoryId;
-    int categoryId;
-    int supplierId;
-    int unitId;
+    int inventorySpinnerId;
+    int categorySpinnerId;
+    int supplierSpinnerId;
+    int unitSpinnerId;
     double productPrice;
     double productCost;
     double productTax;
@@ -79,59 +79,15 @@ public class Frag_Product extends Fragment {
         categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
         supplierViewModel = new ViewModelProvider(this).get(SupplierViewModel.class);
         inventoryViewModel = new ViewModelProvider(this).get(InventoryViewModel.class);
-        binding.btnSaveProduct.setOnClickListener(this::onSaveProduct);
-        binding.btnCancelAddProduct.setOnClickListener(this::onCancelSaveProduct);
-        binding.btnUpdateProduct.setOnClickListener(this::OnUpdateProduct);
-        binding.btnDeleteProduct.setOnClickListener(this::OnDeleteProduct);
+        binding.btnSaveProduct.setOnClickListener(this::SaveProduct);
+        binding.btnCancelAddProduct.setOnClickListener(this::CancelProduct);
+        binding.btnUpdateProduct.setOnClickListener(this::UpdateProduct);
+        binding.btnDeleteProduct.setOnClickListener(this::DeleteProduct);
         binding.addProductCode.setOnClickListener(this::getRandomProductCode);
         binding.addProductImage.setOnClickListener(v -> OnGetImage());
-        OnGetAllSpinnerData();
-        onShowAllProduct();
+        GetAllProduct();
         OnCreateMenu();
         return binding.getRoot();
-    }
-
-    private void OnDeleteProduct(View view) {
-        new Thread(() -> {
-            productViewModel.deleteProductById(productId);
-            handler.post(() -> {
-                OnUpdateUI();
-                Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show();
-            });
-        }).start();
-    }
-
-
-    private void OnShowBtnDeleteUpdate() {
-        binding.btnDeleteProduct.setVisibility(View.VISIBLE);
-        binding.btnUpdateProduct.setVisibility(View.VISIBLE);
-        binding.btnSaveProduct.setVisibility(View.GONE);
-    }
-
-    private void OnUpdateProduct(View view) {
-
-        OnUpdateUI();
-    }
-
-    private void OnCreateMenu() {
-        requireActivity().addMenuProvider(new MenuProvider() {
-            @Override
-            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-                menuInflater.inflate(R.menu.option_menu, menu);
-                menu.findItem(R.id.add_product).setVisible(true);
-            }
-
-            @Override
-            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-                if (menuItem.getItemId() == R.id.add_product) {
-                    binding.txtNoProductFound.setVisibility(View.GONE);
-                    binding.btnDeleteProduct.setVisibility(View.GONE);
-                    binding.btnUpdateProduct.setVisibility(View.GONE);
-                    OnShowAddProduct();
-                }
-                return true;
-            }
-        }, getViewLifecycleOwner());
     }
 
     private void OnGetImage() {
@@ -155,30 +111,21 @@ public class Frag_Product extends Fragment {
     });
 
 
-    private void getRandomProductCode(View view) {
-        rnd = new Random();
-        binding.addProductCode.setText(String.valueOf(rnd.nextInt(999999)));
+    private void DeleteProduct(View view) {
+        new Thread(() -> {
+            productViewModel.deleteProductById(productId);
+            handler.post(() -> {
+                OnUpdateUI();
+                Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show();
+            });
+        }).start();
     }
 
-    private void onCancelSaveProduct(View view) {
-        OnUpdateUI();
-    }
-
-    private void OnShowAddProduct() {
-        binding.layoutAddProduct.setVisibility(View.VISIBLE);
-        binding.layoutShowProduct.setVisibility(View.GONE);
-    }
-
-    private void onSaveProduct(View view) {
-        productCode = Integer.parseInt(String.valueOf(binding.addProductCode.getText()));
-        productQty = Integer.parseInt(String.valueOf(binding.addProductQty.getText()));
-        productName = String.valueOf(binding.addProductName.getText());
-        productPrice = Double.parseDouble(String.valueOf(binding.addProductPrice.getText()));
-        productCost = Double.parseDouble(String.valueOf(binding.addProductCost.getText()));
-        productTax = Double.parseDouble(String.valueOf(binding.addProductTax.getText()));
+    private void SaveProduct(View view) {
+        GetDataFromView();
         if (productName != null) {
             new Thread(() -> {
-                productViewModel.createProduct(new Product(productName, productQty, unitId, productCode, productCost, productPrice, productTax, inventoryId, categoryId, supplierId, file.toString(), SharedPreferenceHelper.getInstance().getSaveUserLoginName(requireContext()), CurrentDateHelper.getCurrentDate()));
+                productViewModel.createProduct(new Product(productName, productQty, unitSpinnerId, productCode, productCost, productPrice, productTax, inventorySpinnerId, categorySpinnerId, supplierSpinnerId, file.toString(), SharedPreferenceHelper.getInstance().getSaveUserLoginName(requireContext()), CurrentDateHelper.getCurrentDate()));
                 handler.post(this::OnUpdateUI);
             }).start();
         } else {
@@ -187,7 +134,39 @@ public class Frag_Product extends Fragment {
 
     }
 
-    private void onShowAllProduct() {
+
+    private void UpdateProduct(View view) {
+        GetDataFromView();
+        new Thread(() -> {
+            productViewModel.updateProductById(productName, productQty, unitSpinnerId, productCode, productCost, productPrice,
+                    productTax, inventorySpinnerId, categorySpinnerId, supplierSpinnerId, file.toString(),
+                    SharedPreferenceHelper.getInstance().getSaveUserLoginName(requireContext()),
+                    CurrentDateHelper.getCurrentDate(), productId);
+            handler.post(this::OnUpdateUI);
+        }).start();
+    }
+
+
+    private void getRandomProductCode(View view) {
+        rnd = new Random();
+        binding.addProductCode.setText(String.valueOf(rnd.nextInt(999999)));
+    }
+
+    private void CancelProduct(View view) {
+        OnUpdateUI();
+    }
+
+
+    private void GetDataFromView() {
+        productCode = Integer.parseInt(String.valueOf(binding.addProductCode.getText()));
+        productQty = Integer.parseInt(String.valueOf(binding.addProductQty.getText()));
+        productName = String.valueOf(binding.addProductName.getText());
+        productPrice = Double.parseDouble(String.valueOf(binding.addProductPrice.getText()));
+        productCost = Double.parseDouble(String.valueOf(binding.addProductCost.getText()));
+        productTax = Double.parseDouble(String.valueOf(binding.addProductTax.getText()));
+    }
+
+    private void GetAllProduct() {
         productViewModel.getAllProduct().observe(getViewLifecycleOwner(), products -> {
             if (products.size() != 0) {
                 binding.txtNoProductFound.setVisibility(View.GONE);
@@ -195,39 +174,42 @@ public class Frag_Product extends Fragment {
                 binding.listShowProduct.setAdapter(new AdapterProduct(products, requireContext()));
                 binding.listShowProduct.setOnItemClickListener((adapterView, view, i, l) -> {
                     productId = products.get(i).getProductId();
+                    categorySpinnerId = products.get(i).getCategoryId();
+                    unitSpinnerId = products.get(i).getProductUnitId();
+                    inventorySpinnerId = products.get(i).getInventoryId();
+                    supplierSpinnerId = products.get(i).getSupplierId();
+                    GetSpinnerData();
                     binding.addProductName.setText(products.get(i).getProductName());
                     binding.addProductCode.setText(String.valueOf(products.get(i).getProductCode()));
                     binding.addProductQty.setText(String.valueOf(products.get(i).getProductQty()));
                     binding.addProductTax.setText(String.valueOf(products.get(i).getProductTax()));
                     binding.addProductCost.setText(String.valueOf(products.get(i).getProductCost()));
                     binding.addProductPrice.setText(String.valueOf(products.get(i).getProductPrice()));
-                    binding.spinnerProductSupplier.setSelection(0);
-                    binding.spinnerProductCategory.setSelection(0);
-                    binding.spinnerProductUnit.setSelection(0);
-                    binding.spinnerProductInventory.setSelection(0);
                     Glide.with(this).load(products.get(i).getImagePath()).into(binding.addProductImage);
-                    OnShowAddProduct();
-                    OnShowBtnDeleteUpdate();
+                    LayoutSaveProduct();
+                    DeleteAndUpdate();
                 });
             }
         });
 
     }
 
-    private void OnGetAllSpinnerData() {
+
+    private void GetSpinnerData() {
         categoryViewModel.getAllCategory().observe(getViewLifecycleOwner(), categories -> {
             if (categories != null) {
                 adapterCategory = new AdapterCategory(categories, requireContext());
                 binding.spinnerProductCategory.setAdapter(adapterCategory);
+                binding.spinnerProductCategory.setSelection(adapterCategory.getPosition(categorySpinnerId));
                 binding.spinnerProductCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        categoryId = categories.get(i).categoryId;
+                        categorySpinnerId = categories.get(i).categoryId;
                     }
 
                     @Override
                     public void onNothingSelected(AdapterView<?> adapterView) {
-                        categoryId = categories.get(0).categoryId;
+                        categorySpinnerId = categories.get(0).categoryId;
                     }
                 });
             }
@@ -236,15 +218,16 @@ public class Frag_Product extends Fragment {
             if (inventories != null) {
                 adapterInventory = new AdapterInventory(inventories, requireContext());
                 binding.spinnerProductInventory.setAdapter(adapterInventory);
+                binding.spinnerProductInventory.setSelection(adapterInventory.getPosition(inventorySpinnerId));
                 binding.spinnerProductInventory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        inventoryId = inventories.get(i).inventoryId;
+                        inventorySpinnerId = inventories.get(i).inventoryId;
                     }
 
                     @Override
                     public void onNothingSelected(AdapterView<?> adapterView) {
-                        inventoryId = inventories.get(0).inventoryId;
+                        inventorySpinnerId = inventories.get(0).inventoryId;
                     }
                 });
             }
@@ -253,15 +236,16 @@ public class Frag_Product extends Fragment {
             if (supplierList != null) {
                 adapterSupplier = new AdapterSupplier(supplierList, requireContext());
                 binding.spinnerProductSupplier.setAdapter(adapterSupplier);
+                binding.spinnerProductSupplier.setSelection(adapterSupplier.getPosition(supplierSpinnerId));
                 binding.spinnerProductSupplier.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        supplierId = supplierList.get(i).getSupplierId();
+                        supplierSpinnerId = supplierList.get(i).getSupplierId();
                     }
 
                     @Override
                     public void onNothingSelected(AdapterView<?> adapterView) {
-                        supplierId = supplierList.get(0).getSupplierId();
+                        supplierSpinnerId = supplierList.get(0).getSupplierId();
                     }
                 });
             }
@@ -270,21 +254,26 @@ public class Frag_Product extends Fragment {
             if (unitList != null) {
                 adapterUnit = new AdapterUnit(unitList, requireContext());
                 binding.spinnerProductUnit.setAdapter(adapterUnit);
+                binding.spinnerProductUnit.setSelection(adapterUnit.getPosition(unitSpinnerId));
                 binding.spinnerProductUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        unitId = unitList.get(i).getUnitId();
+                        unitSpinnerId = unitList.get(i).getUnitId();
                     }
 
                     @Override
                     public void onNothingSelected(AdapterView<?> adapterView) {
-                        unitId = unitList.get(0).getUnitId();
+                        unitSpinnerId = unitList.get(0).getUnitId();
                     }
                 });
             }
         });
+    }
 
-
+    private void DeleteAndUpdate() {
+        binding.btnDeleteProduct.setVisibility(View.VISIBLE);
+        binding.btnUpdateProduct.setVisibility(View.VISIBLE);
+        binding.btnSaveProduct.setVisibility(View.GONE);
     }
 
     public void OnUpdateUI() {
@@ -300,5 +289,29 @@ public class Frag_Product extends Fragment {
         binding.addProductTax.setText(null);
         binding.addProductQty.setText(null);
         binding.addProductCost.setText(null);
+    }
+
+    private void LayoutSaveProduct() {
+        binding.layoutAddProduct.setVisibility(View.VISIBLE);
+        binding.layoutShowProduct.setVisibility(View.GONE);
+    }
+
+    private void OnCreateMenu() {
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menuInflater.inflate(R.menu.option_menu, menu);
+                menu.findItem(R.id.add_product).setVisible(true);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.add_product) {
+                    binding.txtNoProductFound.setVisibility(View.GONE);
+                    LayoutSaveProduct();
+                }
+                return true;
+            }
+        }, getViewLifecycleOwner());
     }
 }

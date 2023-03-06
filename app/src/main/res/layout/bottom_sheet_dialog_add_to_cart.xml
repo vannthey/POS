@@ -3,71 +3,103 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp">
+    android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/image_product_bottom_sheet"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginEnd="5dp"
-        android:contentDescription="@null"
-        android:src="@drawable/ic_image" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
 
-    <TextView
-        android:id="@+id/product_name_bottom_sheet"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginEnd="10dp"
-        android:layout_weight="1"
-        android:gravity="center|start"
-        android:text="@string/product_name"
-        android:textColor="@color/black"
-        android:textSize="18sp" />
+        <ImageView
+            android:id="@+id/image_product_bottom_sheet"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginEnd="5dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_image" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/decrease_product_qty_bottom_sheet"
-        style="@style/Widget.Material3.Button.TextButton"
-        android:layout_width="50dp"
-        android:layout_height="match_parent"
-        android:text="@string/subStruct"
-        android:textColor="@color/black"
-        android:textSize="32sp"
-        app:rippleColor="@color/gray" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="50dp"
-        android:layout_height="match_parent">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/product_qty_bottom_sheet"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/product_name_bottom_sheet"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:cursorVisible="false"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:gravity="center|start"
+            android:text="@string/product_name"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/decrease_product_qty_bottom_sheet"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:text="@string/subStruct"
+            android:textColor="@color/black"
+            android:textSize="32sp"
+            app:rippleColor="@color/gray" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="50dp"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/product_qty_bottom_sheet"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:cursorVisible="false"
+                android:gravity="center"
+                android:importantForAccessibility="no"
+                android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/increase_product_qty_bottom_sheet"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
             android:gravity="center"
-            android:importantForAccessibility="no"
-            android:inputType="number" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:text="@string/add"
+            android:textColor="@color/black"
+            android:textSize="32sp"
+            app:rippleColor="@color/gray" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/increase_product_qty_bottom_sheet"
-        style="@style/Widget.Material3.Button.TextButton"
-        android:layout_width="50dp"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="@string/add"
-        android:textColor="@color/black"
-        android:textSize="32sp"
-        app:rippleColor="@color/gray" />
 
-    <ImageView
-        android:id="@+id/send_product_to_cart_bottom_sheet"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_gravity="center"
-        android:contentDescription="@null"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:src="@drawable/ic_shopping_cart_checkout" />
+    </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/Brilliant_Azure"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/product_price_bottom_sheet"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/dollar"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/send_product_to_cart_bottom_sheet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_to_cart"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+    </LinearLayout>
 
 </LinearLayout>

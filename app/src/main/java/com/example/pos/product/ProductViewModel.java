@@ -31,4 +31,12 @@ public class ProductViewModel extends AndroidViewModel {
         posDatabase.getDao().deleteProductById(productId);
     }
 
+    public void updateProductById(String productName, int productQty, int productUnitId, long productCode,
+                                  double productCost,
+                                  double productPrice, double productTax, int inventoryId, int categoryId, int supplierId,
+                                  String imagePath, String creator, String createDate, int productId) {
+        posDatabase.getDao().updateProductById(productName, productQty, productUnitId, productCode, productCost,
+                productPrice, productTax, inventoryId, categoryId, supplierId, imagePath, creator, createDate, productId);
+    }
+
 }

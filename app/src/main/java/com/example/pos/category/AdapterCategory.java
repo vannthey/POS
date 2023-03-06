@@ -10,6 +10,7 @@ import com.example.pos.Database.Entity.Category;
 import com.example.pos.databinding.CustomCategoryModelItemsBinding;
 
 import java.util.List;
+import java.util.Objects;
 
 public class AdapterCategory extends BaseAdapter {
     CustomCategoryModelItemsBinding binding;
@@ -29,7 +30,7 @@ public class AdapterCategory extends BaseAdapter {
 
     @Override
     public Object getItem(int i) {
-        return i;
+        return categories.get(i);
     }
 
     @Override
@@ -40,12 +41,22 @@ public class AdapterCategory extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         if (view == null) {
-            binding = CustomCategoryModelItemsBinding.inflate(LayoutInflater.from(context),
-                    viewGroup, false);
+            binding = CustomCategoryModelItemsBinding.inflate(LayoutInflater.from(context), viewGroup, false);
             view = binding.getRoot();
         }
         binding.itemCategory.setText(categories.get(i).getCategoryName());
-        // binding.categorySupplierName.setVisibility(View.GONE);
+
         return view;
+    }
+
+    public int getPosition(int position) {
+        int index = -1;
+        for (int i = 0; i < categories.size(); i++) {
+            if (Objects.equals(categories.get(i).getCategoryId(), position)) {
+                index = i;
+            }
+        }
+
+        return index;
     }
 }

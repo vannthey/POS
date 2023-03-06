@@ -10,6 +10,7 @@ import com.example.pos.Database.Entity.Inventory;
 import com.example.pos.databinding.CustomInventoryItemBinding;
 
 import java.util.List;
+import java.util.Objects;
 
 public class AdapterInventory extends BaseAdapter {
     CustomInventoryItemBinding binding;
@@ -44,5 +45,16 @@ public class AdapterInventory extends BaseAdapter {
         }
         binding.inventoryName.setText(inventoryList.get(i).getInventoryName());
         return view;
+    }
+
+    public int getPosition(int position) {
+        int index = -1;
+        for (int i = 0; i < inventoryList.size(); i++) {
+            if (Objects.equals(inventoryList.get(i).getInventoryId(), position)) {
+                index = i;
+            }
+        }
+
+        return index;
     }
 }

@@ -43,22 +43,22 @@ public class Frag_supplier extends Fragment {
         viewModel = new ViewModelProvider(this).get(SupplierViewModel.class);
         handler = new Handler();
         binding.btnCancelSupplier.setOnClickListener(v -> OnUpdateUI());
-        binding.btnSaveSupplier.setOnClickListener(this::OnSaveSupplier);
-        binding.btnUpdateSupplier.setOnClickListener(this::OnUpdateSupplier);
-        binding.btnDeleteSupplier.setOnClickListener(this::OnDeleteSupplier);
+        binding.btnSaveSupplier.setOnClickListener(this::SaveSupplier);
+        binding.btnUpdateSupplier.setOnClickListener(this::UpdateSupplier);
+        binding.btnDeleteSupplier.setOnClickListener(this::DeleteSupplier);
         OnCreateMenu();
-        OnShowAllSupplier();
+        GetAllSupplier();
         return binding.getRoot();
     }
 
-    private void OnDeleteSupplier(View view) {
+    private void DeleteSupplier(View view) {
         new Thread(() -> {
             viewModel.deleteSupplierById(supplierId);
             handler.post(this::OnUpdateUI);
         }).start();
     }
 
-    private void OnUpdateSupplier(View view) {
+    private void UpdateSupplier(View view) {
         SupplierName = String.valueOf(binding.txtSupplierName.getText());
         SupplierPhone = String.valueOf(binding.txtSupplierPhone.getText());
         SupplierAddress = String.valueOf(binding.txtSupplierAddress.getText());
@@ -72,40 +72,14 @@ public class Frag_supplier extends Fragment {
         }
     }
 
-    private void OnCreateMenu() {
-        requireActivity().addMenuProvider(new MenuProvider() {
-            @Override
-            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-                menuInflater.inflate(R.menu.option_menu, menu);
-                menu.findItem(R.id.add_supplier).setVisible(true);
-            }
 
-            @Override
-            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-                if (menuItem.getItemId() == R.id.add_supplier) {
-                    binding.txtNoSupplierFound.setVisibility(View.GONE);
-                    binding.btnDeleteSupplier.setVisibility(View.GONE);
-                    binding.btnUpdateSupplier.setVisibility(View.GONE);
-                    binding.supplierMale.setChecked(false);
-                    binding.supplierFemale.setChecked(false);
-                    binding.txtSupplierPhone.setText(null);
-                    binding.txtSupplierAddress.setText(null);
-                    binding.txtSupplierName.setText(null);
-                    OnShowAddSupplier();
-                    OnCheckSupplierSex();
-                }
-                return true;
-            }
-        }, getViewLifecycleOwner());
-    }
-
-    private void OnShowDeleteUpdate() {
+    private void DeleteAndUpdate() {
         binding.btnDeleteSupplier.setVisibility(View.VISIBLE);
         binding.btnUpdateSupplier.setVisibility(View.VISIBLE);
         binding.btnSaveSupplier.setVisibility(View.GONE);
     }
 
-    private void OnCheckSupplierSex() {
+    private void CheckSupplierSex() {
         binding.supplierMale.setOnCheckedChangeListener((compoundButton, b) -> {
             if (isMale == binding.supplierMale.isChecked()) {
                 SupplierSex = "Male";
@@ -126,8 +100,8 @@ public class Frag_supplier extends Fragment {
         });
     }
 
-    private void OnSaveSupplier(View view) {
-        OnCheckSupplierSex();
+    private void SaveSupplier(View view) {
+        CheckSupplierSex();
         SupplierName = String.valueOf(binding.txtSupplierName.getText());
         SupplierPhone = String.valueOf(binding.txtSupplierPhone.getText());
         SupplierAddress = String.valueOf(binding.txtSupplierAddress.getText());
@@ -142,7 +116,7 @@ public class Frag_supplier extends Fragment {
         }
     }
 
-    private void OnShowAllSupplier() {
+    private void GetAllSupplier() {
         viewModel.getAllSupplier().observe(getViewLifecycleOwner(), suppliers -> {
             if (suppliers.size() != 0) {
                 binding.txtNoSupplierFound.setVisibility(View.GONE);
@@ -154,7 +128,7 @@ public class Frag_supplier extends Fragment {
                 binding.txtSupplierName.setText(suppliers.get(i).getSupplierName());
                 binding.txtSupplierAddress.setText(suppliers.get(i).getSupplierAddress());
                 supplierId = suppliers.get(i).getSupplierId();
-                OnShowDeleteUpdate();
+                DeleteAndUpdate();
                 String sex = suppliers.get(i).getSupplierSex();
                 if (sex.contains("Male")) {
                     binding.supplierMale.setChecked(true);
@@ -163,7 +137,7 @@ public class Frag_supplier extends Fragment {
                     binding.supplierMale.setChecked(false);
                     binding.supplierFemale.setChecked(true);
                 }
-                OnShowAddSupplier();
+                LayoutSaveSupplier();
             });
         });
     }
@@ -181,8 +155,26 @@ public class Frag_supplier extends Fragment {
         binding.txtSupplierAddress.setText(null);
     }
 
-    private void OnShowAddSupplier() {
+    private void LayoutSaveSupplier() {
         binding.layoutAddSupplier.setVisibility(View.VISIBLE);
         binding.listShowSupplier.setVisibility(View.GONE);
+    }
+
+    private void OnCreateMenu() {
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menuInflater.inflate(R.menu.option_menu, menu);
+                menu.findItem(R.id.add_supplier).setVisible(true);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.add_supplier) {
+                    LayoutSaveSupplier();
+                }
+                return true;
+            }
+        }, getViewLifecycleOwner());
     }
 }

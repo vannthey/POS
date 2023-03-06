@@ -194,9 +194,8 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (binding.navDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.navDrawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            return;
         }
+
 //        else {
 //            if (doubleBackToExitPressedOnce) {
 //                super.onBackPressed();
