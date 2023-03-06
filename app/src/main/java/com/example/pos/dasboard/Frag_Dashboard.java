@@ -3,6 +3,8 @@ package com.example.pos.dasboard;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
@@ -28,12 +29,11 @@ import com.example.pos.product.ProductViewModel;
 import com.example.pos.sale.SaleTransactionViewModel;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
-import com.journeyapps.barcodescanner.ScanContract;
-import com.journeyapps.barcodescanner.ScanOptions;
 
 public class Frag_Dashboard extends Fragment {
     ProductViewModel productViewModel;
     SaleTransactionViewModel saleTransactionViewModel;
+    AdapterProductDashboard adapterProductDashboard;
     Handler handler;
     int cartCount = 0;
     int itemCount = 0;
@@ -50,14 +50,14 @@ public class Frag_Dashboard extends Fragment {
     double productDiscount = 0;
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentFragDashboardBinding.inflate(inflater, container, false);
         handler = new Handler();
         saleTransactionViewModel = new ViewModelProvider(this).get(SaleTransactionViewModel.class);
         productViewModel = new ViewModelProvider(this).get(ProductViewModel.class);
         bottomSheetDialog = new BottomSheetDialog(requireContext());
+        OnCheckProductSale();
         OnCreateMenu();
         OnGetAllProduct();
         OnTabLayout();
@@ -68,6 +68,15 @@ public class Frag_Dashboard extends Fragment {
         OnScanQR();
 
         return binding.getRoot();
+    }
+
+    private void OnCheckProductSale() {
+        saleTransactionViewModel.getAllSaleTransaction().observe(getViewLifecycleOwner(), transactionList -> {
+            if (transactionList.size() != 0) {
+                binding.floatActionbarSale.setVisibility(View.VISIBLE);
+                binding.floatActionbarSale.setText(String.valueOf(transactionList.size()));
+            }
+        });
     }
 
     @Override
@@ -82,9 +91,7 @@ public class Frag_Dashboard extends Fragment {
         binding.searchViewDashboard.setOnTouchListener((view, motionEvent) -> {
             final int DRAWABLE_RIGHT = 0;
             if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                if (motionEvent.getRawX() >= (binding.searchViewDashboard.getRight()
-                        - binding.searchViewDashboard.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                    launchQRScan();
+                if (motionEvent.getRawX() >= (binding.searchViewDashboard.getRight() - binding.searchViewDashboard.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                 }
             }
             return false;
@@ -95,14 +102,11 @@ public class Frag_Dashboard extends Fragment {
         addToCartBinding = BottomSheetDialogAddToCartBinding.inflate(getLayoutInflater());
         bottomSheetDialog.setContentView(addToCartBinding.getRoot());
 
-        addToCartBinding.sendProductToCartBottomSheet.setOnClickListener(v ->
-                OnSendProductToCartBottomSheet());
+        addToCartBinding.sendProductToCartBottomSheet.setOnClickListener(v -> OnSendProductToCartBottomSheet());
 
-        addToCartBinding.increaseProductQtyBottomSheet.setOnClickListener(v ->
-                addToCartBinding.productQtyBottomSheet.setText(String.valueOf(itemCount += 1)));
+        addToCartBinding.increaseProductQtyBottomSheet.setOnClickListener(v -> addToCartBinding.productQtyBottomSheet.setText(String.valueOf(itemCount += 1)));
 
-        addToCartBinding.decreaseProductQtyBottomSheet.setOnClickListener(v ->
-                OnCheckAddedProductQty());
+        addToCartBinding.decreaseProductQtyBottomSheet.setOnClickListener(v -> OnCheckAddedProductQty());
     }
 
     private void OnCheckAddedProductQty() {
@@ -116,17 +120,14 @@ public class Frag_Dashboard extends Fragment {
     private void OnSendProductToCartBottomSheet() {
         String getQty = String.valueOf(addToCartBinding.productQtyBottomSheet.getText());
         if (getQty.equals("0")) {
-            Toast.makeText(requireContext(), "Cannot Add Product Cause Qty Is 0",
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "Cannot Add Product Cause Qty Is 0", Toast.LENGTH_SHORT).show();
         } else {
             productQty = Integer.parseInt(String.valueOf(addToCartBinding.productQtyBottomSheet.getText()));
             binding.floatActionbarSale.setVisibility(View.VISIBLE);
             addToCartBinding.productQtyBottomSheet.setText("0");
             bottomSheetDialog.dismiss();
             binding.floatActionbarSale.setText(String.valueOf(cartCount += 1));
-            new Thread(() -> saleTransactionViewModel.createSaleTransaction(new SaleTransaction(productId, productName,
-                    productImagePath,
-                    productQty, productUnit, productPrice, productDiscount))).start();
+            new Thread(() -> saleTransactionViewModel.createSaleTransaction(new SaleTransaction(productId, productName, productImagePath, productQty, productUnit, productPrice, productDiscount))).start();
         }
     }
 
@@ -176,8 +177,8 @@ public class Frag_Dashboard extends Fragment {
     private void OnGetAllProduct() {
         productViewModel.getAllProduct().observe(getViewLifecycleOwner(), products -> {
             if (products != null) {
-                binding.gridDashboard.setAdapter(new AdapterProductDashboard(products,
-                        requireContext()));
+                adapterProductDashboard = new AdapterProductDashboard(products, requireContext());
+                binding.gridDashboard.setAdapter(adapterProductDashboard);
                 binding.gridDashboard.setOnItemClickListener((adapterView, view, i, l) -> {
                     itemCount = 0;
                     addToCartBinding.productQtyBottomSheet.setText("0");
@@ -190,6 +191,21 @@ public class Frag_Dashboard extends Fragment {
                     addToCartBinding.productNameBottomSheet.setText(products.get(i).getProductName());
                     bottomSheetDialog.show();
                 });
+                binding.searchViewDashboard.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        adapterProductDashboard.getFilter().filter(charSequence);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                    }
+                });
             }
         });
                  /*
@@ -201,23 +217,5 @@ public class Frag_Dashboard extends Fragment {
         });
     }
 
-    private void launchQRScan() {
-        ScanOptions options = new ScanOptions();
-        options.setDesiredBarcodeFormats(ScanOptions.ONE_D_CODE_TYPES);
-        options.setPrompt("Scanning Coding");
-        options.setCameraId(0);  // Use a specific camera of the device
-        options.setBeepEnabled(false);
-        options.setOrientationLocked(true);
-        options.setBarcodeImageEnabled(true);
-        barcodeLauncher.launch(options);
-    }
 
-    private final ActivityResultLauncher<ScanOptions> barcodeLauncher = registerForActivityResult(new ScanContract(),
-            result -> {
-                if (result.getContents() == null) {
-                    Toast.makeText(requireContext(), "Cancelled", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(requireContext(), "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
-                }
-            });
 }

@@ -49,6 +49,10 @@ public class Frag_Product extends Fragment {
     UnitViewModel unitViewModel;
     CategoryViewModel categoryViewModel;
     InventoryViewModel inventoryViewModel;
+    AdapterSupplier adapterSupplier;
+    AdapterCategory adapterCategory;
+    AdapterUnit adapterUnit;
+    AdapterInventory adapterInventory;
     Handler handler;
     Random rnd;
     String productName;
@@ -131,29 +135,24 @@ public class Frag_Product extends Fragment {
     }
 
     private void OnGetImage() {
-        launcher.launch(
-                ImagePicker.Companion.with(requireActivity())
-                        .maxResultSize(1080, 1080, true)
-                        .crop().galleryOnly()
-                        .createIntent()
+        launcher.launch(ImagePicker.Companion.with(requireActivity()).maxResultSize(1080, 1080, true).crop().galleryOnly().createIntent()
 
         );
 
     }
 
-    ActivityResultLauncher<Intent> launcher =
-            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), (ActivityResult result) -> {
-                if (result.getResultCode() == RESULT_OK) {
-                    assert result.getData() != null;
-                    uri = result.getData().getData();
-                    file = new File(uri.getPath());
-                    // Use the uri to load the image
-                    binding.addProductImage.setImageURI(uri);
-                } else if (result.getResultCode() == ImagePicker.RESULT_ERROR) {
-                    Toast.makeText(requireContext(), "No Image Pick", Toast.LENGTH_SHORT).show();
-                    // Use ImagePicker.Companion.getError(result.getData()) to show an error
-                }
-            });
+    ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), (ActivityResult result) -> {
+        if (result.getResultCode() == RESULT_OK) {
+            assert result.getData() != null;
+            uri = result.getData().getData();
+            file = new File(uri.getPath());
+            // Use the uri to load the image
+            binding.addProductImage.setImageURI(uri);
+        } else if (result.getResultCode() == ImagePicker.RESULT_ERROR) {
+            Toast.makeText(requireContext(), "No Image Pick", Toast.LENGTH_SHORT).show();
+            // Use ImagePicker.Companion.getError(result.getData()) to show an error
+        }
+    });
 
 
     private void getRandomProductCode(View view) {
@@ -171,7 +170,7 @@ public class Frag_Product extends Fragment {
     }
 
     private void onSaveProduct(View view) {
-        productCode = Integer.parseInt(String.valueOf(binding.addProductPrice.getText()));
+        productCode = Integer.parseInt(String.valueOf(binding.addProductCode.getText()));
         productQty = Integer.parseInt(String.valueOf(binding.addProductQty.getText()));
         productName = String.valueOf(binding.addProductName.getText());
         productPrice = Double.parseDouble(String.valueOf(binding.addProductPrice.getText()));
@@ -179,8 +178,7 @@ public class Frag_Product extends Fragment {
         productTax = Double.parseDouble(String.valueOf(binding.addProductTax.getText()));
         if (productName != null) {
             new Thread(() -> {
-                productViewModel.createProduct(new Product(productName, productQty, unitId,
-                        productCode, productCost, productPrice, productTax, inventoryId, categoryId, supplierId, file.toString(), SharedPreferenceHelper.getInstance().getSaveUserLoginName(requireContext()), CurrentDateHelper.getCurrentDate()));
+                productViewModel.createProduct(new Product(productName, productQty, unitId, productCode, productCost, productPrice, productTax, inventoryId, categoryId, supplierId, file.toString(), SharedPreferenceHelper.getInstance().getSaveUserLoginName(requireContext()), CurrentDateHelper.getCurrentDate()));
                 handler.post(this::OnUpdateUI);
             }).start();
         } else {
@@ -194,8 +192,7 @@ public class Frag_Product extends Fragment {
             if (products.size() != 0) {
                 binding.txtNoProductFound.setVisibility(View.GONE);
                 binding.listShowProduct.setVisibility(View.VISIBLE);
-                binding.listShowProduct.setAdapter(new AdapterProduct(products
-                        , requireContext()));
+                binding.listShowProduct.setAdapter(new AdapterProduct(products, requireContext()));
                 binding.listShowProduct.setOnItemClickListener((adapterView, view, i, l) -> {
                     productId = products.get(i).getProductId();
                     binding.addProductName.setText(products.get(i).getProductName());
@@ -220,7 +217,8 @@ public class Frag_Product extends Fragment {
     private void OnGetAllSpinnerData() {
         categoryViewModel.getAllCategory().observe(getViewLifecycleOwner(), categories -> {
             if (categories != null) {
-                binding.spinnerProductCategory.setAdapter(new AdapterCategory(categories, requireContext()));
+                adapterCategory = new AdapterCategory(categories, requireContext());
+                binding.spinnerProductCategory.setAdapter(adapterCategory);
                 binding.spinnerProductCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -236,8 +234,8 @@ public class Frag_Product extends Fragment {
         });
         inventoryViewModel.getAllInventory().observe(getViewLifecycleOwner(), inventories -> {
             if (inventories != null) {
-                binding.spinnerProductInventory.setAdapter(new AdapterInventory(inventories,
-                        requireContext()));
+                adapterInventory = new AdapterInventory(inventories, requireContext());
+                binding.spinnerProductInventory.setAdapter(adapterInventory);
                 binding.spinnerProductInventory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -253,8 +251,8 @@ public class Frag_Product extends Fragment {
         });
         supplierViewModel.getAllSupplier().observe(getViewLifecycleOwner(), supplierList -> {
             if (supplierList != null) {
-                binding.spinnerProductSupplier.setAdapter(new AdapterSupplier(supplierList,
-                        requireContext()));
+                adapterSupplier = new AdapterSupplier(supplierList, requireContext());
+                binding.spinnerProductSupplier.setAdapter(adapterSupplier);
                 binding.spinnerProductSupplier.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -270,7 +268,8 @@ public class Frag_Product extends Fragment {
         });
         unitViewModel.getAllUnit().observe(getViewLifecycleOwner(), unitList -> {
             if (unitList != null) {
-                binding.spinnerProductUnit.setAdapter(new AdapterUnit(unitList, requireContext()));
+                adapterUnit = new AdapterUnit(unitList, requireContext());
+                binding.spinnerProductUnit.setAdapter(adapterUnit);
                 binding.spinnerProductUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
