@@ -158,19 +158,19 @@ public class Frag_Dashboard extends Fragment {
             /*
             Check if there already have the same item in invoice if so just update the qty
              */
-//            for (SaleTransaction saleTransaction : saleTransactionList) {
-//                if (saleTransaction.getProductId() == productId) {
-//                    int finalQty = saleTransaction.getProductQty() + productQty;
-//
-//                    new Thread(() -> saleTransactionViewModel.editProductOnSaleById(saleTransaction.getProductPrice()
-//
-//                            , finalQty, saleTransaction.productDiscount, saleTransaction.getProductId())).start();
-//                } else {
-//                    new Thread(() -> saleTransactionViewModel.createSaleTransaction(new SaleTransaction(productId,
-//
-//                            productName, productImagePath, productQty, productUnit, productPrice, productDiscount))).start();
-//                }
-//            }
+            for (SaleTransaction saleTransaction : saleTransactionList) {
+                if (saleTransaction.getProductId() == productId) {
+                    int finalQty = saleTransaction.getProductQty() + productQty;
+
+                    new Thread(() -> saleTransactionViewModel.editProductOnSaleById(saleTransaction.getProductPrice()
+
+                            , finalQty, saleTransaction.productDiscount, saleTransaction.getProductId())).start();
+                } else {
+                    new Thread(() -> saleTransactionViewModel.createSaleTransaction(new SaleTransaction(productId,
+
+                            productName, productImagePath, productQty, productUnit, productPrice, productDiscount))).start();
+                }
+            }
 
         }
     }
