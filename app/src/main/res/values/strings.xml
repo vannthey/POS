@@ -123,5 +123,12 @@
     <string name="preference">Preference</string>
     <string name="expense">Expense</string>
     <string name="company_name">Company Name</string>
+    <string name="customer_name">Customer Name</string>
+    <string name="customer_phone">Customer Phone Number</string>
+    <string name="add_customer">Add Customer</string>
+    <string name="no_customer">No Customer</string>
+    <string name="change">Change</string>
+    <string name="Please_Input_Inventory">Please Input Inventory</string>
+    <string name="Please_Input_Customer">Please Input Customer</string>
 
 </resources>

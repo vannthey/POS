@@ -452,7 +452,6 @@ public class ManageAccountActivity extends AppCompatActivity {
         binding.canDiscount.setOnCheckedChangeListener((compoundButton, b) -> canDiscount = binding.canDiscount.isChecked());
         binding.canAddCategory.setOnCheckedChangeListener((compoundButton, b) -> canAddCategory = binding.canAddCategory.isChecked());
         binding.canAddItem.setOnCheckedChangeListener((compoundButton, b) -> canAddItem = binding.canAddItem.isChecked());
-
         binding.canDeleteItem.setOnCheckedChangeListener((compoundButton, b) -> canDeleteItem = binding.canDeleteItem.isChecked());
         binding.canUpdateItem.setOnCheckedChangeListener((compoundButton, b) -> canUpdateItem = binding.canUpdateItem.isChecked());
 

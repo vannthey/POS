@@ -45,8 +45,6 @@ public class AdapterAccountManager extends BaseAdapter {
                     false);
             view = binding.getRoot();
         }
-        long RowCount = getItemId(i) + 1;
-        binding.userId.setText(String.valueOf(RowCount));
         binding.userName.setText(userAccountList.get(i).getUsername());
         binding.userRole.setText(userAccountList.get(i).getUserRole());
         return view;

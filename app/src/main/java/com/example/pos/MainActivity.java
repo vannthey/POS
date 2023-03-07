@@ -20,16 +20,22 @@ import com.example.pos.category.Frag_category;
 import com.example.pos.customer.Frag_customer;
 import com.example.pos.dasboard.Frag_Dashboard;
 import com.example.pos.databinding.ActivityMainBinding;
+import com.example.pos.databinding.CustomChangeLanguageBinding;
+import com.example.pos.exchange.Frag_currency_exchange;
+import com.example.pos.expense.Frag_expense;
 import com.example.pos.inventory.Frag_inventory;
 import com.example.pos.product.Frag_Product;
 import com.example.pos.report.Frag_report;
 import com.example.pos.sale.Frag_sale;
 import com.example.pos.supplier.Frag_supplier;
 import com.example.pos.unit.Frag_unit;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     ActionBarDrawerToggle drawerToggle;
+    BottomSheetDialog bottomSheetDialog;
+    CustomChangeLanguageBinding languageBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +59,10 @@ public class MainActivity extends AppCompatActivity {
         } else {
             SetUserNameAndRole();
         }
+        languageBinding = CustomChangeLanguageBinding.inflate(getLayoutInflater());
+        bottomSheetDialog = new BottomSheetDialog(this);
+        bottomSheetDialog.setContentView(languageBinding.getRoot());
+        bottomSheetDialog.create();
 
 
         drawerToggle = new ActionBarDrawerToggle(this, binding.navDrawerLayout, binding.actionBar.customActionbar, R.string.Navigation_drawer_open, R.string.Navigation_drawer_close);
@@ -62,12 +72,9 @@ public class MainActivity extends AppCompatActivity {
          */
         binding.navDrawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
-
-
         binding.navDrawerView.setNavigationItemSelectedListener(this::NavigationSelected);
         binding.navDrawerView.setCheckedItem(R.id.dashboad);
         setStateFragment(new Frag_Dashboard());
-
     }
 
     private void SetUserNameAndRole() {
@@ -122,6 +129,17 @@ public class MainActivity extends AppCompatActivity {
                 setTitle(R.string.unit);
                 setStateFragment(new Frag_unit());
                 break;
+            case R.id.currency:
+                setTitle(R.string.currency);
+                setStateFragment(new Frag_currency_exchange());
+                break;
+            case R.id.expense:
+                setTitle(R.string.expense);
+                setStateFragment(new Frag_expense());
+                break;
+            case R.id.language:
+                bottomSheetDialog.show();
+                break;
             case R.id.logout:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setCancelable(false);
@@ -145,6 +163,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void setStateFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, fragment).commit();
+    }
+
+    public void ChangeLanguage() {
+        bottomSheetDialog.show();
     }
 
     public void SaleNavigator() {

@@ -8,12 +8,12 @@
     tools:context=".product.Frag_Product">
 
     <TextView
+        android:id="@+id/txt_no_product_found"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:text="@string/no_product"
-        android:id="@+id/txt_no_product_found"
-        android:textSize="32sp"
-        android:gravity="center"/>
+        android:textSize="32sp" />
 
     <LinearLayout
         android:id="@+id/layout_add_product"
@@ -45,8 +45,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:drawableEnd="@drawable/ic_product"
-                        android:inputType="text"
-                        android:hint="@string/product_name" />
+                        android:hint="@string/product_name"
+                        android:inputType="text" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -60,7 +60,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:drawableEnd="@drawable/ic_qr_code_scanner"
-                        android:hint="@string/product_code" />
+                        android:hint="@string/product_code"
+                        android:inputType="number" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -73,9 +74,9 @@
                         android:id="@+id/addProductQty"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:hint="@string/product_qty"
                         android:inputType="number"
-                        android:textSize="16sp"
-                        android:hint="@string/product_qty" />
+                        android:textSize="16sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -89,8 +90,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:drawableEnd="@drawable/ic_percent"
-                        android:inputType="number"
-                        android:hint="@string/product_tax" />
+                        android:hint="@string/product_tax"
+                        android:inputType="number" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -103,9 +104,9 @@
                         android:id="@+id/addProductCost"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:inputType="number"
                         android:drawableEnd="@drawable/ic_dollar"
-                        android:hint="@string/product_cost" />
+                        android:hint="@string/product_cost"
+                        android:inputType="number" />
                 </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -119,9 +120,9 @@
                         android:id="@+id/addProductPrice"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:inputType="number"
                         android:drawableEnd="@drawable/ic_dollar"
-                        android:hint="@string/product_price" />
+                        android:hint="@string/product_price"
+                        android:inputType="number" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
@@ -138,8 +139,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="100dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_image"
-                    android:contentDescription="@null"/>
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_image" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -180,7 +181,7 @@
                         android:id="@+id/spinnerProductCategory"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:importantForAccessibility="no"/>
+                        android:importantForAccessibility="no" />
                 </com.google.android.material.card.MaterialCardView>
 
                 <TextView
@@ -222,7 +223,7 @@
                         android:id="@+id/spinnerProductSupplier"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:importantForAccessibility="no"/>
+                        android:importantForAccessibility="no" />
                 </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
@@ -232,15 +233,26 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center">
+            android:gravity="center"
+            android:padding="10dp">
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCancelAddProduct"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/Deep_Saffron"
+                android:text="@string/cancel"
+                android:textAllCaps="false" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnDeleteProduct"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
                 android:layout_weight="1"
                 android:backgroundTint="@color/Coral_Red"
                 android:text="@string/delete"
@@ -251,8 +263,8 @@
                 android:id="@+id/btnUpdateProduct"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
                 android:layout_weight="1"
                 android:backgroundTint="@color/Lime_Green"
                 android:text="@string/update"
@@ -260,25 +272,13 @@
                 android:visibility="gone" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnCancelAddProduct"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/Banana_Yellow"
-                android:text="@string/cancel"
-                android:textAllCaps="false" />
-
-            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSaveProduct"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
-                android:maxWidth="300dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginStart="5dp"
                 android:layout_weight="1"
                 android:backgroundTint="@color/Egyptian_Blue"
+                android:maxWidth="300dp"
                 android:text="@string/save"
                 android:textAllCaps="false" />
         </LinearLayout>
@@ -299,16 +299,16 @@
             android:layout_height="32dp"
             android:layout_gravity="end"
             android:layout_marginEnd="10dp"
-            android:visibility="gone"
             android:contentDescription="@null"
-            android:src="@drawable/ic_sort" />
+            android:src="@drawable/ic_sort"
+            android:visibility="gone" />
 
         <ListView
             android:id="@+id/list_show_product"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
-            android:scrollbars="none" />
+            android:scrollbars="none"
+            android:visibility="gone" />
     </LinearLayout>
 
 

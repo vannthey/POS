@@ -24,8 +24,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
-import com.example.pos.DateHelper;
 import com.example.pos.Database.Entity.Product;
+import com.example.pos.DateHelper;
 import com.example.pos.R;
 import com.example.pos.SharedPrefHelper;
 import com.example.pos.category.AdapterCategory;
@@ -86,6 +86,7 @@ public class Frag_Product extends Fragment {
         binding.addProductCode.setOnClickListener(this::getRandomProductCode);
         binding.addProductImage.setOnClickListener(v -> OnGetImage());
         GetAllProduct();
+        GetSpinnerData();
         OnCreateMenu();
         return binding.getRoot();
     }
@@ -122,30 +123,53 @@ public class Frag_Product extends Fragment {
     }
 
     private void SaveProduct(View view) {
-        GetDataFromView();
-        if (productName != null) {
+        if (String.valueOf(binding.addProductCode.getText()).isEmpty()
+                || String.valueOf(binding.addProductQty.getText()).isEmpty()
+                || String.valueOf(binding.addProductName.getText()).isEmpty()
+                || String.valueOf(binding.addProductCost.getText()).isEmpty()
+                || String.valueOf(binding.addProductTax.getText()).isEmpty()
+                || String.valueOf(binding.addProductPrice.getText()).isEmpty()) {
+            Toast.makeText(requireContext(), R.string.Please_Input_Product, Toast.LENGTH_SHORT).show();
+        } else {
+            productCode = Integer.parseInt(String.valueOf(binding.addProductCode.getText()));
+            productQty = Integer.parseInt(String.valueOf(binding.addProductQty.getText()));
+            productName = String.valueOf(binding.addProductName.getText());
+            productPrice = Double.parseDouble(String.valueOf(binding.addProductPrice.getText()));
+            productCost = Double.parseDouble(String.valueOf(binding.addProductCost.getText()));
+            productTax = Double.parseDouble(String.valueOf(binding.addProductTax.getText()));
             new Thread(() -> {
                 productViewModel.createProduct(new Product(productName, productQty, unitSpinnerId, productCode, productCost, productPrice, productTax, inventorySpinnerId, categorySpinnerId, supplierSpinnerId, file.toString(), SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()), DateHelper.getCurrentDate()));
                 handler.post(this::OnUpdateUI);
             }).start();
-        } else {
-            Toast.makeText(requireContext(), R.string.Please_Input_Product, Toast.LENGTH_SHORT).show();
         }
-
     }
 
 
     private void UpdateProduct(View view) {
-        GetDataFromView();
-        new Thread(() -> {
-            productViewModel.updateProductById(productName, productQty, unitSpinnerId, productCode, productCost, productPrice,
-                    productTax, inventorySpinnerId, categorySpinnerId, supplierSpinnerId, file.toString(),
-                    SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()),
-                    DateHelper.getCurrentDate(), productId);
-            handler.post(this::OnUpdateUI);
-        }).start();
-    }
+        if (String.valueOf(binding.addProductCode.getText()).isEmpty()
+                || String.valueOf(binding.addProductQty.getText()).isEmpty()
+                || String.valueOf(binding.addProductName.getText()).isEmpty()
+                || String.valueOf(binding.addProductCost.getText()).isEmpty()
+                || String.valueOf(binding.addProductTax.getText()).isEmpty()
+                || String.valueOf(binding.addProductPrice.getText()).isEmpty()) {
+            Toast.makeText(requireContext(), R.string.Please_Input_Product, Toast.LENGTH_SHORT).show();
+        } else {
+            productCode = Integer.parseInt(String.valueOf(binding.addProductCode.getText()));
+            productQty = Integer.parseInt(String.valueOf(binding.addProductQty.getText()));
+            productName = String.valueOf(binding.addProductName.getText());
+            productPrice = Double.parseDouble(String.valueOf(binding.addProductPrice.getText()));
+            productCost = Double.parseDouble(String.valueOf(binding.addProductCost.getText()));
+            productTax = Double.parseDouble(String.valueOf(binding.addProductTax.getText()));
+            new Thread(() -> {
+                productViewModel.updateProductById(productName, productQty, unitSpinnerId, productCode, productCost, productPrice,
+                        productTax, inventorySpinnerId, categorySpinnerId, supplierSpinnerId, file.toString(),
+                        SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()),
+                        DateHelper.getCurrentDate(), productId);
+                handler.post(this::OnUpdateUI);
+            }).start();
+        }
 
+    }
 
     private void getRandomProductCode(View view) {
         rnd = new Random();
@@ -154,16 +178,6 @@ public class Frag_Product extends Fragment {
 
     private void CancelProduct(View view) {
         OnUpdateUI();
-    }
-
-
-    private void GetDataFromView() {
-        productCode = Integer.parseInt(String.valueOf(binding.addProductCode.getText()));
-        productQty = Integer.parseInt(String.valueOf(binding.addProductQty.getText()));
-        productName = String.valueOf(binding.addProductName.getText());
-        productPrice = Double.parseDouble(String.valueOf(binding.addProductPrice.getText()));
-        productCost = Double.parseDouble(String.valueOf(binding.addProductCost.getText()));
-        productTax = Double.parseDouble(String.valueOf(binding.addProductTax.getText()));
     }
 
     private void GetAllProduct() {
@@ -178,7 +192,6 @@ public class Frag_Product extends Fragment {
                     unitSpinnerId = products.get(i).getProductUnitId();
                     inventorySpinnerId = products.get(i).getInventoryId();
                     supplierSpinnerId = products.get(i).getSupplierId();
-                    GetSpinnerData();
                     binding.addProductName.setText(products.get(i).getProductName());
                     binding.addProductCode.setText(String.valueOf(products.get(i).getProductCode()));
                     binding.addProductQty.setText(String.valueOf(products.get(i).getProductQty()));

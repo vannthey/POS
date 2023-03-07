@@ -20,7 +20,10 @@ public class Customer {
     public String customerPhoneNumber;
 
     @ColumnInfo
-    public String customerNote;
+    public String customerAddress;
+
+    @ColumnInfo
+    public Double customerDiscount;
 
     @ColumnInfo
     public String creator;
@@ -28,11 +31,12 @@ public class Customer {
     @ColumnInfo
     public String createDate;
 
-    public Customer(String customerName, String customerSex, String customerPhoneNumber, String customerNote, String creator, String createDate) {
+    public Customer(String customerName, String customerSex, String customerPhoneNumber, String customerAddress, Double customerDiscount, String creator, String createDate) {
         this.customerName = customerName;
         this.customerSex = customerSex;
         this.customerPhoneNumber = customerPhoneNumber;
-        this.customerNote = customerNote;
+        this.customerAddress = customerAddress;
+        this.customerDiscount = customerDiscount;
         this.creator = creator;
         this.createDate = createDate;
     }
@@ -53,8 +57,12 @@ public class Customer {
         return customerPhoneNumber;
     }
 
-    public String getCustomerNote() {
-        return customerNote;
+    public String getCustomerAddress() {
+        return customerAddress;
+    }
+
+    public Double getCustomerDiscount() {
+        return customerDiscount;
     }
 
     public String getCreator() {
@@ -72,7 +80,8 @@ public class Customer {
                 ", customerName='" + customerName + '\'' +
                 ", customerSex='" + customerSex + '\'' +
                 ", customerPhoneNumber='" + customerPhoneNumber + '\'' +
-                ", customerNote='" + customerNote + '\'' +
+                ", customerAddress='" + customerAddress + '\'' +
+                ", customerDiscount=" + customerDiscount +
                 ", creator='" + creator + '\'' +
                 ", createDate='" + createDate + '\'' +
                 '}';

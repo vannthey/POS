@@ -16,8 +16,8 @@ import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.pos.DateHelper;
 import com.example.pos.Database.Entity.Category;
+import com.example.pos.DateHelper;
 import com.example.pos.R;
 import com.example.pos.SharedPrefHelper;
 import com.example.pos.databinding.FragmentFragCategoryBinding;
@@ -52,7 +52,7 @@ public class Frag_category extends Fragment {
     }
 
     private void SaveCategory(View view) {
-        if (binding.categoryName.getText() != null) {
+        if (!String.valueOf(binding.categoryName.getText()).isEmpty()) {
             new Thread(() -> {
                 categoryViewModel.createCategory(new Category(String.valueOf(binding.categoryName.getText()),
                         SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()),

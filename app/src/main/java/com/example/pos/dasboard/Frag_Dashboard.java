@@ -19,9 +19,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
+import com.example.pos.Database.Entity.Category;
 import com.example.pos.Database.Entity.SaleTransaction;
 import com.example.pos.MainActivity;
 import com.example.pos.R;
+import com.example.pos.category.CategoryViewModel;
 import com.example.pos.databinding.BottomSheetDialogAddToCartBinding;
 import com.example.pos.databinding.FragmentFragDashboardBinding;
 import com.example.pos.product.ProductViewModel;
@@ -33,16 +35,18 @@ import java.util.List;
 
 public class Frag_Dashboard extends Fragment {
     ProductViewModel productViewModel;
+    CategoryViewModel categoryViewModel;
     SaleTransactionViewModel saleTransactionViewModel;
     AdapterDashboard adapterDashboard;
     List<SaleTransaction> saleTransactionList;
+    List<Category> categoryList;
     Handler handler;
     int cartCount = 0;
     int itemCount = 0;
     FragmentFragDashboardBinding binding;
-
     BottomSheetDialog bottomSheetDialog;
     BottomSheetDialogAddToCartBinding addToCartBinding;
+    String CategoryName;
     String getQtyBottomSheet;
     String productImagePath;
     String productName;
@@ -56,6 +60,7 @@ public class Frag_Dashboard extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         handler = new Handler();
         productViewModel = new ViewModelProvider(this).get(ProductViewModel.class);
+        categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
         bottomSheetDialog = new BottomSheetDialog(requireContext());
         super.onCreate(savedInstanceState);
     }
@@ -66,10 +71,19 @@ public class Frag_Dashboard extends Fragment {
         binding = FragmentFragDashboardBinding.inflate(inflater, container, false);
         saleTransactionViewModel = new ViewModelProvider(this).get(SaleTransactionViewModel.class);
         GetProductInTransaction();
+        GetCategory();
         GetAllProduct();
-        OnTabLayout();
         OnCreateMenu();
         return binding.getRoot();
+    }
+
+    private void GetCategory() {
+        categoryViewModel.getAllCategory().observe(getViewLifecycleOwner(), categories -> {
+            if (categories.size() != 0) {
+                categoryList = categories;
+                OnTabLayout();
+            }
+        });
     }
 
     /*
@@ -92,6 +106,7 @@ public class Frag_Dashboard extends Fragment {
     public void onDestroyView() {
         productViewModel.getAllProduct().removeObservers(getViewLifecycleOwner());
         saleTransactionViewModel.getAllSaleTransaction().removeObservers(getViewLifecycleOwner());
+        categoryViewModel.getAllCategory().removeObservers(getViewLifecycleOwner());
         super.onDestroyView();
     }
 
@@ -214,10 +229,15 @@ tab layout on dashboard
  */
     private void OnTabLayout() {
         binding.tabLayoutOnDashboard.addTab(binding.tabLayoutOnDashboard.newTab().setText("All"));
+        if (categoryList.size() != 0) {
+            for (Category category : categoryList) {
+                CategoryName = category.getCategoryName();
+                binding.tabLayoutOnDashboard.addTab(binding.tabLayoutOnDashboard.newTab().setText(CategoryName));
+            }
+        }
         binding.tabLayoutOnDashboard.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
             }
 
             @Override
@@ -260,7 +280,7 @@ create Option menu in fragment using addMenuProvider and ViewLifecycleOwner to r
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 if (menuItem.getItemId() == R.id.app_language) {
-                    Toast.makeText(requireActivity(), "Changing Language", Toast.LENGTH_SHORT).show();
+                    ((MainActivity) requireActivity()).ChangeLanguage();
                 }
                 return true;
             }

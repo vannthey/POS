@@ -16,8 +16,8 @@ import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.pos.DateHelper;
 import com.example.pos.Database.Entity.Inventory;
+import com.example.pos.DateHelper;
 import com.example.pos.R;
 import com.example.pos.SharedPrefHelper;
 import com.example.pos.databinding.FragmentFragInventoryBinding;
@@ -73,25 +73,34 @@ public class Frag_inventory extends Fragment {
     }
 
     private void UpdateInventory(View view) {
-        GetDataFromView();
-        new Thread(() -> {
-            inventoryViewModel.updateInventoryById(inventoryAddress, inventoryName, inventoryId);
-            handler.post(this::OnUpdateUI);
-        }).start();
+        if (String.valueOf(binding.inventoryName.getText()).isEmpty()
+                || String.valueOf(binding.inventoryLocation.getText()).isEmpty()) {
+            Toast.makeText(requireContext(), R.string.Please_Input_Inventory, Toast.LENGTH_SHORT).show();
+        } else {
+            inventoryName = String.valueOf(binding.inventoryName.getText());
+            inventoryAddress = String.valueOf(binding.inventoryLocation.getText());
+            new Thread(() -> {
+                inventoryViewModel.updateInventoryById(inventoryAddress, inventoryName, inventoryId);
+                handler.post(this::OnUpdateUI);
+            }).start();
+        }
+
     }
 
     private void DeleteInventory(View view) {
-        new Thread(()->{
+        new Thread(() -> {
             inventoryViewModel.deleteInventoryById(inventoryId);
             handler.post(this::OnUpdateUI);
         }).start();
     }
 
     private void SaveInventory(View view) {
-        GetDataFromView();
-        if (inventoryName.isEmpty()) {
-            Toast.makeText(requireContext(), "Please Input Inventory Name", Toast.LENGTH_SHORT).show();
+        if (String.valueOf(binding.inventoryName.getText()).isEmpty()
+                || String.valueOf(binding.inventoryLocation.getText()).isEmpty()) {
+            Toast.makeText(requireContext(), R.string.Please_Input_Inventory, Toast.LENGTH_SHORT).show();
         } else {
+            inventoryName = String.valueOf(binding.inventoryName.getText());
+            inventoryAddress = String.valueOf(binding.inventoryLocation.getText());
             new Thread(() -> {
                 inventoryViewModel.createInventory(new Inventory(inventoryName, inventoryAddress,
                         SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()),
@@ -101,10 +110,6 @@ public class Frag_inventory extends Fragment {
         }
     }
 
-    private void GetDataFromView() {
-        inventoryName = String.valueOf(binding.inventoryName.getText());
-        inventoryAddress = String.valueOf(binding.inventoryLocation.getText());
-    }
 
     private void OnUpdateUI() {
         binding.btnDeleteInventory.setVisibility(View.GONE);

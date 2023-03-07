@@ -6,6 +6,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 
 import com.example.pos.Database.Entity.Category;
+import com.example.pos.Database.Entity.Customer;
 import com.example.pos.Database.Entity.Inventory;
 import com.example.pos.Database.Entity.Product;
 import com.example.pos.Database.Entity.SaleTransaction;
@@ -151,4 +152,25 @@ public interface POSDao {
 
     @Query("SELECT * FROM Inventory")
     LiveData<List<Inventory>> getAllInventory();
+
+    /*
+    Operation On Customer
+     */
+    @Insert
+    void createCustomer(Customer customer);
+
+    @Query("delete from Customer Where customerId like :customerId")
+    void deleteCustomerById(int customerId);
+
+    @Query("update Customer set customerName=:customerName, customerSex=:customerSex," +
+            "customerPhoneNumber=:customerPhoneNumber,customerAddress=:customerAddress," +
+            "customerDiscount=:customerDiscount where " +
+            "customerId like " +
+            ":customerId")
+    void updateCustomerById(String customerName, String customerSex, String customerPhoneNumber, double customerDiscount,
+                            String customerAddress,
+                            int customerId);
+
+    @Query("select * from Customer")
+    LiveData<List<Customer>> getAllCustomer();
 }

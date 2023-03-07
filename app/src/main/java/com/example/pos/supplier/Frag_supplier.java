@@ -15,8 +15,8 @@ import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.pos.DateHelper;
 import com.example.pos.Database.Entity.Supplier;
+import com.example.pos.DateHelper;
 import com.example.pos.R;
 import com.example.pos.SharedPrefHelper;
 import com.example.pos.databinding.FragmentFragSupplierBinding;
@@ -28,9 +28,6 @@ public class Frag_supplier extends Fragment {
     String SupplierName;
     String SupplierPhone;
     String SupplierAddress;
-    boolean isMale = true;
-    boolean isFemale = true;
-
     String SupplierSex;
     Supplier supplier;
     int supplierId;
@@ -48,6 +45,7 @@ public class Frag_supplier extends Fragment {
         binding.btnDeleteSupplier.setOnClickListener(this::DeleteSupplier);
         OnCreateMenu();
         GetAllSupplier();
+        CheckSupplierSex();
         return binding.getRoot();
     }
 
@@ -80,39 +78,29 @@ public class Frag_supplier extends Fragment {
     }
 
     private void CheckSupplierSex() {
-        binding.supplierMale.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (isMale == binding.supplierMale.isChecked()) {
+        binding.groupSupplierSex.setOnCheckedChangeListener((radioGroup, i) -> {
+            if (binding.supplierMale.isChecked()) {
                 SupplierSex = "Male";
-                binding.supplierFemale.setEnabled(false);
             } else {
-                SupplierSex = null;
-                binding.supplierFemale.setEnabled(true);
-            }
-        });
-        binding.supplierFemale.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (isFemale == binding.supplierFemale.isChecked()) {
                 SupplierSex = "Female";
-                binding.supplierMale.setEnabled(false);
-            } else {
-                SupplierSex = null;
-                binding.supplierMale.setEnabled(true);
             }
         });
     }
 
     private void SaveSupplier(View view) {
-        CheckSupplierSex();
-        SupplierName = String.valueOf(binding.txtSupplierName.getText());
-        SupplierPhone = String.valueOf(binding.txtSupplierPhone.getText());
-        SupplierAddress = String.valueOf(binding.txtSupplierAddress.getText());
-        supplier = new Supplier(SupplierName, SupplierSex, SupplierPhone, SupplierAddress, SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()), DateHelper.getCurrentDate());
-        if (SupplierName != null) {
+        if (String.valueOf(binding.txtSupplierName.getText()).isEmpty()
+                || String.valueOf(binding.txtSupplierPhone.getText()).isEmpty()
+                || String.valueOf(binding.txtSupplierAddress.getText()).isEmpty()) {
+            Toast.makeText(requireContext(), R.string.Please_Input_Supplier, Toast.LENGTH_SHORT).show();
+        } else {
+            SupplierName = String.valueOf(binding.txtSupplierName.getText());
+            SupplierPhone = String.valueOf(binding.txtSupplierPhone.getText());
+            SupplierAddress = String.valueOf(binding.txtSupplierAddress.getText());
+            supplier = new Supplier(SupplierName, SupplierSex, SupplierPhone, SupplierAddress, SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()), DateHelper.getCurrentDate());
             new Thread(() -> {
                 viewModel.createSupplier(supplier);
                 handler.post(this::OnUpdateUI);
             }).start();
-        } else {
-            Toast.makeText(requireContext(), R.string.Please_Input_Supplier, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -129,13 +117,14 @@ public class Frag_supplier extends Fragment {
                 binding.txtSupplierAddress.setText(suppliers.get(i).getSupplierAddress());
                 supplierId = suppliers.get(i).getSupplierId();
                 DeleteAndUpdate();
-                String sex = suppliers.get(i).getSupplierSex();
-                if (sex.contains("Male")) {
-                    binding.supplierMale.setChecked(true);
-                    binding.supplierFemale.setChecked(false);
-                } else if (sex.contains("Female")) {
+                SupplierSex = suppliers.get(i).getSupplierSex();
+                if (SupplierSex == null) {
                     binding.supplierMale.setChecked(false);
+                    binding.supplierFemale.setChecked(false);
+                } else if (SupplierSex.equals("Female")) {
                     binding.supplierFemale.setChecked(true);
+                } else if (SupplierSex.equals("Male")) {
+                    binding.supplierMale.setChecked(true);
                 }
                 LayoutSaveSupplier();
             });
@@ -148,8 +137,6 @@ public class Frag_supplier extends Fragment {
         binding.btnDeleteSupplier.setVisibility(View.GONE);
         binding.btnUpdateSupplier.setVisibility(View.GONE);
         binding.btnSaveSupplier.setVisibility(View.VISIBLE);
-        binding.supplierMale.setChecked(false);
-        binding.supplierFemale.setChecked(false);
         binding.txtSupplierName.setText(null);
         binding.txtSupplierPhone.setText(null);
         binding.txtSupplierAddress.setText(null);
@@ -171,6 +158,7 @@ public class Frag_supplier extends Fragment {
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 if (menuItem.getItemId() == R.id.add_supplier) {
+                    binding.txtNoSupplierFound.setVisibility(View.GONE);
                     LayoutSaveSupplier();
                 }
                 return true;

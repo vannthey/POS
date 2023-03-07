@@ -7,12 +7,12 @@
     tools:context=".supplier.Frag_supplier">
 
     <TextView
+        android:id="@+id/txt_no_supplier_found"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:text="@string/no_supplier"
-        android:id="@+id/txt_no_supplier_found"
-        android:textSize="32sp"
-        android:gravity="center"/>
+        android:textSize="32sp" />
 
     <ListView
         android:id="@+id/list_show_supplier"
@@ -51,26 +51,29 @@
             android:layout_marginTop="10dp"
             android:text="@string/supplier_sex" />
 
-        <LinearLayout
+        <RadioGroup
+            android:id="@+id/group_supplier_sex"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <com.google.android.material.checkbox.MaterialCheckBox
+            <RadioButton
+                android:id="@+id/supplierMale"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:buttonTint="@color/Egyptian_Blue"
-                android:id="@+id/supplierMale"
                 android:text="@string/male" />
 
-            <com.google.android.material.checkbox.MaterialCheckBox
+            <RadioButton
+                android:id="@+id/supplierFemale"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:buttonTint="@color/Egyptian_Blue"
-                android:id="@+id/supplierFemale"
                 android:text="@string/female" />
-        </LinearLayout>
+        </RadioGroup>
+
 
         <TextView
             android:layout_width="match_parent"
@@ -113,46 +116,49 @@
             android:gravity="center">
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCancelSupplier"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/Deep_Saffron"
+                android:text="@string/cancel"
+                android:textAllCaps="false" />
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnDeleteSupplier"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
                 android:backgroundTint="@color/Coral_Red"
                 android:text="@string/delete"
                 android:textAllCaps="false"
                 android:visibility="gone" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnCancelSupplier"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:backgroundTint="@color/Banana_Yellow"
-                android:text="@string/cancel"
-                android:textAllCaps="false" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnSaveSupplier"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:backgroundTint="@color/Egyptian_Blue"
-                android:text="@string/save"
-                android:textAllCaps="false" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnUpdateSupplier"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
                 android:backgroundTint="@color/Lime_Green"
                 android:text="@string/update"
                 android:textAllCaps="false"
                 android:visibility="gone" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSaveSupplier"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/Egyptian_Blue"
+                android:text="@string/save"
+                android:textAllCaps="false" />
         </LinearLayout>
 
     </LinearLayout>

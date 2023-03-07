@@ -7,12 +7,12 @@
     tools:context=".inventory.Frag_inventory">
 
     <TextView
+        android:id="@+id/txt_no_inventory_found"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:text="@string/no_inventory"
-        android:id="@+id/txt_no_inventory_found"
-        android:textSize="32sp"
-        android:gravity="center"/>
+        android:textSize="32sp" />
 
     <ListView
         android:id="@+id/list_inventory"
@@ -62,43 +62,47 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:padding="10dp"
             android:gravity="center">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnUpdateInventory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:backgroundTint="@color/Lime_Green"
-                android:text="@string/update"
-                android:visibility="gone" />
+                android:id="@+id/btnCancelInventory"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/Deep_Saffron"
+                android:text="@string/cancel" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnDeleteInventory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
                 android:backgroundTint="@color/Coral_Red"
                 android:text="@string/delete"
                 android:visibility="gone" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnCancelInventory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:text="@string/cancel" />
+                android:id="@+id/btnUpdateInventory"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/Lime_Green"
+                android:text="@string/update"
+                android:visibility="gone" />
+
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSaveInventory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
                 android:backgroundTint="@color/Egyptian_Blue"
                 android:text="@string/save" />
         </LinearLayout>
