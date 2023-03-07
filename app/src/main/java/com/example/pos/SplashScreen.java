@@ -18,8 +18,14 @@ public class SplashScreen extends AppCompatActivity {
         binding = ActivitySpashScreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         new Handler().post(() -> {
-            startActivity(new Intent(this, Login.class));
-            this.finish();
+            if (SharedPrefHelper.getInstance().getSaveUserLoginName(this).isEmpty() && SharedPrefHelper.getInstance().getDefaultUser(this).isEmpty()) {
+                startActivity(new Intent(this, Login.class));
+                this.finish();
+            } else {
+                startActivity(new Intent(this, MainActivity.class));
+                this.finish();
+            }
+
         });
     }
 }

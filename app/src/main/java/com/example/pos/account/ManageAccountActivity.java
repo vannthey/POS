@@ -20,7 +20,7 @@ import androidx.transition.Transition;
 import androidx.transition.TransitionManager;
 
 import com.bumptech.glide.Glide;
-import com.example.pos.CurrentDateHelper;
+import com.example.pos.DateHelper;
 import com.example.pos.Database.Entity.UserAccount;
 import com.example.pos.Database.POSDatabase;
 import com.example.pos.R;
@@ -201,7 +201,7 @@ public class ManageAccountActivity extends AppCompatActivity {
         Password = String.valueOf(binding.txtPassword.getText());
         Address = String.valueOf(binding.txtAddress.getText());
         if (DateOfBirth == null) {
-            DateOfBirth = CurrentDateHelper.getCurrentDate();
+            DateOfBirth = DateHelper.getCurrentDate();
         }
 
     }
@@ -248,7 +248,7 @@ public class ManageAccountActivity extends AppCompatActivity {
     }
 
     private void OnSetUserDateOfBird() {
-        binding.txtDateOfBirth.setText(CurrentDateHelper.getCurrentDate());
+        binding.txtDateOfBirth.setText(DateHelper.getCurrentDate());
         binding.txtDateOfBirth.setOnClickListener(v -> {
             DatePickerDialog dialog = new DatePickerDialog(this);
             dialog.setOnDateSetListener((datePicker, i, i1, i2) -> {
@@ -340,7 +340,7 @@ public class ManageAccountActivity extends AppCompatActivity {
         OnGetAllDataFromForm();
         userAccount = new UserAccount(Firstname, Lastname, UserSex, DateOfBirth, Address, Username,
                 Password, UserRole, profilePath, canDiscount, canUpdateItem, canAddItem, canAddCategory,
-                canDeleteItem, CurrentDateHelper.getCurrentDate());
+                canDeleteItem, DateHelper.getCurrentDate());
         thread = new Thread(() -> {
             POSDatabase.getInstance(getApplicationContext()).getDao().createUser(userAccount);
             handler.post(() -> {

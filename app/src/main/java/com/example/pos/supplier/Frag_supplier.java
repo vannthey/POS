@@ -15,10 +15,10 @@ import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.pos.CurrentDateHelper;
+import com.example.pos.DateHelper;
 import com.example.pos.Database.Entity.Supplier;
 import com.example.pos.R;
-import com.example.pos.SharedPreferenceHelper;
+import com.example.pos.SharedPrefHelper;
 import com.example.pos.databinding.FragmentFragSupplierBinding;
 
 public class Frag_supplier extends Fragment {
@@ -105,7 +105,7 @@ public class Frag_supplier extends Fragment {
         SupplierName = String.valueOf(binding.txtSupplierName.getText());
         SupplierPhone = String.valueOf(binding.txtSupplierPhone.getText());
         SupplierAddress = String.valueOf(binding.txtSupplierAddress.getText());
-        supplier = new Supplier(SupplierName, SupplierSex, SupplierPhone, SupplierAddress, SharedPreferenceHelper.getInstance().getSaveUserLoginName(requireContext()), CurrentDateHelper.getCurrentDate());
+        supplier = new Supplier(SupplierName, SupplierSex, SupplierPhone, SupplierAddress, SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()), DateHelper.getCurrentDate());
         if (SupplierName != null) {
             new Thread(() -> {
                 viewModel.createSupplier(supplier);

@@ -1,60 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" tools:showIn="navigation_view">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
 
-<group android:checkableBehavior="single">
     <item
-        android:id="@+id/dashboad"
-        android:icon="@drawable/ic_dashboard"
-        android:title="@string/dashboard"/>
+        android:id="@+id/NavSale"
+        android:title="@string/Sale">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/dashboad"
+                    android:icon="@drawable/ic_dashboard"
+                    android:title="@string/dashboard" />
+                <item
+                    android:id="@+id/sale"
+                    android:icon="@drawable/ic_sale"
+                    android:title="@string/sale" />
+
+
+            </group>
+        </menu>
+    </item>
     <item
-        android:id="@+id/sale"
-        android:icon="@drawable/ic_sale"
-        android:title="@string/sale"/>
+        android:id="@+id/NavProduct"
+        android:title="@string/product">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/product"
+                    android:icon="@drawable/ic_product"
+                    android:title="@string/product" />
+                <item
+                    android:id="@+id/unit"
+                    android:icon="@drawable/ic_unit"
+                    android:title="@string/unit" />
+                <item
+                    android:id="@+id/category"
+                    android:icon="@drawable/ic_category"
+                    android:title="@string/category" />
+                <item
+                    android:id="@+id/inventory"
+                    android:icon="@drawable/ic_warehouse"
+                    android:title="@string/inventory" />
+                <item
+                    android:id="@+id/supplier"
+                    android:icon="@drawable/ic_supplier"
+                    android:title="@string/supplier" />
+                <item
+                    android:id="@+id/customer"
+                    android:icon="@drawable/ic_customer"
+                    android:title="@string/customer" />
+            </group>
+        </menu>
+
+    </item>
     <item
-        android:id="@+id/item"
-        android:icon="@drawable/ic_product"
-        android:title="@string/product"/>
+        android:id="@+id/NavReport"
+        android:title="@string/report">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/report"
+                    android:icon="@drawable/ic_summarize"
+                    android:title="@string/report" />
+                <item
+                    android:id="@+id/expense"
+                    android:icon="@drawable/ic_expense"
+                    android:title="@string/expense" />
+            </group>
+        </menu>
+    </item>
+
+
     <item
-        android:id="@+id/unit"
-        android:icon="@drawable/ic_unit"
-        android:title="@string/unit"/>
-    <item
-        android:id="@+id/category"
-        android:icon="@drawable/ic_category"
-        android:title="@string/category"/>
-    <item
-        android:id="@+id/inventory"
-        android:icon="@drawable/ic_warehouse"
-        android:title="@string/inventory"/>
-    <item
-        android:id="@+id/supplier"
-        android:icon="@drawable/ic_supplier"
-        android:title="@string/supplier"/>
-    <item
-        android:id="@+id/customer"
-        android:icon="@drawable/ic_customer"
-        android:title="@string/customer"/>
-    <item
-        android:id="@+id/payment"
-        android:icon="@drawable/ic_payments"
-        android:title="@string/payment"/>
-    <item
-        android:id="@+id/report"
-        android:icon="@drawable/ic_summarize"
-        android:title="@string/report"/>
+        android:id="@+id/NavPreference"
+        android:title="@string/preference">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/language"
+                    android:icon="@drawable/ic_language"
+                    android:title="@string/language" />
+                <item
+                    android:id="@+id/payment"
+                    android:icon="@drawable/ic_payments"
+                    android:title="@string/payment" />
+                <item
+                    android:id="@+id/currency"
+                    android:icon="@drawable/ic_currency_exchange"
+                    android:title="@string/currency" />
+
+                <item
+                    android:id="@+id/company_inform"
+                    android:icon="@drawable/ic_badge"
+                    android:title="@string/company_information" />
+            </group>
+        </menu>
+    </item>
     <item
         android:id="@+id/manage_account"
         android:icon="@drawable/ic_manage_accounts"
-        android:title="@string/setting_account"/>
-</group>
-    <item
-        android:id="@+id/setting"
-        android:icon="@drawable/ic_settings"
-        android:title="@string/setting"/>
+        android:title="@string/setting_account" />
     <item
         android:id="@+id/logout"
         android:icon="@drawable/ic_logout"
-        android:title="@string/sign_out"/>
+        android:title="@string/sign_out" />
 
 </menu>

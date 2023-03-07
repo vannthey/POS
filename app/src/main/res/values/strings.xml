@@ -27,11 +27,11 @@
     <string name="inventory">Inventory</string>
     <string name="setting">Setting</string>
     <string name="currency">Currency Exchange</string>
-    <string name="company_name">Company Name</string>
+    <string name="company_information">Company Information</string>
     <string name="system_language">Language</string>
     <string name="company_number">Phone Number</string>
     <string name="company_address">Address</string>
-    <string name="print_invoice">Print Invoice</string>
+    <string name="Invoice_Preference">Invoice Preference</string>
     <string name="change_logo">Change Logo</string>
     <string name="payment_method">Payment Method</string>
     <string name="add_category">Add Category</string>
@@ -119,5 +119,9 @@
     <string name="equal">=</string>
     <string name="riel_money">Riel</string>
     <string name="Description">Description</string>
+    <string name="Sale">Sale</string>
+    <string name="preference">Preference</string>
+    <string name="expense">Expense</string>
+    <string name="company_name">Company Name</string>
 
 </resources>

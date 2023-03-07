@@ -2,7 +2,6 @@ package com.example.pos;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,17 +24,12 @@ import com.example.pos.inventory.Frag_inventory;
 import com.example.pos.product.Frag_Product;
 import com.example.pos.report.Frag_report;
 import com.example.pos.sale.Frag_sale;
-import com.example.pos.setting.Preference;
 import com.example.pos.supplier.Frag_supplier;
-import com.example.pos.supplier.SupplierViewModel;
 import com.example.pos.unit.Frag_unit;
 
 public class MainActivity extends AppCompatActivity {
-    SupplierViewModel viewModel;
     ActivityMainBinding binding;
     ActionBarDrawerToggle drawerToggle;
-    SharedPreferences sharedPreferences, sharedDefault;
-    SharedPreferences.Editor editor, editorDefault;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,40 +38,24 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         setSupportActionBar(binding.actionBar.customActionbar);
         setTitle("Dashboard");
-        String defaultUser = "DefaultUser";
-        sharedDefault = getSharedPreferences(defaultUser, MODE_PRIVATE);
-        String saveUserLogin = "UserLogin";
-        sharedPreferences = getSharedPreferences(saveUserLogin, MODE_PRIVATE);
-        String defaultUsername = "Admin";
-        String DefaultUserLogin = sharedDefault.getString(defaultUsername, "");
-        if (DefaultUserLogin.contains("Admin")) {
-            binding.navDrawerView.getMenu().findItem(R.id.item).setVisible(false);
-            binding.navDrawerView.getMenu().findItem(R.id.category).setVisible(false);
-            binding.navDrawerView.getMenu().findItem(R.id.inventory).setVisible(false);
-            binding.navDrawerView.getMenu().findItem(R.id.dashboad).setVisible(false);
-            binding.navDrawerView.getMenu().findItem(R.id.sale).setVisible(false);
-            binding.navDrawerView.getMenu().findItem(R.id.setting).setVisible(false);
-            binding.navDrawerView.getMenu().findItem(R.id.report).setVisible(false);
-            binding.navDrawerView.getMenu().findItem(R.id.payment).setVisible(false);
-            binding.navDrawerView.getMenu().findItem(R.id.customer).setVisible(false);
-            binding.navDrawerView.getMenu().findItem(R.id.supplier).setVisible(false);
-            binding.navDrawerView.getMenu().findItem(R.id.unit).setVisible(false);
-            TextView userOnNavDrawer =
-                    binding.navDrawerView.getHeaderView(0).findViewById(R.id.userOnNavDrawer);
-            userOnNavDrawer.setText("Admin");
-            TextView userRoleOnNavDrawer =
-                    binding.navDrawerView.getHeaderView(0).findViewById(R.id.userRoleOnNavDrawer);
-            userRoleOnNavDrawer.setText("Default User");
+        if (SharedPrefHelper.getInstance().getDefaultUser(this).contains("Admin")) {
+            binding.navDrawerView.getMenu().findItem(R.id.NavSale).setVisible(false);
+            binding.navDrawerView.getMenu().findItem(R.id.NavPreference).setVisible(false);
+            binding.navDrawerView.getMenu().findItem(R.id.NavProduct).setVisible(false);
+            binding.navDrawerView.getMenu().findItem(R.id.NavReport).setVisible(false);
+            TextView userOnNavDrawer = binding.navDrawerView.getHeaderView(0).findViewById(R.id.userOnNavDrawer);
+            String defaultUsername = "Admin";
+            userOnNavDrawer.setText(defaultUsername);
+            TextView userRoleOnNavDrawer = binding.navDrawerView.getHeaderView(0).findViewById(R.id.userRoleOnNavDrawer);
+            String defaultUser = "DefaultUser";
+            userRoleOnNavDrawer.setText(defaultUser);
             binding.mainFrameLayout.setVisibility(View.GONE);
         } else {
-            onSetUserNameAndRoleOnNavDrawer();
+            SetUserNameAndRole();
         }
 
-        drawerToggle = new ActionBarDrawerToggle(this,
-                binding.navDrawerLayout,
-                binding.actionBar.customActionbar,
-                R.string.Navigation_drawer_open,
-                R.string.Navigation_drawer_close);
+
+        drawerToggle = new ActionBarDrawerToggle(this, binding.navDrawerLayout, binding.actionBar.customActionbar, R.string.Navigation_drawer_open, R.string.Navigation_drawer_close);
 
         /*
         Set state to navigation drawer to it visible on action bar
@@ -92,17 +70,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void onSetUserNameAndRoleOnNavDrawer() {
-        ImageView userProfileOnNavDrawer =
-                binding.navDrawerView.getHeaderView(0).findViewById(R.id.image_profile_user);
-        String path = SharedPreferenceHelper.getInstance().getSaveUserProfilePath(this);
+    private void SetUserNameAndRole() {
+        ImageView userProfileOnNavDrawer = binding.navDrawerView.getHeaderView(0).findViewById(R.id.image_profile_user);
+        String path = SharedPrefHelper.getInstance().getSaveUserProfilePath(this);
         Glide.with(this).load(path).into(userProfileOnNavDrawer);
-        TextView userOnNavDrawer =
-                binding.navDrawerView.getHeaderView(0).findViewById(R.id.userOnNavDrawer);
-        userOnNavDrawer.setText(SharedPreferenceHelper.getInstance().getSaveUserLoginName(this));
-        TextView userRoleOnNavDrawer =
-                binding.navDrawerView.getHeaderView(0).findViewById(R.id.userRoleOnNavDrawer);
-        userRoleOnNavDrawer.setText(SharedPreferenceHelper.getInstance().getSaveUserLoginRole(this));
+        TextView userOnNavDrawer = binding.navDrawerView.getHeaderView(0).findViewById(R.id.userOnNavDrawer);
+        userOnNavDrawer.setText(SharedPrefHelper.getInstance().getSaveUserLoginName(this));
+        TextView userRoleOnNavDrawer = binding.navDrawerView.getHeaderView(0).findViewById(R.id.userRoleOnNavDrawer);
+        userRoleOnNavDrawer.setText(SharedPrefHelper.getInstance().getSaveUserLoginRole(this));
     }
 
     /*
@@ -111,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("NonConstantResourceId")
     private boolean NavigationSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
-            case R.id.item:
+            case R.id.product:
                 setTitle(R.string.product);
                 setStateFragment(new Frag_Product());
                 break;
@@ -148,21 +123,14 @@ public class MainActivity extends AppCompatActivity {
                 setStateFragment(new Frag_unit());
                 break;
             case R.id.logout:
-                editor = sharedPreferences.edit();
-                editorDefault = sharedDefault.edit();
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setCancelable(false);
                 builder.setMessage("ARE YOU SURE WANT TO LOG OUT?");
-                builder.setNegativeButton("NO", (dialogInterface, i) ->
-                        dialogInterface.dismiss()
-                );
+                builder.setNegativeButton("NO", (dialogInterface, i) -> dialogInterface.dismiss());
                 builder.setPositiveButton("YES", (dialogInterface, i) -> {
-                    editorDefault.clear();
-                    editorDefault.commit();
-                    editor.clear();
-                    editor.commit();
-                    finish();
-                    System.exit(0);
+                    SharedPrefHelper.getInstance().ClearDefaultUser(this);
+                    SharedPrefHelper.getInstance().ClearUser(this);
+                    this.finish();
                 });
                 AlertDialog dialog = builder.create();
                 dialog.show();
@@ -170,19 +138,13 @@ public class MainActivity extends AppCompatActivity {
             case R.id.manage_account:
                 startActivity(new Intent(this, ManageAccountActivity.class));
                 break;
-            case R.id.setting:
-                startActivity(new Intent(this, Preference.class));
-                break;
         }
         binding.navDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
     private void setStateFragment(Fragment fragment) {
-        getSupportFragmentManager().
-                beginTransaction().
-                replace(R.id.main_frame_layout, fragment).
-                commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, fragment).commit();
     }
 
     public void SaleNavigator() {

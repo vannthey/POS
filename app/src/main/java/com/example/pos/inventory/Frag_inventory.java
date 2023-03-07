@@ -16,10 +16,10 @@ import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.pos.CurrentDateHelper;
+import com.example.pos.DateHelper;
 import com.example.pos.Database.Entity.Inventory;
 import com.example.pos.R;
-import com.example.pos.SharedPreferenceHelper;
+import com.example.pos.SharedPrefHelper;
 import com.example.pos.databinding.FragmentFragInventoryBinding;
 
 public class Frag_inventory extends Fragment {
@@ -94,8 +94,8 @@ public class Frag_inventory extends Fragment {
         } else {
             new Thread(() -> {
                 inventoryViewModel.createInventory(new Inventory(inventoryName, inventoryAddress,
-                        SharedPreferenceHelper.getInstance().getSaveUserLoginName(requireContext()),
-                        CurrentDateHelper.getCurrentDate()));
+                        SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()),
+                        DateHelper.getCurrentDate()));
                 handler.post(this::OnUpdateUI);
             }).start();
         }

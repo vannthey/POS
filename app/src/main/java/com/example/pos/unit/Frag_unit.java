@@ -15,10 +15,10 @@ import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.pos.CurrentDateHelper;
+import com.example.pos.DateHelper;
 import com.example.pos.Database.Entity.Unit;
 import com.example.pos.R;
-import com.example.pos.SharedPreferenceHelper;
+import com.example.pos.SharedPrefHelper;
 import com.example.pos.databinding.FragmentFragUnitBinding;
 
 public class Frag_unit extends Fragment {
@@ -64,7 +64,7 @@ public class Frag_unit extends Fragment {
     private void SaveUnit(View view) {
         if (binding.unitTitle.getText() != null) {
             new Thread(() -> {
-                viewModel.createUnit(new Unit(String.valueOf(binding.unitTitle.getText()), SharedPreferenceHelper.getInstance().getSaveUserLoginName(requireContext()), CurrentDateHelper.getCurrentDate()));
+                viewModel.createUnit(new Unit(String.valueOf(binding.unitTitle.getText()), SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()), DateHelper.getCurrentDate()));
                 handler.post(this::OnUpdateUI);
             }).start();
         } else {

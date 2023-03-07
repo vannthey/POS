@@ -16,10 +16,10 @@ import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.pos.CurrentDateHelper;
+import com.example.pos.DateHelper;
 import com.example.pos.Database.Entity.Category;
 import com.example.pos.R;
-import com.example.pos.SharedPreferenceHelper;
+import com.example.pos.SharedPrefHelper;
 import com.example.pos.databinding.FragmentFragCategoryBinding;
 
 public class Frag_category extends Fragment {
@@ -55,8 +55,8 @@ public class Frag_category extends Fragment {
         if (binding.categoryName.getText() != null) {
             new Thread(() -> {
                 categoryViewModel.createCategory(new Category(String.valueOf(binding.categoryName.getText()),
-                        SharedPreferenceHelper.getInstance().getSaveUserLoginName(requireContext()),
-                        CurrentDateHelper.getCurrentDate()));
+                        SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()),
+                        DateHelper.getCurrentDate()));
                 handler.post(this::OnUpdateUI);
             }).start();
         } else {

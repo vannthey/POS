@@ -3,17 +3,16 @@ package com.example.pos;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-public class SharedPreferenceHelper {
+public class SharedPrefHelper {
     private final String SavedUserLogin = "UserLogin";
-
     private final String DefaultUsername = "Admin";
     private final String DefaultUser = "DefaultUser";
     private final String DefaultPassword = "Admin";
-    private static SharedPreferenceHelper INSTANCE;
+    private static SharedPrefHelper INSTANCE;
 
-    public static synchronized SharedPreferenceHelper getInstance() {
+    public static synchronized SharedPrefHelper getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new SharedPreferenceHelper();
+            INSTANCE = new SharedPrefHelper();
         }
         return INSTANCE;
     }
@@ -26,6 +25,15 @@ public class SharedPreferenceHelper {
     public String getDefaultUserPassword(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(DefaultUser, Context.MODE_PRIVATE);
         return sharedPreferences.getString(DefaultPassword, "");
+    }
+
+    public void ClearDefaultUser(Context context) {
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(DefaultUser, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+
     }
 
     public void SaveDefaultUser(String txtUsername, String txtPassword, Context context) {
@@ -63,6 +71,15 @@ public class SharedPreferenceHelper {
                 Context.MODE_PRIVATE);
         String savedPassword = "Password";
         return sharedPreferences.getString(savedPassword, "");
+    }
+
+    public void ClearUser(Context context) {
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SavedUserLogin, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+
     }
 
     public void SaveUserLogin(String txtUsername, String txtPassword, String txtUserRole,

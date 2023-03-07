@@ -24,10 +24,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
-import com.example.pos.CurrentDateHelper;
+import com.example.pos.DateHelper;
 import com.example.pos.Database.Entity.Product;
 import com.example.pos.R;
-import com.example.pos.SharedPreferenceHelper;
+import com.example.pos.SharedPrefHelper;
 import com.example.pos.category.AdapterCategory;
 import com.example.pos.category.CategoryViewModel;
 import com.example.pos.databinding.FragmentFragProductBinding;
@@ -125,7 +125,7 @@ public class Frag_Product extends Fragment {
         GetDataFromView();
         if (productName != null) {
             new Thread(() -> {
-                productViewModel.createProduct(new Product(productName, productQty, unitSpinnerId, productCode, productCost, productPrice, productTax, inventorySpinnerId, categorySpinnerId, supplierSpinnerId, file.toString(), SharedPreferenceHelper.getInstance().getSaveUserLoginName(requireContext()), CurrentDateHelper.getCurrentDate()));
+                productViewModel.createProduct(new Product(productName, productQty, unitSpinnerId, productCode, productCost, productPrice, productTax, inventorySpinnerId, categorySpinnerId, supplierSpinnerId, file.toString(), SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()), DateHelper.getCurrentDate()));
                 handler.post(this::OnUpdateUI);
             }).start();
         } else {
@@ -140,8 +140,8 @@ public class Frag_Product extends Fragment {
         new Thread(() -> {
             productViewModel.updateProductById(productName, productQty, unitSpinnerId, productCode, productCost, productPrice,
                     productTax, inventorySpinnerId, categorySpinnerId, supplierSpinnerId, file.toString(),
-                    SharedPreferenceHelper.getInstance().getSaveUserLoginName(requireContext()),
-                    CurrentDateHelper.getCurrentDate(), productId);
+                    SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()),
+                    DateHelper.getCurrentDate(), productId);
             handler.post(this::OnUpdateUI);
         }).start();
     }

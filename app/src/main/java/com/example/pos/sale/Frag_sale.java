@@ -5,9 +5,9 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -38,18 +38,23 @@ public class Frag_sale extends Fragment implements DeleteProductCallBack {
     int saleProductQty;
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        handler = new Handler();
+        saleTransactionViewModel = new ViewModelProvider(this).get(SaleTransactionViewModel.class);
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentFragSaleBinding.inflate(inflater, container, false);
-        binding.btnSalePay.setOnClickListener(this::OnSalePay);
-        handler = new Handler();
-        saleTransactionViewModel = new ViewModelProvider(this).get(SaleTransactionViewModel.class);
-        onGetAllSaleProduct();
-        onCreateBottomDialog();
+        binding.btnSalePay.setOnClickListener(this::SalePay);
+        GetAllSale();
+        BottomDialog();
         return binding.getRoot();
     }
 
-    private void onCalculateTotal() {
+    private void CalculateTotal() {
         if (saleTransactionList != null) {
             for (SaleTransaction saleTransaction : saleTransactionList) {
                 saleProductDiscount = saleTransaction.getProductDiscount() / 100;
@@ -59,17 +64,17 @@ public class Frag_sale extends Fragment implements DeleteProductCallBack {
                 //Find Subtotal
                 if (saleProductDiscount == 0) {
                     saleSubtotal += (saleProductPrice * saleProductQty);
-                    onSetFinalPrice();
+                    SetFinalPrice();
                 } else {
                     saleSubtotal += (saleProductPrice * saleProductQty) - saleProductDiscount;
-                    onSetFinalPrice();
+                    SetFinalPrice();
                 }
             }
         }
     }
 
 
-    private void onResetData() {
+    private void ResetData() {
         saleSubtotal = 0;
         saleProductDiscount = 0;
         saleProductPrice = 0;
@@ -77,27 +82,27 @@ public class Frag_sale extends Fragment implements DeleteProductCallBack {
         saleDiscount = 0;
     }
 
-    private void onSetFinalPrice() {
+    private void SetFinalPrice() {
         binding.saleTotal.setText(String.valueOf(saleSubtotal));
         binding.saleDiscount.setText("");
         binding.saleSubtotal.setText(String.valueOf(saleSubtotal));
     }
 
-    private void OnSalePay(View view) {
+    private void SalePay(View view) {
         new Thread(() -> {
             saleTransactionViewModel.deleteAfterPay();
-            handler.post(this::onGetAllSaleProduct);
+            handler.post(this::GetAllSale);
         }).start();
-        onClearSaleTotal();
+        ClearSaleTotal();
     }
 
-    private void onClearSaleTotal() {
+    private void ClearSaleTotal() {
         binding.saleTotal.setText("");
         binding.saleDiscount.setText("");
         binding.saleSubtotal.setText("");
     }
 
-    private void onCreateBottomDialog() {
+    private void BottomDialog() {
         SaleBinding = CustomEditProductOnSaleBinding.inflate(getLayoutInflater());
         bottomSheetDialog = new BottomSheetDialog(requireContext());
         bottomSheetDialog.setContentView(SaleBinding.getRoot());
@@ -106,13 +111,11 @@ public class Frag_sale extends Fragment implements DeleteProductCallBack {
     }
 
 
-    private void onGetAllSaleProduct() {
+    private void GetAllSale() {
         saleTransactionViewModel.getAllSaleTransaction().observe(getViewLifecycleOwner(),
                 transactionList -> {
                     if (transactionList != null) {
                         saleTransactionList = transactionList;
-                       // Toast.makeText(requireContext(), ""+saleTransactionList.toString(), Toast.LENGTH_SHORT)
-                        // .show();
                         binding.listItemSale.setAdapter(new AdapterSale(this, requireContext(),
                                 transactionList));
                         binding.listItemSale.setOnItemClickListener((adapterView, view, i, l) -> {
@@ -133,9 +136,9 @@ public class Frag_sale extends Fragment implements DeleteProductCallBack {
                                             (productPrice, productQty, productDiscount, productId);
                                     handler.post(() -> {
                                         bottomSheetDialog.dismiss();
-                                        onClearSaleTotal();
-                                        onResetData();
-                                        onGetAllSaleProduct();
+                                        ClearSaleTotal();
+                                        ResetData();
+                                        GetAllSale();
                                     });
                                 }).start();
 
@@ -144,13 +147,11 @@ public class Frag_sale extends Fragment implements DeleteProductCallBack {
                         });
                     }
                 });
-        onCalculateTotal();
+        CalculateTotal();
     }
 
     @Override
     public void doDelete(int id) {
-        new Thread(() -> {
-            saleTransactionViewModel.deleteSaleTransactionById(id);
-        }).start();
+        new Thread(() -> saleTransactionViewModel.deleteSaleTransactionById(id)).start();
     }
 }
