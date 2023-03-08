@@ -1,19 +1,25 @@
 package com.example.pos.account;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuProvider;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
@@ -21,13 +27,13 @@ import com.example.pos.Database.Entity.UserAccount;
 import com.example.pos.DateHelper;
 import com.example.pos.R;
 import com.example.pos.SharedPrefHelper;
-import com.example.pos.databinding.ActivityManageAccountBinding;
+import com.example.pos.databinding.FragmentFragAccountManagementBinding;
 import com.github.drjacky.imagepicker.ImagePicker;
 
 import java.io.File;
 
-public class ManageAccountActivity extends AppCompatActivity {
-    ActivityManageAccountBinding binding;
+public class Frag_account_management extends Fragment {
+    FragmentFragAccountManagementBinding binding;
     AccountViewModel viewModel;
     String UserRole;
 
@@ -60,19 +66,17 @@ public class ManageAccountActivity extends AppCompatActivity {
     String profilePath;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityManageAccountBinding.inflate(getLayoutInflater());
-        setSupportActionBar(binding.customActionbarManageAccount.customActionbar);
-        assert getSupportActionBar() != null;
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        binding.customActionbarManageAccount.customActionbar.setNavigationOnClickListener(v -> {
-            setTitle(R.string.app_default);
-            finish();
-        });
-        setTitle("Account Management");
-        setContentView(binding.getRoot());
+    public void onCreate(Bundle savedInstanceState) {
         viewModel = new ViewModelProvider(this).get(AccountViewModel.class);
+        super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        binding = FragmentFragAccountManagementBinding.inflate(inflater, container, false);
         binding.btnSaveCreateUser.setOnClickListener(v -> SaveUserAccount());
         binding.btnCancelCreateUser.setOnClickListener(v -> OnUpdateUI());
         binding.btnUpdateUser.setOnClickListener(v -> OnUpdateUser());
@@ -81,6 +85,8 @@ public class ManageAccountActivity extends AppCompatActivity {
         GetAllUser();
         SetDateOfBirth();
         OnStateCheckBox();
+        OnCreateMenu();
+        return binding.getRoot();
     }
 
 
@@ -108,7 +114,7 @@ public class ManageAccountActivity extends AppCompatActivity {
                 || String.valueOf(binding.txtUserName.getText()).isEmpty()
                 || String.valueOf(binding.txtPassword.getText()).isEmpty()
                 || String.valueOf(binding.txtAddress.getText()).isEmpty()) {
-            Toast.makeText(this, R.string.Please_Input_User, Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.Please_Input_User, Toast.LENGTH_SHORT).show();
         } else {
             Firstname = String.valueOf(binding.txtFirstName.getText());
             Lastname = String.valueOf(binding.txtLastName.getText());
@@ -129,7 +135,7 @@ public class ManageAccountActivity extends AppCompatActivity {
     private void SetDateOfBirth() {
         binding.txtDateOfBirth.setText(DateHelper.getCurrentDate());
         binding.txtDateOfBirth.setOnClickListener(v -> {
-            DatePickerDialog dialog = new DatePickerDialog(this);
+            DatePickerDialog dialog = new DatePickerDialog(requireContext());
             dialog.setOnDateSetListener((datePicker, i, i1, i2) -> {
                 switch (i1 + 1) {
                     case 1:
@@ -182,9 +188,9 @@ public class ManageAccountActivity extends AppCompatActivity {
 
 
     private void GetAllUser() {
-        viewModel.userAccount().observe(this, userAccounts -> {
+        viewModel.userAccount().observe(getViewLifecycleOwner(), userAccounts -> {
             if (userAccounts.size() != 0) {
-                binding.listAllUser.setAdapter(new AdapterAccountManager(userAccounts, this));
+                binding.listAllUser.setAdapter(new AdapterAccountManager(userAccounts, requireContext()));
                 binding.listAllUser.setOnItemClickListener((adapterView, view, i, l) -> {
                     UserId = userAccounts.get(i).getUserId();
                     binding.txtFirstName.setText(userAccounts.get(i).getFirstname());
@@ -235,7 +241,7 @@ public class ManageAccountActivity extends AppCompatActivity {
                 || String.valueOf(binding.txtUserName.getText()).isEmpty()
                 || String.valueOf(binding.txtPassword.getText()).isEmpty()
                 || String.valueOf(binding.txtAddress.getText()).isEmpty()) {
-            Toast.makeText(this, R.string.Please_Input_User, Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.Please_Input_User, Toast.LENGTH_SHORT).show();
         } else {
             Firstname = String.valueOf(binding.txtFirstName.getText());
             Lastname = String.valueOf(binding.txtLastName.getText());
@@ -247,7 +253,7 @@ public class ManageAccountActivity extends AppCompatActivity {
             }
             userAccount = new UserAccount(Firstname, Lastname, UserSex, DateOfBirth, Address, Username, Password, UserRole,
                     profilePath, canDiscount, canChangePrice,
-                    SharedPrefHelper.getInstance().getSaveUserLoginName(this), DateHelper.getCurrentDate());
+                    SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()), DateHelper.getCurrentDate());
 
             viewModel.createUser(userAccount);
             OnUpdateUI();
@@ -291,7 +297,7 @@ public class ManageAccountActivity extends AppCompatActivity {
     }
 
     private void OnGetImage() {
-        launcher.launch(ImagePicker.Companion.with(this)
+        launcher.launch(ImagePicker.Companion.with(requireActivity())
                 .maxResultSize(1080, 1080, true)
                 .crop().galleryOnly()
                 .createIntent());
@@ -308,7 +314,7 @@ public class ManageAccountActivity extends AppCompatActivity {
                     // Use the uri to load the image
                     binding.userImageProfile.setImageURI(uri);
                 } else if (result.getResultCode() == ImagePicker.RESULT_ERROR) {
-                    Toast.makeText(this, "No Image Pick", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "No Image Pick", Toast.LENGTH_SHORT).show();
                     // Use ImagePicker.Companion.getError(result.getData()) to show an error
                 }
             });
@@ -330,17 +336,21 @@ public class ManageAccountActivity extends AppCompatActivity {
         binding.btnSaveCreateUser.setVisibility(View.VISIBLE);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.add_user) {
-            FormCreateUser();
-        }
-        return super.onOptionsItemSelected(item);
-    }
+    private void OnCreateMenu() {
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menuInflater.inflate(R.menu.option_menu, menu);
+                menu.findItem(R.id.add_user).setVisible(true);
+            }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.manage_account_menu, menu);
-        return super.onCreateOptionsMenu(menu);
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.add_user) {
+                    FormCreateUser();
+                }
+                return true;
+            }
+        },getViewLifecycleOwner());
     }
 }

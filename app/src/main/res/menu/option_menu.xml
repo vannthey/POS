@@ -50,4 +50,10 @@
         android:title="@string/add_customer"
         android:visible="false"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/add_user"
+        android:icon="@drawable/ic_person_add"
+        android:title="@string/add_customer"
+        android:visible="false"
+        app:showAsAction="ifRoom" />
 </menu>

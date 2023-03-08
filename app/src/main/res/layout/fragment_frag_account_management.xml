@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".account.ManageAccountActivity">
+    tools:context=".account.Frag_account_management">
 
-    <include
-        android:id="@+id/custom_actionbar_manage_account"
-        layout="@layout/custom_actionbar" />
 
     <ListView
         android:id="@+id/list_all_user"
@@ -35,9 +31,7 @@
                 android:layout_height="150dp"
                 android:layout_gravity="center"
                 android:contentDescription="@null"
-                android:src="@drawable/ic_image"
-                app:civ_border_color="@color/Egyptian_Blue"
-                app:civ_border_width="1dp" />
+                android:src="@drawable/ic_image" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -108,8 +102,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:layout_weight="1"
-                    app:passwordToggleEnabled="true">
+                    android:layout_weight="1">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/txt_password"
@@ -147,11 +140,11 @@
                 android:layout_height="wrap_content">
 
                 <RadioGroup
+                    android:id="@+id/userAccountSex"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:id="@+id/userAccountSex"
                     android:orientation="horizontal">
 
                     <RadioButton
@@ -345,6 +338,5 @@
         </LinearLayout>
 
     </ScrollView>
-
 
 </LinearLayout>

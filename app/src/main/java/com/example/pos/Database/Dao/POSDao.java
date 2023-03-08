@@ -101,14 +101,10 @@ public interface POSDao {
     @Query("Update UserAccount SET Firstname=:FirstName,Lastname=:LastName,Username=:UserName," +
             "Password=:Password,DOB=:DOB,Address=:Address,Sex=:Sex,UserRole=:Role," +
             "ProfilePath=:profilePath," +
-            "canDiscount=:canDiscount," +
-            "canUpdate=:canUpdate,canAddItem=:canAddItem,canAddCategory=:canAddCategory," +
-            "canDeleteItem=:canDeleteItem WHERE userId LIKE :Id")
+            "canDiscount=:canDiscount,canChangePrice=:canChangePrice WHERE userId LIKE :Id")
     void updateUserById(String FirstName, String LastName, String UserName, String Password,
                         String DOB, String Address, String Sex, String Role, String profilePath,
-                        boolean canDiscount,
-                        boolean canUpdate,
-                        boolean canAddItem, boolean canAddCategory, boolean canDeleteItem, int Id);
+                        boolean canDiscount, boolean canChangePrice, int Id);
 
     @Query("DELETE FROM UserAccount WHERE userId LIKE :userId")
     void deleteUserById(int userId);
@@ -117,7 +113,7 @@ public interface POSDao {
     void createUser(UserAccount userAccount);
 
     @Query("SELECT * FROM UserAccount")
-    List<UserAccount> userAccount();
+    LiveData<List<UserAccount>> userAccount();
 
     @Query("SELECT * FROM UserAccount Where Username =:username AND Password =:password")
     List<UserAccount> checkUser(String username, String password);

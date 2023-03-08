@@ -19,7 +19,7 @@
     <string name="setting_account">Manage account</string>
     <string name="sign_out">Sign out</string>
     <string name="shopping_cart">cart</string>
-    <string name="user_position">Cashier</string>
+    <string name="user_position">user position</string>
     <string name="dashboard">Dashboard</string>
     <string name="sale">Sale</string>
     <string name="category">Category</string>
@@ -130,5 +130,9 @@
     <string name="change">Change</string>
     <string name="Please_Input_Inventory">Please Input Inventory</string>
     <string name="Please_Input_Customer">Please Input Customer</string>
+    <string name="Please_Input_User">Please Input User</string>
+    <string name="Change_price">Change Price</string>
+    <string name="account_management">Account Management</string>
+    <string name="app_default">Default User</string>
 
 </resources>

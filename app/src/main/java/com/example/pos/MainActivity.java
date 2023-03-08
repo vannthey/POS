@@ -55,16 +55,13 @@ public class MainActivity extends AppCompatActivity {
             TextView userRoleOnNavDrawer = binding.navDrawerView.getHeaderView(0).findViewById(R.id.userRoleOnNavDrawer);
             String defaultUser = "DefaultUser";
             userRoleOnNavDrawer.setText(defaultUser);
+            setTitle(R.string.app_default);
             binding.mainFrameLayout.setVisibility(View.GONE);
         } else {
+            binding.navDrawerView.setCheckedItem(R.id.dashboad);
+            setStateFragment(new Frag_Dashboard());
             SetUserNameAndRole();
         }
-        languageBinding = CustomChangeLanguageBinding.inflate(getLayoutInflater());
-        bottomSheetDialog = new BottomSheetDialog(this);
-        bottomSheetDialog.setContentView(languageBinding.getRoot());
-        bottomSheetDialog.create();
-
-
         drawerToggle = new ActionBarDrawerToggle(this, binding.navDrawerLayout, binding.actionBar.customActionbar, R.string.Navigation_drawer_open, R.string.Navigation_drawer_close);
 
         /*
@@ -73,8 +70,7 @@ public class MainActivity extends AppCompatActivity {
         binding.navDrawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
         binding.navDrawerView.setNavigationItemSelectedListener(this::NavigationSelected);
-        binding.navDrawerView.setCheckedItem(R.id.dashboad);
-        setStateFragment(new Frag_Dashboard());
+
     }
 
     private void SetUserNameAndRole() {
@@ -154,8 +150,11 @@ public class MainActivity extends AppCompatActivity {
                 dialog.show();
                 break;
             case R.id.manage_account:
+                setTitle(R.string.account_management);
                 startActivity(new Intent(this, ManageAccountActivity.class));
                 break;
+
+
         }
         binding.navDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
@@ -166,6 +165,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void ChangeLanguage() {
+        languageBinding = CustomChangeLanguageBinding.inflate(getLayoutInflater());
+        bottomSheetDialog = new BottomSheetDialog(this);
+        bottomSheetDialog.setContentView(languageBinding.getRoot());
+        bottomSheetDialog.create();
         bottomSheetDialog.show();
     }
 
