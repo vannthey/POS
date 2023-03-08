@@ -45,28 +45,22 @@ public class Frag_unit extends Fragment {
 
     private void UpdateUnit(View view) {
         if (binding.unitTitle.getText() != null) {
-            new Thread(() -> {
                 viewModel.updateUnitById(String.valueOf(binding.unitTitle.getText()), unitId);
-                handler.post(this::OnUpdateUI);
-            }).start();
+                OnUpdateUI();
         } else {
             Toast.makeText(requireContext(), R.string.Please_Input_Unit_Name, Toast.LENGTH_SHORT).show();
         }
     }
 
     private void DeleteUnit(View view) {
-        new Thread(() -> {
             viewModel.deleteUnitById(unitId);
-            handler.post(this::OnUpdateUI);
-        }).start();
+            OnUpdateUI();
     }
 
     private void SaveUnit(View view) {
         if (!String.valueOf(binding.unitTitle.getText()).isEmpty()) {
-            new Thread(() -> {
                 viewModel.createUnit(new Unit(String.valueOf(binding.unitTitle.getText()), SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()), DateHelper.getCurrentDate()));
-                handler.post(this::OnUpdateUI);
-            }).start();
+                OnUpdateUI();
         } else {
             Toast.makeText(requireContext(), R.string.Please_Input_Unit_Name, Toast.LENGTH_SHORT).show();
         }

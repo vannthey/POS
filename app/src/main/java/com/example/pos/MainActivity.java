@@ -44,24 +44,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         setSupportActionBar(binding.actionBar.customActionbar);
         setTitle("Dashboard");
-        if (SharedPrefHelper.getInstance().getDefaultUser(this).contains("Admin")) {
-            binding.navDrawerView.getMenu().findItem(R.id.NavSale).setVisible(false);
-            binding.navDrawerView.getMenu().findItem(R.id.NavPreference).setVisible(false);
-            binding.navDrawerView.getMenu().findItem(R.id.NavProduct).setVisible(false);
-            binding.navDrawerView.getMenu().findItem(R.id.NavReport).setVisible(false);
-            TextView userOnNavDrawer = binding.navDrawerView.getHeaderView(0).findViewById(R.id.userOnNavDrawer);
-            String defaultUsername = "Admin";
-            userOnNavDrawer.setText(defaultUsername);
-            TextView userRoleOnNavDrawer = binding.navDrawerView.getHeaderView(0).findViewById(R.id.userRoleOnNavDrawer);
-            String defaultUser = "DefaultUser";
-            userRoleOnNavDrawer.setText(defaultUser);
-            setTitle(R.string.app_default);
-            binding.mainFrameLayout.setVisibility(View.GONE);
-        } else {
-            binding.navDrawerView.setCheckedItem(R.id.dashboad);
-            setStateFragment(new Frag_Dashboard());
-            SetUserNameAndRole();
-        }
+        binding.navDrawerView.setCheckedItem(R.id.dashboad);
+        setStateFragment(new Frag_Dashboard());
+        SetUserNameAndRole();
+
         drawerToggle = new ActionBarDrawerToggle(this, binding.navDrawerLayout, binding.actionBar.customActionbar, R.string.Navigation_drawer_open, R.string.Navigation_drawer_close);
 
         /*
