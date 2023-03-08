@@ -2,9 +2,7 @@ package com.example.pos.setting;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,7 +22,6 @@ public class Login extends AppCompatActivity {
     String ProfilePath;
     ActivityLoginBinding binding;
     List<UserAccount> userAccounts;
-    Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +29,6 @@ public class Login extends AppCompatActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         binding.btnLogin.setOnClickListener(this::btnLogin);
-        handler = new Handler();
     }
 
     private void btnLogin(View view) {
@@ -54,8 +50,6 @@ public class Login extends AppCompatActivity {
                             UserRole, ProfilePath, this);
                     startActivity(new Intent(this, MainActivity.class));
                     finish();
-                } else {
-                    Toast.makeText(this, "Invalidate Login", Toast.LENGTH_SHORT).show();
                 }
             }
         }).start();

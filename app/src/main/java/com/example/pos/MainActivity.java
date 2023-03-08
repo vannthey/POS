@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         binding.navDrawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
         binding.navDrawerView.setNavigationItemSelectedListener(this::NavigationSelected);
-
     }
 
     private void SetUserNameAndRole() {

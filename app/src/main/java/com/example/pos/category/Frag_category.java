@@ -38,18 +38,18 @@ public class Frag_category extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentFragCategoryBinding.inflate(inflater, container, false);
-        binding.btnCancelCategory.setOnClickListener(this::CancelCategory);
-        binding.btnSaveCategory.setOnClickListener(this::SaveCategory);
-        binding.btnUpdateCategory.setOnClickListener(this::UpdateCategory);
-        binding.btnDeleteCategory.setOnClickListener(this::DeleteCategory);
+        binding.formCategory.btnCancelCategory.setOnClickListener(this::CancelCategory);
+        binding.formCategory.btnSaveCategory.setOnClickListener(this::SaveCategory);
+        binding.formCategory.btnUpdateCategory.setOnClickListener(this::UpdateCategory);
+        binding.formCategory.btnDeleteCategory.setOnClickListener(this::DeleteCategory);
         GetAllCategory();
         OnCreateMenu();
         return binding.getRoot();
     }
 
     private void SaveCategory(View view) {
-        if (!String.valueOf(binding.categoryName.getText()).isEmpty()) {
-            categoryViewModel.createCategory(new Category(String.valueOf(binding.categoryName.getText()),
+        if (!String.valueOf(binding.formCategory.categoryName.getText()).isEmpty()) {
+            categoryViewModel.createCategory(new Category(String.valueOf(binding.formCategory.categoryName.getText()),
                     SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()),
                     DateHelper.getCurrentDate()));
             OnUpdateUI();
@@ -60,9 +60,9 @@ public class Frag_category extends Fragment {
     }
 
     private void UpdateCategory(View view) {
-        if (binding.categoryName.getText() != null) {
+        if (binding.formCategory.categoryName.getText() != null) {
             categoryViewModel.updateCategoryById(categoryName =
-                    String.valueOf(binding.categoryName.getText()), categoryId);
+                    String.valueOf(binding.formCategory.categoryName.getText()), categoryId);
             OnUpdateUI();
         } else {
             Toast.makeText(requireContext(), R.string.Please_Input_Category_Name, Toast.LENGTH_SHORT).show();
@@ -89,7 +89,7 @@ public class Frag_category extends Fragment {
             binding.listCategory.setOnItemClickListener((adapterView, view, i, l) -> {
                 categoryId = categories.get(i).getCategoryId();
                 categoryName = categories.get(i).getCategoryName();
-                binding.categoryName.setText(categoryName);
+                binding.formCategory.categoryName.setText(categoryName);
                 LayoutAddCategory();
                 DeleteAndUpdate();
 
@@ -98,22 +98,22 @@ public class Frag_category extends Fragment {
     }
 
     private void OnUpdateUI() {
-        binding.layoutAddCategory.setVisibility(View.GONE);
+        binding.formCategory.layoutAddCategory.setVisibility(View.GONE);
         binding.listCategory.setVisibility(View.VISIBLE);
-        binding.btnSaveCategory.setVisibility(View.VISIBLE);
-        binding.btnDeleteCategory.setVisibility(View.GONE);
-        binding.btnUpdateCategory.setVisibility(View.GONE);
-        binding.categoryName.setText(null);
+        binding.formCategory.btnSaveCategory.setVisibility(View.VISIBLE);
+        binding.formCategory.btnDeleteCategory.setVisibility(View.GONE);
+        binding.formCategory.btnUpdateCategory.setVisibility(View.GONE);
+        binding.formCategory.categoryName.setText(null);
     }
 
     private void DeleteAndUpdate() {
-        binding.btnDeleteCategory.setVisibility(View.VISIBLE);
-        binding.btnUpdateCategory.setVisibility(View.VISIBLE);
-        binding.btnSaveCategory.setVisibility(View.GONE);
+        binding.formCategory.btnDeleteCategory.setVisibility(View.VISIBLE);
+        binding.formCategory.btnUpdateCategory.setVisibility(View.VISIBLE);
+        binding.formCategory.btnSaveCategory.setVisibility(View.GONE);
     }
 
     private void LayoutAddCategory() {
-        binding.layoutAddCategory.setVisibility(View.VISIBLE);
+        binding.formCategory.layoutAddCategory.setVisibility(View.VISIBLE);
         binding.listCategory.setVisibility(View.GONE);
     }
 

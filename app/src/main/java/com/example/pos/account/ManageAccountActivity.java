@@ -67,17 +67,16 @@ public class ManageAccountActivity extends AppCompatActivity {
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         binding.customActionbarManageAccount.customActionbar.setNavigationOnClickListener(v -> {
-            setTitle(R.string.app_default);
             finish();
         });
         setTitle("Account Management");
         setContentView(binding.getRoot());
         viewModel = new ViewModelProvider(this).get(AccountViewModel.class);
-        binding.btnSaveCreateUser.setOnClickListener(v -> SaveUserAccount());
-        binding.btnCancelCreateUser.setOnClickListener(v -> OnUpdateUI());
-        binding.btnUpdateUser.setOnClickListener(v -> OnUpdateUser());
-        binding.btnDeleteUser.setOnClickListener(v -> OnDeleteUser());
-        binding.userImageProfile.setOnClickListener(v -> OnGetImage());
+        binding.formUser.btnSaveCreateUser.setOnClickListener(v -> SaveUserAccount());
+        binding.formUser.btnCancelCreateUser.setOnClickListener(v -> OnUpdateUI());
+        binding.formUser.btnUpdateUser.setOnClickListener(v -> OnUpdateUser());
+        binding.formUser.btnDeleteUser.setOnClickListener(v -> OnDeleteUser());
+        binding.formUser.userImageProfile.setOnClickListener(v -> OnGetImage());
         GetAllUser();
         SetDateOfBirth();
         OnStateCheckBox();
@@ -91,30 +90,30 @@ public class ManageAccountActivity extends AppCompatActivity {
 
     private void FormCreateUser() {
         binding.listAllUser.setVisibility(View.GONE);
-        binding.formAddUser.setVisibility(View.VISIBLE);
+        binding.formUser.formAddUser.setVisibility(View.VISIBLE);
     }
 
 
     private void DeleteUpdate() {
-        binding.btnDeleteUser.setVisibility(View.VISIBLE);
-        binding.btnUpdateUser.setVisibility(View.VISIBLE);
-        binding.btnSaveCreateUser.setVisibility(View.GONE);
+        binding.formUser.btnDeleteUser.setVisibility(View.VISIBLE);
+        binding.formUser.btnUpdateUser.setVisibility(View.VISIBLE);
+        binding.formUser.btnSaveCreateUser.setVisibility(View.GONE);
     }
 
 
     private void OnUpdateUser() {
-        if (String.valueOf(binding.txtFirstName.getText()).isEmpty()
-                || String.valueOf(binding.txtLastName.getText()).isEmpty()
-                || String.valueOf(binding.txtUserName.getText()).isEmpty()
-                || String.valueOf(binding.txtPassword.getText()).isEmpty()
-                || String.valueOf(binding.txtAddress.getText()).isEmpty()) {
+        if (String.valueOf(binding.formUser.txtFirstName.getText()).isEmpty()
+                || String.valueOf(binding.formUser.txtLastName.getText()).isEmpty()
+                || String.valueOf(binding.formUser.txtUserName.getText()).isEmpty()
+                || String.valueOf(binding.formUser.txtPassword.getText()).isEmpty()
+                || String.valueOf(binding.formUser.txtAddress.getText()).isEmpty()) {
             Toast.makeText(this, R.string.Please_Input_User, Toast.LENGTH_SHORT).show();
         } else {
-            Firstname = String.valueOf(binding.txtFirstName.getText());
-            Lastname = String.valueOf(binding.txtLastName.getText());
-            Username = String.valueOf(binding.txtUserName.getText());
-            Password = String.valueOf(binding.txtPassword.getText());
-            Address = String.valueOf(binding.txtAddress.getText());
+            Firstname = String.valueOf(binding.formUser.txtFirstName.getText());
+            Lastname = String.valueOf(binding.formUser.txtLastName.getText());
+            Username = String.valueOf(binding.formUser.txtUserName.getText());
+            Password = String.valueOf(binding.formUser.txtPassword.getText());
+            Address = String.valueOf(binding.formUser.txtAddress.getText());
             if (DateOfBirth == null) {
                 DateOfBirth = DateHelper.getCurrentDate();
             }
@@ -127,8 +126,8 @@ public class ManageAccountActivity extends AppCompatActivity {
     }
 
     private void SetDateOfBirth() {
-        binding.txtDateOfBirth.setText(DateHelper.getCurrentDate());
-        binding.txtDateOfBirth.setOnClickListener(v -> {
+        binding.formUser.txtDateOfBirth.setText(DateHelper.getCurrentDate());
+        binding.formUser.txtDateOfBirth.setOnClickListener(v -> {
             DatePickerDialog dialog = new DatePickerDialog(this);
             dialog.setOnDateSetListener((datePicker, i, i1, i2) -> {
                 switch (i1 + 1) {
@@ -172,7 +171,7 @@ public class ManageAccountActivity extends AppCompatActivity {
                 year = String.valueOf(i);
                 day = String.valueOf(i2);
                 DateOfBirth = day + "-" + month + "-" + year;
-                binding.txtDateOfBirth.setText(DateOfBirth);
+                binding.formUser.txtDateOfBirth.setText(DateOfBirth);
             });
             dialog.show();
 
@@ -187,40 +186,40 @@ public class ManageAccountActivity extends AppCompatActivity {
                 binding.listAllUser.setAdapter(new AdapterAccountManager(userAccounts, this));
                 binding.listAllUser.setOnItemClickListener((adapterView, view, i, l) -> {
                     UserId = userAccounts.get(i).getUserId();
-                    binding.txtFirstName.setText(userAccounts.get(i).getFirstname());
-                    binding.txtLastName.setText(userAccounts.get(i).getLastname());
-                    binding.txtPassword.setText(userAccounts.get(i).getPassword());
-                    binding.txtUserName.setText(userAccounts.get(i).getUsername());
-                    Glide.with(this).load(userAccounts.get(i).getProfilePath()).into(binding.userImageProfile);
+                    binding.formUser.txtFirstName.setText(userAccounts.get(i).getFirstname());
+                    binding.formUser.txtLastName.setText(userAccounts.get(i).getLastname());
+                    binding.formUser.txtPassword.setText(userAccounts.get(i).getPassword());
+                    binding.formUser.txtUserName.setText(userAccounts.get(i).getUsername());
+                    Glide.with(this).load(userAccounts.get(i).getProfilePath()).into(binding.formUser.userImageProfile);
                     if (userAccounts.get(i).getSex().contains("Male")) {
-                        binding.isMale.setChecked(true);
+                        binding.formUser.isMale.setChecked(true);
                     } else if (userAccounts.get(i).getSex().contains("Female")) {
-                        binding.isFemale.setChecked(true);
+                        binding.formUser.isFemale.setChecked(true);
                     }
-                    binding.txtDateOfBirth.setText(userAccounts.get(i).getDOB());
-                    binding.txtAddress.setText(userAccounts.get(i).getAddress());
+                    binding.formUser.txtDateOfBirth.setText(userAccounts.get(i).getDOB());
+                    binding.formUser.txtAddress.setText(userAccounts.get(i).getAddress());
                     switch (userAccounts.get(i).getUserRole()) {
                         case "Admin":
-                            binding.isAdmin.setChecked(true);
+                            binding.formUser.isAdmin.setChecked(true);
                             break;
                         case "Seller":
-                            binding.isSeller.setChecked(true);
+                            binding.formUser.isSeller.setChecked(true);
                             break;
                         case "Cashier":
-                            binding.isCashier.setChecked(true);
+                            binding.formUser.isCashier.setChecked(true);
                             break;
                         case "Manager":
-                            binding.isManager.setChecked(true);
+                            binding.formUser.isManager.setChecked(true);
                             break;
                     }
                     profilePath = userAccounts.get(i).getProfilePath();
                     if (userAccounts.get(i).getCanDiscount() == null) {
-                        binding.canDiscount.setChecked(false);
+                        binding.formUser.canDiscount.setChecked(false);
                     } else if (userAccounts.get(i).getCanChangePrice() == null) {
-                        binding.canChangePrice.setChecked(false);
+                        binding.formUser.canChangePrice.setChecked(false);
                     } else {
-                        binding.canDiscount.setChecked(true);
-                        binding.canChangePrice.setChecked(true);
+                        binding.formUser.canDiscount.setChecked(true);
+                        binding.formUser.canChangePrice.setChecked(true);
                     }
                     FormCreateUser();
                     DeleteUpdate();
@@ -230,18 +229,18 @@ public class ManageAccountActivity extends AppCompatActivity {
     }
 
     private void SaveUserAccount() {
-        if (String.valueOf(binding.txtFirstName.getText()).isEmpty()
-                || String.valueOf(binding.txtLastName.getText()).isEmpty()
-                || String.valueOf(binding.txtUserName.getText()).isEmpty()
-                || String.valueOf(binding.txtPassword.getText()).isEmpty()
-                || String.valueOf(binding.txtAddress.getText()).isEmpty()) {
+        if (String.valueOf(binding.formUser.txtFirstName.getText()).isEmpty()
+                || String.valueOf(binding.formUser.txtLastName.getText()).isEmpty()
+                || String.valueOf(binding.formUser.txtUserName.getText()).isEmpty()
+                || String.valueOf(binding.formUser.txtPassword.getText()).isEmpty()
+                || String.valueOf(binding.formUser.txtAddress.getText()).isEmpty()) {
             Toast.makeText(this, R.string.Please_Input_User, Toast.LENGTH_SHORT).show();
         } else {
-            Firstname = String.valueOf(binding.txtFirstName.getText());
-            Lastname = String.valueOf(binding.txtLastName.getText());
-            Username = String.valueOf(binding.txtUserName.getText());
-            Password = String.valueOf(binding.txtPassword.getText());
-            Address = String.valueOf(binding.txtAddress.getText());
+            Firstname = String.valueOf(binding.formUser.txtFirstName.getText());
+            Lastname = String.valueOf(binding.formUser.txtLastName.getText());
+            Username = String.valueOf(binding.formUser.txtUserName.getText());
+            Password = String.valueOf(binding.formUser.txtPassword.getText());
+            Address = String.valueOf(binding.formUser.txtAddress.getText());
             if (DateOfBirth == null) {
                 DateOfBirth = DateHelper.getCurrentDate();
             }
@@ -257,37 +256,37 @@ public class ManageAccountActivity extends AppCompatActivity {
     }
 
     private void OnStateCheckBox() {
-        binding.accountPosition.setOnCheckedChangeListener((radioGroup, i) -> {
-            if (isAdmin == binding.isAdmin.isChecked()) {
+        binding.formUser.accountPosition.setOnCheckedChangeListener((radioGroup, i) -> {
+            if (isAdmin == binding.formUser.isAdmin.isChecked()) {
                 UserRole = "Admin";
                 canDiscount = true;
                 canChangePrice = true;
-                binding.canDiscount.setEnabled(false);
-                binding.canChangePrice.setEnabled(false);
-            } else if (isSeller == binding.isSeller.isChecked()) {
+                binding.formUser.canDiscount.setEnabled(false);
+                binding.formUser.canChangePrice.setEnabled(false);
+            } else if (isSeller == binding.formUser.isSeller.isChecked()) {
                 UserRole = "Seller";
-                binding.canDiscount.setEnabled(true);
-                binding.canChangePrice.setEnabled(true);
-            } else if (isCashier == binding.isCashier.isChecked()) {
-                binding.canDiscount.setEnabled(true);
-                binding.canChangePrice.setEnabled(true);
+                binding.formUser.canDiscount.setEnabled(true);
+                binding.formUser.canChangePrice.setEnabled(true);
+            } else if (isCashier == binding.formUser.isCashier.isChecked()) {
+                binding.formUser.canDiscount.setEnabled(true);
+                binding.formUser.canChangePrice.setEnabled(true);
                 UserRole = "Cashier";
-            } else if (isManager == binding.isManager.isChecked()) {
-                binding.canDiscount.setEnabled(true);
-                binding.canChangePrice.setEnabled(true);
+            } else if (isManager == binding.formUser.isManager.isChecked()) {
+                binding.formUser.canDiscount.setEnabled(true);
+                binding.formUser.canChangePrice.setEnabled(true);
                 UserRole = "Manager";
             }
         });
-        binding.userAccountSex.setOnCheckedChangeListener((radioGroup, i) -> {
-            if (binding.isMale.isChecked()) {
+        binding.formUser.userAccountSex.setOnCheckedChangeListener((radioGroup, i) -> {
+            if (binding.formUser.isMale.isChecked()) {
                 UserSex = "Male";
-            } else if (binding.isFemale.isChecked()) {
+            } else if (binding.formUser.isFemale.isChecked()) {
                 UserSex = "Female";
             }
         });
-        binding.canDiscount.setOnCheckedChangeListener((compoundButton, b) -> canDiscount = binding.canDiscount.isChecked());
-        binding.canChangePrice.setOnCheckedChangeListener((compoundButton, b) -> canChangePrice =
-                binding.canChangePrice.isChecked());
+        binding.formUser.canDiscount.setOnCheckedChangeListener((compoundButton, b) -> canDiscount = binding.formUser.canDiscount.isChecked());
+        binding.formUser.canChangePrice.setOnCheckedChangeListener((compoundButton, b) -> canChangePrice =
+                binding.formUser.canChangePrice.isChecked());
     }
 
     private void OnGetImage() {
@@ -306,7 +305,7 @@ public class ManageAccountActivity extends AppCompatActivity {
                     file = new File(uri.getPath());
                     profilePath = file.toString();
                     // Use the uri to load the image
-                    binding.userImageProfile.setImageURI(uri);
+                    binding.formUser.userImageProfile.setImageURI(uri);
                 } else if (result.getResultCode() == ImagePicker.RESULT_ERROR) {
                     Toast.makeText(this, "No Image Pick", Toast.LENGTH_SHORT).show();
                     // Use ImagePicker.Companion.getError(result.getData()) to show an error
@@ -316,18 +315,18 @@ public class ManageAccountActivity extends AppCompatActivity {
 
     private void OnUpdateUI() {
         binding.listAllUser.setVisibility(View.VISIBLE);
-        binding.formAddUser.setVisibility(View.GONE);
-        binding.userImageProfile.setImageResource(R.drawable.ic_image);
-        binding.canDiscount.setChecked(false);
-        binding.canChangePrice.setChecked(false);
-        binding.txtFirstName.setText(null);
-        binding.txtLastName.setText(null);
-        binding.txtUserName.setText(null);
-        binding.txtPassword.setText(null);
-        binding.txtAddress.setText(null);
-        binding.btnDeleteUser.setVisibility(View.GONE);
-        binding.btnUpdateUser.setVisibility(View.GONE);
-        binding.btnSaveCreateUser.setVisibility(View.VISIBLE);
+        binding.formUser.formAddUser.setVisibility(View.GONE);
+        binding.formUser.userImageProfile.setImageResource(R.drawable.ic_image);
+        binding.formUser.canDiscount.setChecked(false);
+        binding.formUser.canChangePrice.setChecked(false);
+        binding.formUser.txtFirstName.setText(null);
+        binding.formUser.txtLastName.setText(null);
+        binding.formUser.txtUserName.setText(null);
+        binding.formUser.txtPassword.setText(null);
+        binding.formUser.txtAddress.setText(null);
+        binding.formUser.btnDeleteUser.setVisibility(View.GONE);
+        binding.formUser.btnUpdateUser.setVisibility(View.GONE);
+        binding.formUser.btnSaveCreateUser.setVisibility(View.VISIBLE);
     }
 
     @Override

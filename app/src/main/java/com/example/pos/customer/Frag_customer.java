@@ -43,10 +43,10 @@ public class Frag_customer extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentFragCustomerBinding.inflate(getLayoutInflater(), container, false);
-        binding.btnSaveCustomer.setOnClickListener(this::SaveCustomer);
-        binding.btnDeleteCustomer.setOnClickListener(this::DeleteCustomer);
-        binding.btnUpdateCustomer.setOnClickListener(this::UpdateCustomer);
-        binding.btnCancelCustomer.setOnClickListener(this::CancelCustomer);
+        binding.formCustomer.btnSaveCustomer.setOnClickListener(this::SaveCustomer);
+        binding.formCustomer.btnDeleteCustomer.setOnClickListener(this::DeleteCustomer);
+        binding.formCustomer.btnUpdateCustomer.setOnClickListener(this::UpdateCustomer);
+        binding.formCustomer.btnCancelCustomer.setOnClickListener(this::CancelCustomer);
         onCreateMenu();
         GetAllCustomer();
         CustomerSex();
@@ -58,16 +58,16 @@ public class Frag_customer extends Fragment {
     }
 
     private void UpdateCustomer(View view) {
-        customerName = String.valueOf(binding.customerName.getText());
-        customerAddress = String.valueOf(binding.customerAddress.getText());
-        customerPhone = String.valueOf(binding.customerPhoneNumber.getText());
-        if (String.valueOf(binding.customerName.getText()).isEmpty() ||
-                String.valueOf(binding.customerAddress.getText()).isEmpty()
-                || String.valueOf(binding.customerPhoneNumber.getText()).isEmpty()) {
-            if (String.valueOf(binding.customerDiscount.getText()).isEmpty()) {
+        customerName = String.valueOf(binding.formCustomer.customerName.getText());
+        customerAddress = String.valueOf(binding.formCustomer.customerAddress.getText());
+        customerPhone = String.valueOf(binding.formCustomer.customerPhoneNumber.getText());
+        if (String.valueOf(binding.formCustomer.customerName.getText()).isEmpty() ||
+                String.valueOf(binding.formCustomer.customerAddress.getText()).isEmpty()
+                || String.valueOf(binding.formCustomer.customerPhoneNumber.getText()).isEmpty()) {
+            if (String.valueOf(binding.formCustomer.customerDiscount.getText()).isEmpty()) {
                 customerDiscount = 0;
             } else {
-                customerDiscount = Double.parseDouble(String.valueOf(binding.customerDiscount.getText()));
+                customerDiscount = Double.parseDouble(String.valueOf(binding.formCustomer.customerDiscount.getText()));
             }
             Toast.makeText(requireContext(), R.string.Please_Input_Customer, Toast.LENGTH_SHORT).show();
         } else {
@@ -88,16 +88,16 @@ public class Frag_customer extends Fragment {
     }
 
     private void SaveCustomer(View view) {
-        customerName = String.valueOf(binding.customerName.getText());
-        customerAddress = String.valueOf(binding.customerAddress.getText());
-        customerPhone = String.valueOf(binding.customerPhoneNumber.getText());
-        if (String.valueOf(binding.customerName.getText()).isEmpty() ||
-                String.valueOf(binding.customerAddress.getText()).isEmpty()
-                || String.valueOf(binding.customerPhoneNumber.getText()).isEmpty()) {
-            if (String.valueOf(binding.customerDiscount.getText()).isEmpty()) {
+        customerName = String.valueOf(binding.formCustomer.customerName.getText());
+        customerAddress = String.valueOf(binding.formCustomer.customerAddress.getText());
+        customerPhone = String.valueOf(binding.formCustomer.customerPhoneNumber.getText());
+        if (String.valueOf(binding.formCustomer.customerName.getText()).isEmpty() ||
+                String.valueOf(binding.formCustomer.customerAddress.getText()).isEmpty()
+                || String.valueOf(binding.formCustomer.customerPhoneNumber.getText()).isEmpty()) {
+            if (String.valueOf(binding.formCustomer.customerDiscount.getText()).isEmpty()) {
                 customerDiscount = 0;
             } else {
-                customerDiscount = Double.parseDouble(String.valueOf(binding.customerDiscount.getText()));
+                customerDiscount = Double.parseDouble(String.valueOf(binding.formCustomer.customerDiscount.getText()));
             }
             Toast.makeText(requireContext(), R.string.Please_Input_Customer, Toast.LENGTH_SHORT).show();
         } else {
@@ -121,28 +121,27 @@ public class Frag_customer extends Fragment {
                     customerId = customers.get(i).getCustomerId();
                     customerSex = customers.get(i).getCustomerSex();
                     if (customerSex == null) {
-                        binding.customerMale.setChecked(false);
-                        binding.customerFemale.setChecked(false);
+                        binding.formCustomer.customerMale.setChecked(false);
+                        binding.formCustomer.customerFemale.setChecked(false);
                     } else if (customerSex.contains("Female")) {
-                        binding.customerFemale.setChecked(true);
+                        binding.formCustomer.customerFemale.setChecked(true);
                     } else {
-                        binding.customerMale.setChecked(true);
+                        binding.formCustomer.customerMale.setChecked(true);
                     }
-                    binding.customerDiscount.setText(String.valueOf(customers.get(i).getCustomerDiscount()));
-                    binding.customerName.setText(customers.get(i).getCustomerName());
-                    binding.customerPhoneNumber.setText(customers.get(i).getCustomerPhoneNumber());
-                    binding.customerAddress.setText(customers.get(i).getCustomerAddress());
-
+                    binding.formCustomer.customerDiscount.setText(String.valueOf(customers.get(i).getCustomerDiscount()));
+                    binding.formCustomer.customerName.setText(customers.get(i).getCustomerName());
+                    binding.formCustomer.customerPhoneNumber.setText(customers.get(i).getCustomerPhoneNumber());
+                    binding.formCustomer.customerAddress.setText(customers.get(i).getCustomerAddress());
                     ShowAddCustomer();
                     DeleteUpdate();
                 });
             }
-        });
+        });//viewModel Get All Customer
     }
 
     private void CustomerSex() {
-        binding.customSex.setOnCheckedChangeListener((radioGroup, i) -> {
-            if (binding.customerMale.isChecked()) {
+        binding.formCustomer.customSex.setOnCheckedChangeListener((radioGroup, i) -> {
+            if (binding.formCustomer.customerMale.isChecked()) {
                 customerSex = "Male";
             } else {
                 customerSex = "Female";
@@ -179,24 +178,24 @@ public class Frag_customer extends Fragment {
 
     private void ShowAddCustomer() {
         binding.listAllCustomer.setVisibility(View.GONE);
-        binding.layoutAddCustomer.setVisibility(View.VISIBLE);
+        binding.formCustomer.layoutAddCustomer.setVisibility(View.VISIBLE);
     }
 
     private void DeleteUpdate() {
-        binding.btnUpdateCustomer.setVisibility(View.VISIBLE);
-        binding.btnDeleteCustomer.setVisibility(View.VISIBLE);
-        binding.btnSaveCustomer.setVisibility(View.GONE);
+        binding.formCustomer.btnUpdateCustomer.setVisibility(View.VISIBLE);
+        binding.formCustomer.btnDeleteCustomer.setVisibility(View.VISIBLE);
+        binding.formCustomer.btnSaveCustomer.setVisibility(View.GONE);
     }
 
     private void OnUpdateUI() {
-        binding.customerName.setText(null);
-        binding.customerPhoneNumber.setText(null);
-        binding.customerAddress.setText(null);
-        binding.customerDiscount.setText(null);
-        binding.btnUpdateCustomer.setVisibility(View.GONE);
-        binding.btnDeleteCustomer.setVisibility(View.GONE);
-        binding.btnSaveCustomer.setVisibility(View.VISIBLE);
-        binding.layoutAddCustomer.setVisibility(View.GONE);
+        binding.formCustomer.customerName.setText(null);
+        binding.formCustomer.customerPhoneNumber.setText(null);
+        binding.formCustomer.customerAddress.setText(null);
+        binding.formCustomer.customerDiscount.setText(null);
+        binding.formCustomer.btnUpdateCustomer.setVisibility(View.GONE);
+        binding.formCustomer.btnDeleteCustomer.setVisibility(View.GONE);
+        binding.formCustomer.btnSaveCustomer.setVisibility(View.VISIBLE);
+        binding.formCustomer.layoutAddCustomer.setVisibility(View.GONE);
         binding.listAllCustomer.setVisibility(View.VISIBLE);
     }
 

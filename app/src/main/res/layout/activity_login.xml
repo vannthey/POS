@@ -3,9 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:gravity="center"
+    android:orientation="vertical"
     tools:context=".setting.Login">
 
     <com.google.android.material.textfield.TextInputLayout
@@ -14,8 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
-        android:hint="@string/username"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="10dp"
+        android:hint="@string/username">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtUsername"
@@ -30,42 +29,43 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
-        android:hint="@string/password"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="10dp"
+        android:hint="@string/password">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtPassword"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/txtPassword"/>
+            android:layout_height="wrap_content" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:visibility="gone"
-    android:paddingStart="30dp"
-    android:paddingEnd="30dp">
-    <RadioButton
-        android:layout_width="wrap_content"
-        android:layout_height="24dp"
-        android:id="@+id/rememberMeLogin"
-        android:gravity="center" />
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/rememberMe"/>
-</LinearLayout>
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:visibility="gone">
+
+        <RadioButton
+            android:id="@+id/rememberMeLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rememberMe" />
+    </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:cornerRadius="5dp"
         android:id="@+id/btnLogin"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
         android:backgroundTint="@color/Egyptian_Blue"
-        android:textAllCaps="false"
-        android:text="@string/login"/>
+        android:text="@string/login"
+        android:textAllCaps="false" />
 
 
 </LinearLayout>

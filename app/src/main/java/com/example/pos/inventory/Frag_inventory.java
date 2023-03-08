@@ -39,10 +39,10 @@ public class Frag_inventory extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentFragInventoryBinding.inflate(inflater, container, false);
-        binding.btnCancelInventory.setOnClickListener(this::CancelInventory);
-        binding.btnSaveInventory.setOnClickListener(this::SaveInventory);
-        binding.btnDeleteInventory.setOnClickListener(this::DeleteInventory);
-        binding.btnUpdateInventory.setOnClickListener(this::UpdateInventory);
+        binding.formInventory.btnCancelInventory.setOnClickListener(this::CancelInventory);
+        binding.formInventory.btnSaveInventory.setOnClickListener(this::SaveInventory);
+        binding.formInventory.btnDeleteInventory.setOnClickListener(this::DeleteInventory);
+        binding.formInventory.btnUpdateInventory.setOnClickListener(this::UpdateInventory);
         onCreateMenu();
         GetAllInventory();
         return binding.getRoot();
@@ -57,8 +57,8 @@ public class Frag_inventory extends Fragment {
             }
             binding.listInventory.setOnItemClickListener((adapterView, view, i, l) -> {
                 inventoryId = inventories.get(i).inventoryId;
-                binding.inventoryName.setText(inventories.get(i).getInventoryName());
-                binding.inventoryLocation.setText(inventories.get(i).getInventoryAddress());
+                binding.formInventory.inventoryName.setText(inventories.get(i).getInventoryName());
+                binding.formInventory.inventoryLocation.setText(inventories.get(i).getInventoryAddress());
                 DeleteAndUpdate();
                 LayoutSaveInventory();
             });
@@ -70,12 +70,12 @@ public class Frag_inventory extends Fragment {
     }
 
     private void UpdateInventory(View view) {
-        if (String.valueOf(binding.inventoryName.getText()).isEmpty()
-                || String.valueOf(binding.inventoryLocation.getText()).isEmpty()) {
+        if (String.valueOf(binding.formInventory.inventoryName.getText()).isEmpty()
+                || String.valueOf(binding.formInventory.inventoryLocation.getText()).isEmpty()) {
             Toast.makeText(requireContext(), R.string.Please_Input_Inventory, Toast.LENGTH_SHORT).show();
         } else {
-            inventoryName = String.valueOf(binding.inventoryName.getText());
-            inventoryAddress = String.valueOf(binding.inventoryLocation.getText());
+            inventoryName = String.valueOf(binding.formInventory.inventoryName.getText());
+            inventoryAddress = String.valueOf(binding.formInventory.inventoryLocation.getText());
 
             inventoryViewModel.updateInventoryById(inventoryAddress, inventoryName, inventoryId);
             OnUpdateUI();
@@ -89,12 +89,12 @@ public class Frag_inventory extends Fragment {
     }
 
     private void SaveInventory(View view) {
-        if (String.valueOf(binding.inventoryName.getText()).isEmpty()
-                || String.valueOf(binding.inventoryLocation.getText()).isEmpty()) {
+        if (String.valueOf(binding.formInventory.inventoryName.getText()).isEmpty()
+                || String.valueOf(binding.formInventory.inventoryLocation.getText()).isEmpty()) {
             Toast.makeText(requireContext(), R.string.Please_Input_Inventory, Toast.LENGTH_SHORT).show();
         } else {
-            inventoryName = String.valueOf(binding.inventoryName.getText());
-            inventoryAddress = String.valueOf(binding.inventoryLocation.getText());
+            inventoryName = String.valueOf(binding.formInventory.inventoryName.getText());
+            inventoryAddress = String.valueOf(binding.formInventory.inventoryLocation.getText());
             inventoryViewModel.createInventory(new Inventory(inventoryName, inventoryAddress,
                     SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()),
                     DateHelper.getCurrentDate()));
@@ -103,25 +103,25 @@ public class Frag_inventory extends Fragment {
     }
 
     private void OnUpdateUI() {
-        binding.btnDeleteInventory.setVisibility(View.GONE);
-        binding.btnUpdateInventory.setVisibility(View.GONE);
-        binding.btnSaveInventory.setVisibility(View.VISIBLE);
+        binding.formInventory.btnDeleteInventory.setVisibility(View.GONE);
+        binding.formInventory.btnUpdateInventory.setVisibility(View.GONE);
+        binding.formInventory.btnSaveInventory.setVisibility(View.VISIBLE);
         binding.listInventory.setVisibility(View.VISIBLE);
-        binding.inventoryName.setText("");
-        binding.inventoryLocation.setText("");
-        binding.layoutAddInventory.setVisibility(View.GONE);
+        binding.formInventory.inventoryName.setText("");
+        binding.formInventory.inventoryLocation.setText("");
+        binding.formInventory.layoutAddInventory.setVisibility(View.GONE);
     }
 
 
     private void LayoutSaveInventory() {
         binding.listInventory.setVisibility(View.GONE);
-        binding.layoutAddInventory.setVisibility(View.VISIBLE);
+        binding.formInventory.layoutAddInventory.setVisibility(View.VISIBLE);
     }
 
     private void DeleteAndUpdate() {
-        binding.btnDeleteInventory.setVisibility(View.VISIBLE);
-        binding.btnUpdateInventory.setVisibility(View.VISIBLE);
-        binding.btnSaveInventory.setVisibility(View.GONE);
+        binding.formInventory.btnDeleteInventory.setVisibility(View.VISIBLE);
+        binding.formInventory.btnUpdateInventory.setVisibility(View.VISIBLE);
+        binding.formInventory.btnSaveInventory.setVisibility(View.GONE);
     }
 
 

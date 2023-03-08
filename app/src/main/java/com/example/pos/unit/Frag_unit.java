@@ -32,10 +32,10 @@ public class Frag_unit extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentFragUnitBinding.inflate(inflater, container, false);
         handler = new Handler();
-        binding.btnSaveUnit.setOnClickListener(this::SaveUnit);
-        binding.btnCancelUnit.setOnClickListener(this::CancelUnit);
-        binding.btnDeleteUnit.setOnClickListener(this::DeleteUnit);
-        binding.btnUpdateUnit.setOnClickListener(this::UpdateUnit);
+        binding.formUnit.btnSaveUnit.setOnClickListener(this::SaveUnit);
+        binding.formUnit.btnCancelUnit.setOnClickListener(this::CancelUnit);
+        binding.formUnit.btnDeleteUnit.setOnClickListener(this::DeleteUnit);
+        binding.formUnit.btnUpdateUnit.setOnClickListener(this::UpdateUnit);
         viewModel = new ViewModelProvider(this).get(UnitViewModel.class);
         GetAllProduct();
         OnCreateMenu();
@@ -44,23 +44,23 @@ public class Frag_unit extends Fragment {
 
 
     private void UpdateUnit(View view) {
-        if (binding.unitTitle.getText() != null) {
-                viewModel.updateUnitById(String.valueOf(binding.unitTitle.getText()), unitId);
-                OnUpdateUI();
+        if (binding.formUnit.unitTitle.getText() != null) {
+            viewModel.updateUnitById(String.valueOf(binding.formUnit.unitTitle.getText()), unitId);
+            OnUpdateUI();
         } else {
             Toast.makeText(requireContext(), R.string.Please_Input_Unit_Name, Toast.LENGTH_SHORT).show();
         }
     }
 
     private void DeleteUnit(View view) {
-            viewModel.deleteUnitById(unitId);
-            OnUpdateUI();
+        viewModel.deleteUnitById(unitId);
+        OnUpdateUI();
     }
 
     private void SaveUnit(View view) {
-        if (!String.valueOf(binding.unitTitle.getText()).isEmpty()) {
-                viewModel.createUnit(new Unit(String.valueOf(binding.unitTitle.getText()), SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()), DateHelper.getCurrentDate()));
-                OnUpdateUI();
+        if (!String.valueOf(binding.formUnit.unitTitle.getText()).isEmpty()) {
+            viewModel.createUnit(new Unit(String.valueOf(binding.formUnit.unitTitle.getText()), SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()), DateHelper.getCurrentDate()));
+            OnUpdateUI();
         } else {
             Toast.makeText(requireContext(), R.string.Please_Input_Unit_Name, Toast.LENGTH_SHORT).show();
         }
@@ -98,7 +98,7 @@ public class Frag_unit extends Fragment {
             }
             binding.listUnit.setOnItemClickListener((adapterView, view, i, l) -> {
                 unitId = unitList.get(i).getUnitId();
-                binding.unitTitle.setText(unitList.get(i).unitTitle);
+                binding.formUnit.unitTitle.setText(unitList.get(i).unitTitle);
                 LayoutSaveUnit();
                 DeleteAndUpdate();
             });
@@ -106,23 +106,23 @@ public class Frag_unit extends Fragment {
     }
 
     private void DeleteAndUpdate() {
-        binding.btnSaveUnit.setVisibility(View.GONE);
-        binding.btnUpdateUnit.setVisibility(View.VISIBLE);
-        binding.btnDeleteUnit.setVisibility(View.VISIBLE);
+        binding.formUnit.btnSaveUnit.setVisibility(View.GONE);
+        binding.formUnit.btnUpdateUnit.setVisibility(View.VISIBLE);
+        binding.formUnit.btnDeleteUnit.setVisibility(View.VISIBLE);
     }
 
 
     private void LayoutSaveUnit() {
         binding.listUnit.setVisibility(View.GONE);
-        binding.layoutAddUnit.setVisibility(View.VISIBLE);
+        binding.formUnit.layoutAddUnit.setVisibility(View.VISIBLE);
     }
 
     private void OnUpdateUI() {
         binding.listUnit.setVisibility(View.VISIBLE);
-        binding.layoutAddUnit.setVisibility(View.GONE);
-        binding.btnSaveUnit.setVisibility(View.VISIBLE);
-        binding.btnUpdateUnit.setVisibility(View.GONE);
-        binding.btnDeleteUnit.setVisibility(View.GONE);
-        binding.unitTitle.setText(null);
+        binding.formUnit.layoutAddUnit.setVisibility(View.GONE);
+        binding.formUnit.btnSaveUnit.setVisibility(View.VISIBLE);
+        binding.formUnit.btnUpdateUnit.setVisibility(View.GONE);
+        binding.formUnit.btnDeleteUnit.setVisibility(View.GONE);
+        binding.formUnit.unitTitle.setText(null);
     }
 }

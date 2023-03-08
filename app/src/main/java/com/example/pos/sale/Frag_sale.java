@@ -58,33 +58,6 @@ public class Frag_sale extends Fragment implements DeleteProductCallBack {
         return binding.getRoot();
     }
 
-    private void CalculateTotal() {
-        if (saleTransactionList != null) {
-            for (SaleTransaction saleTransaction : saleTransactionList) {
-                saleProductDiscount = saleTransaction.getProductDiscount() / 100;
-                saleProductQty = saleTransaction.getProductQty();
-                saleProductPrice = saleTransaction.getProductPrice();
-                saleProductDiscount = saleTransaction.getProductDiscount();
-                //Find Subtotal
-                if (saleProductDiscount == 0) {
-                    saleSubtotal += (saleProductPrice * saleProductQty);
-                    SetFinalPrice();
-                } else {
-                    saleSubtotal += (saleProductPrice * saleProductQty) - saleProductDiscount;
-                    SetFinalPrice();
-                }
-            }
-        }
-    }
-
-
-    private void ResetData() {
-        saleSubtotal = 0;
-        saleProductDiscount = 0;
-        saleProductPrice = 0;
-        saleProductQty = 0;
-        saleDiscount = 0;
-    }
 
     private void SetFinalPrice() {
         binding.saleTotal.setText(String.valueOf(saleSubtotal));
@@ -93,14 +66,7 @@ public class Frag_sale extends Fragment implements DeleteProductCallBack {
     }
 
     private void SalePay(View view) {
-        saleTransactionViewModel.deleteAfterPay();
-        ClearSaleTotal();
-    }
-
-    private void ClearSaleTotal() {
-        binding.saleTotal.setText("");
-        binding.saleDiscount.setText("");
-        binding.saleSubtotal.setText("");
+        //saleTransactionViewModel.deleteAfterPay();
     }
 
     private void BottomDialog() {
@@ -119,24 +85,25 @@ public class Frag_sale extends Fragment implements DeleteProductCallBack {
                 binding.listItemSale.setOnItemClickListener((adapterView, view, i, l) -> {
                     productId = transactionList.get(i).getProductId();
                     Glide.with(requireContext()).load(transactionList.get(i).getProductImagePath()).into(SaleBinding.customEditImageOnSale);
-                    SaleBinding.customEditProductPriceOnSale.setText(String.valueOf(transactionList.get(i).getProductPrice()));
-                    SaleBinding.customEditProductDiscountOnSale.setText(String.valueOf(transactionList.get(i).getProductDiscount()));
-                    SaleBinding.customEditProductQtyOnSale.setText(String.valueOf(transactionList.get(i).getProductQty()));
-                    SaleBinding.customBtnSaveEditProduct.setOnClickListener(view1 -> {
+                    SaleBinding.
+                            customEditProductPriceOnSale.setText(String.valueOf(transactionList.get(i).getProductPrice()));
+                    SaleBinding.
+                            customEditProductDiscountOnSale.setText(String.valueOf(transactionList.get(i).getProductDiscount()));
+                    SaleBinding.
+                            customEditProductQtyOnSale.setText(String.valueOf(transactionList.get(i).getProductQty()));
+                    SaleBinding.
+                            customBtnSaveEditProduct.setOnClickListener(view1 -> {
                         productPrice = Double.parseDouble(String.valueOf(SaleBinding.customEditProductPriceOnSale.getText()));
                         productDiscount = Double.parseDouble(String.valueOf(SaleBinding.customEditProductDiscountOnSale.getText()));
                         productQty = Integer.parseInt(String.valueOf(SaleBinding.customEditProductQtyOnSale.getText()));
                         saleTransactionViewModel.editProductOnSaleById(productPrice, productQty, productDiscount, productId);
                         bottomSheetDialog.dismiss();
-                        ClearSaleTotal();
-                        ResetData();
                         GetAllSale();
                     });
                     bottomSheetDialog.show();
                 });
             }
         });
-        CalculateTotal();
     }//GetAllSale
 
     @Override
@@ -160,5 +127,5 @@ public class Frag_sale extends Fragment implements DeleteProductCallBack {
                 return true;
             }
         }, getViewLifecycleOwner());
-    }
+    }//OnCreateMenu
 }

@@ -39,7 +39,6 @@ public class Frag_Dashboard extends Fragment {
     CategoryViewModel categoryViewModel;
     SaleTransactionViewModel saleTransactionViewModel;
     AdapterDashboard adapterDashboard;
-    List<SaleTransaction> saleTransactionList;
     List<Category> categoryList;
     int cartCount = 0;
     int itemCount = 0;
@@ -55,6 +54,7 @@ public class Frag_Dashboard extends Fragment {
     int productUnit;
     double productPrice;
     double productDiscount = 0;
+    List<SaleTransaction> saleTransactionList;
 
     CustomCheckPayTypeBinding checkPayTypeBinding;
     AlertDialog.Builder builder;
@@ -103,6 +103,37 @@ public class Frag_Dashboard extends Fragment {
     }
 
     /*
+    this method perform send data to sale transaction
+     */
+    private void SaveProductToTransaction() {
+        getQtyBottomSheet = String.valueOf(addToCartBinding.productQtyBottomSheet.getText());
+        if (getQtyBottomSheet.equals("0")) {
+            Toast.makeText(requireContext(), "Cannot Add Product Cause Qty Is 0", Toast.LENGTH_SHORT).show();
+        } else {
+            productQty = Integer.parseInt(String.valueOf(addToCartBinding.productQtyBottomSheet.getText()));
+            binding.floatActionbarSale.setVisibility(View.VISIBLE);
+            addToCartBinding.productQtyBottomSheet.setText("0");
+            bottomSheetDialog.dismiss();
+            binding.floatActionbarSale.setText(String.valueOf(cartCount += 1));
+            /*
+            Check if there already have the same item in invoice if so just update the qty
+             */
+            saleTransactionViewModel.createSaleTransaction(new SaleTransaction(productId, productName, productImagePath, productQty, productUnit, productPrice, productDiscount));
+            if (saleTransactionList != null) {
+                for (SaleTransaction saleTransaction : saleTransactionList) {
+                    if (saleTransaction.getProductId() == productId) {
+                        Toast.makeText(requireContext(), "" + saleTransaction.getProductName(), Toast.LENGTH_SHORT).show();
+                        saleTransactionViewModel.editProductOnSaleById(
+                                productPrice, (saleTransaction.getProductQty() + productQty), productDiscount, productId
+                        );
+                    }
+                }
+            }
+
+        }
+    }
+
+    /*
     remove observer to prevent memory lack
      */
     @Override
@@ -139,37 +170,6 @@ public class Frag_Dashboard extends Fragment {
             addToCartBinding.productQtyBottomSheet.setText(String.valueOf(itemCount -= 1));
         } else {
             addToCartBinding.productQtyBottomSheet.setText("0");
-        }
-    }
-
-    /*
-    this method perform send data to sale transaction
-     */
-    private void SaveProductToTransaction() {
-        getQtyBottomSheet = String.valueOf(addToCartBinding.productQtyBottomSheet.getText());
-        if (getQtyBottomSheet.equals("0")) {
-            Toast.makeText(requireContext(), "Cannot Add Product Cause Qty Is 0", Toast.LENGTH_SHORT).show();
-        } else {
-            productQty = Integer.parseInt(String.valueOf(addToCartBinding.productQtyBottomSheet.getText()));
-            binding.floatActionbarSale.setVisibility(View.VISIBLE);
-            addToCartBinding.productQtyBottomSheet.setText("0");
-            bottomSheetDialog.dismiss();
-            binding.floatActionbarSale.setText(String.valueOf(cartCount += 1));
-
-            /*
-            Check if there already have the same item in invoice if so just update the qty
-             */
-            if (saleTransactionList != null) {
-                saleTransactionViewModel.createSaleTransaction(new SaleTransaction(productId,
-                        productName, productImagePath, productQty, productUnit, productPrice, productDiscount));
-                for (SaleTransaction saleTransaction : saleTransactionList) {
-                    if (saleTransaction.getProductId() == productId) {
-                        int finalQty = saleTransaction.getProductQty() + productQty;
-                        saleTransactionViewModel.editProductOnSaleById(saleTransaction.getProductPrice()
-                                , finalQty, saleTransaction.productDiscount, saleTransaction.getProductId());
-                    }
-                }
-            }
         }
     }
 

@@ -137,5 +137,8 @@
     <string name="pay_by_card">Card</string>
     <string name="pay_by_cash">Cash</string>
     <string name="go_dashboard">dashboard</string>
+    <string name="balance">Balance</string>
+    <string name="double_dot"> : </string>
+    <string name="Cash_drawer">Cash Drawer</string>
 
 </resources>
