@@ -1,2 +1,2 @@
 /*1 February 2023*/
-Sample POS
+Test Build POS in Java
