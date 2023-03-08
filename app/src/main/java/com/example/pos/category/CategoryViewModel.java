@@ -20,7 +20,7 @@ public class CategoryViewModel extends AndroidViewModel {
     }
 
     public void createCategory(Category category) {
-        posDatabase.getDao().createCategory(category);
+        new Thread(() -> posDatabase.getDao().createCategory(category)).start();
     }
 
     public LiveData<List<Category>> getAllCategory() {
@@ -28,10 +28,10 @@ public class CategoryViewModel extends AndroidViewModel {
     }
 
     public void updateCategoryById(String categoryName, int categoryId) {
-        posDatabase.getDao().updateCategoryById(categoryName, categoryId);
+        new Thread(() -> posDatabase.getDao().updateCategoryById(categoryName, categoryId)).start();
     }
 
     public void deleteCategoryById(int categoryId) {
-        posDatabase.getDao().deleteCategoryById(categoryId);
+        new Thread(() -> posDatabase.getDao().deleteCategoryById(categoryId)).start();
     }
 }

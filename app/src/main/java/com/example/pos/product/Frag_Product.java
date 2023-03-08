@@ -5,7 +5,6 @@ import static android.app.Activity.RESULT_OK;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -53,7 +52,6 @@ public class Frag_Product extends Fragment {
     AdapterCategory adapterCategory;
     AdapterUnit adapterUnit;
     AdapterInventory adapterInventory;
-    Handler handler;
     Random rnd;
     String productName;
     int productId;
@@ -73,7 +71,6 @@ public class Frag_Product extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentFragProductBinding.inflate(getLayoutInflater(), container, false);
-        handler = new Handler();
         productViewModel = new ViewModelProvider(this).get(ProductViewModel.class);
         unitViewModel = new ViewModelProvider(this).get(UnitViewModel.class);
         categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
@@ -113,13 +110,9 @@ public class Frag_Product extends Fragment {
 
 
     private void DeleteProduct(View view) {
-        new Thread(() -> {
-            productViewModel.deleteProductById(productId);
-            handler.post(() -> {
-                OnUpdateUI();
-                Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show();
-            });
-        }).start();
+        productViewModel.deleteProductById(productId);
+        OnUpdateUI();
+        Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show();
     }
 
     private void SaveProduct(View view) {
@@ -137,10 +130,8 @@ public class Frag_Product extends Fragment {
             productPrice = Double.parseDouble(String.valueOf(binding.addProductPrice.getText()));
             productCost = Double.parseDouble(String.valueOf(binding.addProductCost.getText()));
             productTax = Double.parseDouble(String.valueOf(binding.addProductTax.getText()));
-            new Thread(() -> {
-                productViewModel.createProduct(new Product(productName, productQty, unitSpinnerId, productCode, productCost, productPrice, productTax, inventorySpinnerId, categorySpinnerId, supplierSpinnerId, file.toString(), SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()), DateHelper.getCurrentDate()));
-                handler.post(this::OnUpdateUI);
-            }).start();
+            productViewModel.createProduct(new Product(productName, productQty, unitSpinnerId, productCode, productCost, productPrice, productTax, inventorySpinnerId, categorySpinnerId, supplierSpinnerId, file.toString(), SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()), DateHelper.getCurrentDate()));
+            OnUpdateUI();
         }
     }
 
@@ -160,13 +151,11 @@ public class Frag_Product extends Fragment {
             productPrice = Double.parseDouble(String.valueOf(binding.addProductPrice.getText()));
             productCost = Double.parseDouble(String.valueOf(binding.addProductCost.getText()));
             productTax = Double.parseDouble(String.valueOf(binding.addProductTax.getText()));
-            new Thread(() -> {
-                productViewModel.updateProductById(productName, productQty, unitSpinnerId, productCode, productCost, productPrice,
-                        productTax, inventorySpinnerId, categorySpinnerId, supplierSpinnerId, file.toString(),
-                        SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()),
-                        DateHelper.getCurrentDate(), productId);
-                handler.post(this::OnUpdateUI);
-            }).start();
+            productViewModel.updateProductById(productName, productQty, unitSpinnerId, productCode, productCost, productPrice,
+                    productTax, inventorySpinnerId, categorySpinnerId, supplierSpinnerId, file.toString(),
+                    SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()),
+                    DateHelper.getCurrentDate(), productId);
+            OnUpdateUI();
         }
 
     }

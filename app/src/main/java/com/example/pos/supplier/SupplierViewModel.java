@@ -24,17 +24,21 @@ public class SupplierViewModel extends AndroidViewModel {
     }
 
     public void createSupplier(Supplier supplier) {
-        posDatabase.getDao().createSupplier(supplier);
+
+        new Thread(() -> posDatabase.getDao().createSupplier(supplier)).start();
+
+
     }
 
     public void deleteSupplierById(int Id) {
-        posDatabase.getDao().deleteSupplierById(Id);
+        new Thread(() -> posDatabase.getDao().deleteSupplierById(Id)).start();
     }
 
     public void updateSupplierById(String supplierName, String supplierAddress, String supplierSex,
                                    String supplierPhoneNumber, int Id) {
-        posDatabase.getDao().updateSupplierById(supplierName, supplierAddress, supplierSex,
-                supplierPhoneNumber, Id);
+        new Thread(() -> posDatabase.getDao().updateSupplierById(supplierName, supplierAddress, supplierSex,
+                supplierPhoneNumber, Id)).start();
+
     }
 
 }

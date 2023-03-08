@@ -24,18 +24,21 @@ public class CustomerViewModel extends AndroidViewModel {
     }
 
     public void createCustomer(Customer customer) {
-        posDatabase.getDao().createCustomer(customer);
+        new Thread(() -> posDatabase.getDao().createCustomer(customer)).start();
+
     }
 
     public void updateCustomerById(String customerName, String customerSex, String customerPhoneNumber, double customerDiscount,
                                    String customerAddress,
                                    int customerId) {
-        posDatabase.getDao().updateCustomerById(customerName, customerSex, customerPhoneNumber, customerDiscount, customerAddress,
-                customerId);
+
+        new Thread(() -> posDatabase.getDao().updateCustomerById(customerName, customerSex, customerPhoneNumber, customerDiscount, customerAddress,
+                customerId)).start();
     }
 
     public void deleteCustomerById(int customerId) {
-        posDatabase.getDao().deleteCustomerById(customerId);
+        new Thread(() -> posDatabase.getDao().deleteCustomerById(customerId)).start();
+
     }
 
 }

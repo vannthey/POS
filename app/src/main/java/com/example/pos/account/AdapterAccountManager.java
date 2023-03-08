@@ -5,10 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.pos.Database.Entity.UserAccount;
-import com.example.pos.R;
 import com.example.pos.databinding.CustomListAllUserBinding;
 
 import java.util.List;
@@ -47,6 +46,7 @@ public class AdapterAccountManager extends BaseAdapter {
         }
         binding.userName.setText(userAccountList.get(i).getUsername());
         binding.userRole.setText(userAccountList.get(i).getUserRole());
+        Glide.with(context).load(userAccountList.get(i).getProfilePath()).into(binding.imageUserAccount);
         return view;
     }
 }

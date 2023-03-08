@@ -46,21 +46,11 @@ public class UserAccount {
     Boolean canDiscount;
 
     @ColumnInfo
-    public
-    Boolean canUpdate;
+    public Boolean canChangePrice;
 
     @ColumnInfo
     public
-    Boolean canAddItem;
-
-    @ColumnInfo
-    public
-    Boolean canAddCategory;
-
-    @ColumnInfo
-    public
-    Boolean canDeleteItem;
-
+    String creator;
     @ColumnInfo
     public
     String createDate;
@@ -68,7 +58,7 @@ public class UserAccount {
     public UserAccount() {
     }
 
-    public UserAccount(String firstname, String lastname, String sex, String DOB, String address, String username, String password, String userRole, String profilePath, Boolean canDiscount, Boolean canUpdate, Boolean canAddItem, Boolean canAddCategory, Boolean canDeleteItem, String createDate) {
+    public UserAccount(String firstname, String lastname, String sex, String DOB, String address, String username, String password, String userRole, String profilePath, Boolean canDiscount, Boolean canChangePrice, String creator, String createDate) {
         Firstname = firstname;
         Lastname = lastname;
         Sex = sex;
@@ -79,33 +69,9 @@ public class UserAccount {
         UserRole = userRole;
         ProfilePath = profilePath;
         this.canDiscount = canDiscount;
-        this.canUpdate = canUpdate;
-        this.canAddItem = canAddItem;
-        this.canAddCategory = canAddCategory;
-        this.canDeleteItem = canDeleteItem;
+        this.canChangePrice = canChangePrice;
+        this.creator = creator;
         this.createDate = createDate;
-    }
-
-    @Override
-    public String toString() {
-        return "UserAccount{" +
-                "userId=" + userId +
-                ", Firstname='" + Firstname + '\'' +
-                ", Lastname='" + Lastname + '\'' +
-                ", Sex='" + Sex + '\'' +
-                ", DOB='" + DOB + '\'' +
-                ", Address='" + Address + '\'' +
-                ", Username='" + Username + '\'' +
-                ", Password='" + Password + '\'' +
-                ", UserRole='" + UserRole + '\'' +
-                ", ProfilePath='" + ProfilePath + '\'' +
-                ", canDiscount=" + canDiscount +
-                ", canUpdate=" + canUpdate +
-                ", canAddItem=" + canAddItem +
-                ", canAddCategory=" + canAddCategory +
-                ", canDeleteItem=" + canDeleteItem +
-                ", createDate='" + createDate + '\'' +
-                '}';
     }
 
     public int getUserId() {
@@ -152,23 +118,35 @@ public class UserAccount {
         return canDiscount;
     }
 
-    public Boolean getCanUpdate() {
-        return canUpdate;
+    public Boolean getCanChangePrice() {
+        return canChangePrice;
     }
 
-    public Boolean getCanAddItem() {
-        return canAddItem;
-    }
-
-    public Boolean getCanAddCategory() {
-        return canAddCategory;
-    }
-
-    public Boolean getCanDeleteItem() {
-        return canDeleteItem;
+    public String getCreator() {
+        return creator;
     }
 
     public String getCreateDate() {
         return createDate;
+    }
+
+    @Override
+    public String toString() {
+        return "UserAccount{" +
+                "userId=" + userId +
+                ", Firstname='" + Firstname + '\'' +
+                ", Lastname='" + Lastname + '\'' +
+                ", Sex='" + Sex + '\'' +
+                ", DOB='" + DOB + '\'' +
+                ", Address='" + Address + '\'' +
+                ", Username='" + Username + '\'' +
+                ", Password='" + Password + '\'' +
+                ", UserRole='" + UserRole + '\'' +
+                ", ProfilePath='" + ProfilePath + '\'' +
+                ", canDiscount=" + canDiscount +
+                ", canChangePrice=" + canChangePrice +
+                ", creator='" + creator + '\'' +
+                ", createDate='" + createDate + '\'' +
+                '}';
     }
 }

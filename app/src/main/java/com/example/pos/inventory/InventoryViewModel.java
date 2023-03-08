@@ -24,14 +24,14 @@ public class InventoryViewModel extends AndroidViewModel {
     }
 
     public void createInventory(Inventory inventory) {
-        posDatabase.getDao().createInventory(inventory);
+        new Thread(() -> posDatabase.getDao().createInventory(inventory)).start();
     }
 
     public void deleteInventoryById(int inventoryId) {
-        posDatabase.getDao().deleteInventoryById(inventoryId);
+        new Thread(() -> posDatabase.getDao().deleteInventoryById(inventoryId)).start();
     }
 
     public void updateInventoryById(String inventoryAddress, String inventoryName, int inventoryId) {
-        posDatabase.getDao().updateInventoryById(inventoryAddress, inventoryName, inventoryId);
+        new Thread(() -> posDatabase.getDao().updateInventoryById(inventoryAddress, inventoryName, inventoryId)).start();
     }
 }

@@ -20,7 +20,7 @@ public class ProductViewModel extends AndroidViewModel {
     }
 
     public void createProduct(Product product) {
-        posDatabase.getDao().createProduct(product);
+        new Thread(() -> posDatabase.getDao().createProduct(product)).start();
     }
 
     public LiveData<List<Product>> getAllProduct() {
@@ -28,15 +28,15 @@ public class ProductViewModel extends AndroidViewModel {
     }
 
     public void deleteProductById(int productId) {
-        posDatabase.getDao().deleteProductById(productId);
+        new Thread(() -> posDatabase.getDao().deleteProductById(productId)).start();
     }
 
     public void updateProductById(String productName, int productQty, int productUnitId, long productCode,
                                   double productCost,
                                   double productPrice, double productTax, int inventoryId, int categoryId, int supplierId,
                                   String imagePath, String creator, String createDate, int productId) {
-        posDatabase.getDao().updateProductById(productName, productQty, productUnitId, productCode, productCost,
-                productPrice, productTax, inventoryId, categoryId, supplierId, imagePath, creator, createDate, productId);
+        new Thread(() -> posDatabase.getDao().updateProductById(productName, productQty, productUnitId, productCode, productCost,
+                productPrice, productTax, inventoryId, categoryId, supplierId, imagePath, creator, createDate, productId)).start();
     }
 
 }

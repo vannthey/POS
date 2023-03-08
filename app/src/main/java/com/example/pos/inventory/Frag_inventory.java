@@ -1,7 +1,6 @@
 package com.example.pos.inventory;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,7 +24,6 @@ import com.example.pos.databinding.FragmentFragInventoryBinding;
 public class Frag_inventory extends Fragment {
     FragmentFragInventoryBinding binding;
     InventoryViewModel inventoryViewModel;
-    Handler handler;
     String inventoryName;
     String inventoryAddress;
     int inventoryId;
@@ -33,7 +31,6 @@ public class Frag_inventory extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         inventoryViewModel = new ViewModelProvider(this).get(InventoryViewModel.class);
-        handler = new Handler();
         super.onCreate(savedInstanceState);
     }
 
@@ -79,19 +76,16 @@ public class Frag_inventory extends Fragment {
         } else {
             inventoryName = String.valueOf(binding.inventoryName.getText());
             inventoryAddress = String.valueOf(binding.inventoryLocation.getText());
-            new Thread(() -> {
-                inventoryViewModel.updateInventoryById(inventoryAddress, inventoryName, inventoryId);
-                handler.post(this::OnUpdateUI);
-            }).start();
+
+            inventoryViewModel.updateInventoryById(inventoryAddress, inventoryName, inventoryId);
+            OnUpdateUI();
         }
 
     }
 
     private void DeleteInventory(View view) {
-        new Thread(() -> {
-            inventoryViewModel.deleteInventoryById(inventoryId);
-            handler.post(this::OnUpdateUI);
-        }).start();
+        inventoryViewModel.deleteInventoryById(inventoryId);
+        OnUpdateUI();
     }
 
     private void SaveInventory(View view) {
@@ -101,15 +95,12 @@ public class Frag_inventory extends Fragment {
         } else {
             inventoryName = String.valueOf(binding.inventoryName.getText());
             inventoryAddress = String.valueOf(binding.inventoryLocation.getText());
-            new Thread(() -> {
-                inventoryViewModel.createInventory(new Inventory(inventoryName, inventoryAddress,
-                        SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()),
-                        DateHelper.getCurrentDate()));
-                handler.post(this::OnUpdateUI);
-            }).start();
+            inventoryViewModel.createInventory(new Inventory(inventoryName, inventoryAddress,
+                    SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()),
+                    DateHelper.getCurrentDate()));
+            OnUpdateUI();
         }
     }
-
 
     private void OnUpdateUI() {
         binding.btnDeleteInventory.setVisibility(View.GONE);

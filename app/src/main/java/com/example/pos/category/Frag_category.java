@@ -1,7 +1,6 @@
 package com.example.pos.category;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,14 +24,11 @@ import com.example.pos.databinding.FragmentFragCategoryBinding;
 public class Frag_category extends Fragment {
     FragmentFragCategoryBinding binding;
     CategoryViewModel categoryViewModel;
-
-    Handler handler;
     String categoryName;
     int categoryId;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        handler = new Handler();
         categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
         super.onCreate(savedInstanceState);
     }
@@ -53,12 +49,10 @@ public class Frag_category extends Fragment {
 
     private void SaveCategory(View view) {
         if (!String.valueOf(binding.categoryName.getText()).isEmpty()) {
-            new Thread(() -> {
-                categoryViewModel.createCategory(new Category(String.valueOf(binding.categoryName.getText()),
-                        SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()),
-                        DateHelper.getCurrentDate()));
-                handler.post(this::OnUpdateUI);
-            }).start();
+            categoryViewModel.createCategory(new Category(String.valueOf(binding.categoryName.getText()),
+                    SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()),
+                    DateHelper.getCurrentDate()));
+            OnUpdateUI();
         } else {
             Toast.makeText(requireContext(), R.string.Please_Input_Category_Name,
                     Toast.LENGTH_SHORT).show();
@@ -66,22 +60,18 @@ public class Frag_category extends Fragment {
     }
 
     private void UpdateCategory(View view) {
-        new Thread(() -> {
-            if (binding.categoryName.getText() != null) {
-                categoryViewModel.updateCategoryById(categoryName =
-                        String.valueOf(binding.categoryName.getText()), categoryId);
-                handler.post(this::OnUpdateUI);
-            } else {
-                Toast.makeText(requireContext(), R.string.Please_Input_Category_Name, Toast.LENGTH_SHORT).show();
-            }
-        }).start();
+        if (binding.categoryName.getText() != null) {
+            categoryViewModel.updateCategoryById(categoryName =
+                    String.valueOf(binding.categoryName.getText()), categoryId);
+            OnUpdateUI();
+        } else {
+            Toast.makeText(requireContext(), R.string.Please_Input_Category_Name, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void DeleteCategory(View view) {
-        new Thread(() -> {
-            categoryViewModel.deleteCategoryById(categoryId);
-            handler.post(this::OnUpdateUI);
-        }).start();
+        categoryViewModel.deleteCategoryById(categoryId);
+        OnUpdateUI();
     }
 
     private void CancelCategory(View view) {

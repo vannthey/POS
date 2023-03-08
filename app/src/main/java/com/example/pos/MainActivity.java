@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -44,26 +43,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         setSupportActionBar(binding.actionBar.customActionbar);
         setTitle("Dashboard");
-        if (SharedPrefHelper.getInstance().getDefaultUser(this).contains("Admin")) {
-            binding.navDrawerView.getMenu().findItem(R.id.NavSale).setVisible(false);
-            binding.navDrawerView.getMenu().findItem(R.id.NavPreference).setVisible(false);
-            binding.navDrawerView.getMenu().findItem(R.id.NavProduct).setVisible(false);
-            binding.navDrawerView.getMenu().findItem(R.id.NavReport).setVisible(false);
-            TextView userOnNavDrawer = binding.navDrawerView.getHeaderView(0).findViewById(R.id.userOnNavDrawer);
-            String defaultUsername = "Admin";
-            userOnNavDrawer.setText(defaultUsername);
-            TextView userRoleOnNavDrawer = binding.navDrawerView.getHeaderView(0).findViewById(R.id.userRoleOnNavDrawer);
-            String defaultUser = "DefaultUser";
-            userRoleOnNavDrawer.setText(defaultUser);
-            binding.mainFrameLayout.setVisibility(View.GONE);
-        } else {
-            SetUserNameAndRole();
-        }
-        languageBinding = CustomChangeLanguageBinding.inflate(getLayoutInflater());
-        bottomSheetDialog = new BottomSheetDialog(this);
-        bottomSheetDialog.setContentView(languageBinding.getRoot());
-        bottomSheetDialog.create();
-
+        binding.navDrawerView.setCheckedItem(R.id.dashboad);
+        setStateFragment(new Frag_Dashboard());
+        SetUserNameAndRole();
 
         drawerToggle = new ActionBarDrawerToggle(this, binding.navDrawerLayout, binding.actionBar.customActionbar, R.string.Navigation_drawer_open, R.string.Navigation_drawer_close);
 
@@ -73,8 +55,7 @@ public class MainActivity extends AppCompatActivity {
         binding.navDrawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
         binding.navDrawerView.setNavigationItemSelectedListener(this::NavigationSelected);
-        binding.navDrawerView.setCheckedItem(R.id.dashboad);
-        setStateFragment(new Frag_Dashboard());
+
     }
 
     private void SetUserNameAndRole() {
@@ -154,8 +135,11 @@ public class MainActivity extends AppCompatActivity {
                 dialog.show();
                 break;
             case R.id.manage_account:
+                setTitle(R.string.account_management);
                 startActivity(new Intent(this, ManageAccountActivity.class));
                 break;
+
+
         }
         binding.navDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
@@ -166,12 +150,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void ChangeLanguage() {
+        languageBinding = CustomChangeLanguageBinding.inflate(getLayoutInflater());
+        bottomSheetDialog = new BottomSheetDialog(this);
+        bottomSheetDialog.setContentView(languageBinding.getRoot());
+        bottomSheetDialog.create();
         bottomSheetDialog.show();
     }
 
     public void SaleNavigator() {
-        View view = binding.navDrawerView.findViewById(R.id.sale);
-        view.callOnClick();
+        binding.navDrawerView.findViewById(R.id.sale).callOnClick();
+    }
+
+    public void DashboardNavigator() {
+        binding.navDrawerView.findViewById(R.id.dashboad).callOnClick();
     }
 
     @Override

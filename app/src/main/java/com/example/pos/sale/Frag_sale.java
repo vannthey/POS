@@ -1,18 +1,23 @@
 package com.example.pos.sale;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.example.pos.Database.Entity.SaleTransaction;
+import com.example.pos.MainActivity;
+import com.example.pos.R;
 import com.example.pos.databinding.CustomEditProductOnSaleBinding;
 import com.example.pos.databinding.FragmentFragSaleBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -30,7 +35,6 @@ public class Frag_sale extends Fragment implements DeleteProductCallBack {
     double productPrice;
     double productDiscount;
     int productQty;
-    Handler handler;
     double saleDiscount;
     double saleSubtotal;
     double saleProductDiscount;
@@ -39,7 +43,6 @@ public class Frag_sale extends Fragment implements DeleteProductCallBack {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        handler = new Handler();
         saleTransactionViewModel = new ViewModelProvider(this).get(SaleTransactionViewModel.class);
         super.onCreate(savedInstanceState);
     }
@@ -51,6 +54,7 @@ public class Frag_sale extends Fragment implements DeleteProductCallBack {
         binding.btnSalePay.setOnClickListener(this::SalePay);
         GetAllSale();
         BottomDialog();
+        OnCreateMenu();
         return binding.getRoot();
     }
 
@@ -89,10 +93,7 @@ public class Frag_sale extends Fragment implements DeleteProductCallBack {
     }
 
     private void SalePay(View view) {
-        new Thread(() -> {
-            saleTransactionViewModel.deleteAfterPay();
-            handler.post(this::GetAllSale);
-        }).start();
+        saleTransactionViewModel.deleteAfterPay();
         ClearSaleTotal();
     }
 
@@ -110,48 +111,54 @@ public class Frag_sale extends Fragment implements DeleteProductCallBack {
 
     }
 
-
     private void GetAllSale() {
-        saleTransactionViewModel.getAllSaleTransaction().observe(getViewLifecycleOwner(),
-                transactionList -> {
-                    if (transactionList != null) {
-                        saleTransactionList = transactionList;
-                        binding.listItemSale.setAdapter(new AdapterSale(this, requireContext(),
-                                transactionList));
-                        binding.listItemSale.setOnItemClickListener((adapterView, view, i, l) -> {
-                            productId = transactionList.get(i).getProductId();
-                            Glide.with(requireContext()).load(transactionList.get(i).getProductImagePath()).into(SaleBinding.customEditImageOnSale);
-                            SaleBinding.customEditProductPriceOnSale.setText(String.valueOf(transactionList.get(i).getProductPrice()));
-                            SaleBinding.customEditProductDiscountOnSale.setText(String.valueOf(transactionList.get(i).getProductDiscount()));
-                            SaleBinding.customEditProductQtyOnSale.setText(String.valueOf(transactionList.get(i).getProductQty()));
-                            SaleBinding.customBtnSaveEditProduct.setOnClickListener(view1 -> {
-                                productPrice =
-                                        Double.parseDouble(String.valueOf(SaleBinding.customEditProductPriceOnSale.getText()));
-                                productDiscount =
-                                        Double.parseDouble(String.valueOf(SaleBinding.customEditProductDiscountOnSale.getText()));
-                                productQty =
-                                        Integer.parseInt(String.valueOf(SaleBinding.customEditProductQtyOnSale.getText()));
-                                new Thread(() -> {
-                                    saleTransactionViewModel.editProductOnSaleById
-                                            (productPrice, productQty, productDiscount, productId);
-                                    handler.post(() -> {
-                                        bottomSheetDialog.dismiss();
-                                        ClearSaleTotal();
-                                        ResetData();
-                                        GetAllSale();
-                                    });
-                                }).start();
-
-                            });
-                            bottomSheetDialog.show();
-                        });
-                    }
+        saleTransactionViewModel.getAllSaleTransaction().observe(getViewLifecycleOwner(), transactionList -> {
+            if (transactionList != null) {
+                saleTransactionList = transactionList;
+                binding.listItemSale.setAdapter(new AdapterSale(this, requireContext(), transactionList));
+                binding.listItemSale.setOnItemClickListener((adapterView, view, i, l) -> {
+                    productId = transactionList.get(i).getProductId();
+                    Glide.with(requireContext()).load(transactionList.get(i).getProductImagePath()).into(SaleBinding.customEditImageOnSale);
+                    SaleBinding.customEditProductPriceOnSale.setText(String.valueOf(transactionList.get(i).getProductPrice()));
+                    SaleBinding.customEditProductDiscountOnSale.setText(String.valueOf(transactionList.get(i).getProductDiscount()));
+                    SaleBinding.customEditProductQtyOnSale.setText(String.valueOf(transactionList.get(i).getProductQty()));
+                    SaleBinding.customBtnSaveEditProduct.setOnClickListener(view1 -> {
+                        productPrice = Double.parseDouble(String.valueOf(SaleBinding.customEditProductPriceOnSale.getText()));
+                        productDiscount = Double.parseDouble(String.valueOf(SaleBinding.customEditProductDiscountOnSale.getText()));
+                        productQty = Integer.parseInt(String.valueOf(SaleBinding.customEditProductQtyOnSale.getText()));
+                        saleTransactionViewModel.editProductOnSaleById(productPrice, productQty, productDiscount, productId);
+                        bottomSheetDialog.dismiss();
+                        ClearSaleTotal();
+                        ResetData();
+                        GetAllSale();
+                    });
+                    bottomSheetDialog.show();
                 });
+            }
+        });
         CalculateTotal();
-    }
+    }//GetAllSale
 
     @Override
     public void doDelete(int id) {
-        new Thread(() -> saleTransactionViewModel.deleteSaleTransactionById(id)).start();
+        saleTransactionViewModel.deleteSaleTransactionById(id);
+    }
+
+    private void OnCreateMenu() {
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menuInflater.inflate(R.menu.option_menu, menu);
+                menu.findItem(R.id.go_dashboard).setVisible(true);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.go_dashboard) {
+                    ((MainActivity) requireActivity()).DashboardNavigator();
+                }
+                return true;
+            }
+        }, getViewLifecycleOwner());
     }
 }

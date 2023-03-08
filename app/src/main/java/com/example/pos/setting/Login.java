@@ -12,6 +12,7 @@ import com.example.pos.Database.Entity.UserAccount;
 import com.example.pos.Database.POSDatabase;
 import com.example.pos.MainActivity;
 import com.example.pos.SharedPrefHelper;
+import com.example.pos.account.ManageAccountActivity;
 import com.example.pos.databinding.ActivityLoginBinding;
 
 import java.util.List;
@@ -39,7 +40,7 @@ public class Login extends AppCompatActivity {
         Password = String.valueOf(binding.txtPassword.getText());
         if (Username.equals("Admin") && Password.equals("Admin")) {
             SharedPrefHelper.getInstance().SaveDefaultUser(Username, Password, this);
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, ManageAccountActivity.class));
         }
         new Thread(() -> {
             userAccounts =
@@ -54,9 +55,7 @@ public class Login extends AppCompatActivity {
                     startActivity(new Intent(this, MainActivity.class));
                     finish();
                 } else {
-                    handler.post(() -> {
-                        Toast.makeText(this, "Invalidate Login", Toast.LENGTH_SHORT).show();
-                    });
+                    Toast.makeText(this, "Invalidate Login", Toast.LENGTH_SHORT).show();
                 }
             }
         }).start();

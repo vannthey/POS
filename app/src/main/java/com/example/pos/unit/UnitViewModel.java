@@ -24,14 +24,22 @@ public class UnitViewModel extends AndroidViewModel {
     }
 
     public void createUnit(Unit unit) {
-        posDatabase.getDao().createUnit(unit);
+        new Thread(()->{
+            posDatabase.getDao().createUnit(unit);
+        }).start();
+
     }
 
     public void updateUnitById(String unitTitle, int unitId) {
-        posDatabase.getDao().updateUnitById(unitTitle, unitId);
+        new Thread(()->{
+            posDatabase.getDao().updateUnitById(unitTitle, unitId);
+        }).start();
+
     }
 
     public void deleteUnitById(int unitId) {
-        posDatabase.getDao().deleteUnitById(unitId);
+        new Thread(()->{
+            posDatabase.getDao().deleteUnitById(unitId);
+        }).start();
     }
 }

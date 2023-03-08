@@ -35,14 +35,16 @@
                 android:layout_height="150dp"
                 android:layout_gravity="center"
                 android:contentDescription="@null"
+                android:src="@drawable/ic_image"
                 app:civ_border_color="@color/Egyptian_Blue"
-                app:civ_border_width="1dp"
-                android:src="@drawable/ic_image" />
+                app:civ_border_width="1dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/personal_information" />
+                android:layout_marginTop="10dp"
+                android:text="@string/personal_information"
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -53,8 +55,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginEnd="5dp"
                     android:layout_weight="1">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -69,8 +70,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="5dp"
                     android:layout_weight="1">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -92,8 +92,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginEnd="5dp"
                     android:layout_weight="1">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -108,8 +107,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="5dp"
                     android:layout_weight="1"
                     app:passwordToggleEnabled="true">
 
@@ -130,51 +128,64 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:layout_weight="1"
-                    android:text="@string/sex" />
+                    android:text="@string/sex"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:layout_weight="1"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="0dp"
-                    android:text="@string/date_of_birth" />
+                    android:text="@string/date_of_birth"
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/is_male"
+                <RadioGroup
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:buttonTint="@color/Egyptian_Blue"
-                    android:text="@string/male" />
+                    android:gravity="center"
+                    android:id="@+id/userAccountSex"
+                    android:orientation="horizontal">
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/is_female"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:buttonTint="@color/Egyptian_Blue"
-                    android:text="@string/female" />
+                    <RadioButton
+                        android:id="@+id/is_male"
+                        style="@style/Widget.AppCompat.CompoundButton.CheckBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/Egyptian_Blue"
+                        android:text="@string/male" />
+
+                    <RadioButton
+                        android:id="@+id/is_female"
+                        style="@style/Widget.AppCompat.CompoundButton.CheckBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/Egyptian_Blue"
+                        android:text="@string/female" />
+                </RadioGroup>
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_weight="2">
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/txt_date_of_birth"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableEnd="@drawable/ic_date" />
+                        android:drawableEnd="@drawable/ic_date"
+                        android:importantForAccessibility="no" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -183,19 +194,20 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/address" />
+                android:layout_marginTop="10dp"
+                android:text="@string/address"
+                android:textSize="16sp" />
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp">
+                android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/txt_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:importantForAccessibility="no"
                     android:maxHeight="100dp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -203,57 +215,66 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/position" />
+                android:layout_marginTop="10dp"
+                android:text="@string/position"
+                android:textSize="16sp" />
 
-            <LinearLayout
+
+            <RadioGroup
+                android:id="@+id/accountPosition"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp">
+                android:orientation="horizontal">
 
-                <com.google.android.material.checkbox.MaterialCheckBox
+                <RadioButton
                     android:id="@+id/isAdmin"
-                    android:layout_width="wrap_content"
+                    style="@style/Widget.AppCompat.CompoundButton.CheckBox"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:buttonTint="@color/Egyptian_Blue"
                     android:text="@string/admin" />
 
-                <com.google.android.material.checkbox.MaterialCheckBox
+                <RadioButton
                     android:id="@+id/isManager"
-                    android:layout_width="wrap_content"
+                    style="@style/Widget.AppCompat.CompoundButton.CheckBox"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:buttonTint="@color/Egyptian_Blue"
                     android:text="@string/manager" />
 
-                <com.google.android.material.checkbox.MaterialCheckBox
+                <RadioButton
                     android:id="@+id/isSeller"
-                    android:layout_width="wrap_content"
+                    style="@style/Widget.AppCompat.CompoundButton.CheckBox"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:buttonTint="@color/Egyptian_Blue"
                     android:text="@string/seller" />
 
-                <com.google.android.material.checkbox.MaterialCheckBox
+                <RadioButton
                     android:id="@+id/isCashier"
-                    android:layout_width="wrap_content"
+                    style="@style/Widget.AppCompat.CompoundButton.CheckBox"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:buttonTint="@color/Egyptian_Blue"
                     android:text="@string/cashier" />
-            </LinearLayout>
+
+
+            </RadioGroup>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/permission" />
+                android:layout_marginTop="10dp"
+                android:text="@string/permission"
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp">
+                android:layout_height="wrap_content">
 
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/canDiscount"
@@ -264,43 +285,13 @@
                     android:text="@string/discount" />
 
                 <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/canUpdateItem"
+                    android:id="@+id/canChangePrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:buttonTint="@color/Egyptian_Blue"
-                    android:text="@string/update_item" />
+                    android:text="@string/Change_price" />
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/canAddItem"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:buttonTint="@color/Egyptian_Blue"
-                    android:text="@string/add_item" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp">
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/canAddCategory"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:buttonTint="@color/Egyptian_Blue"
-                    android:text="@string/add_category" />
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/canDeleteItem"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:buttonTint="@color/Egyptian_Blue"
-                    android:text="@string/delete_item" />
             </LinearLayout>
 
             <LinearLayout
@@ -311,20 +302,17 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnCancelCreateUser"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_height="60dp"
+                    android:layout_marginEnd="5dp"
                     android:layout_weight="1"
+                    android:backgroundTint="@color/Deep_Saffron"
                     android:text="@string/cancel"
-                    android:textAllCaps="false"
-                    app:rippleColor="@color/gray" />
+                    android:textAllCaps="false" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnSaveCreateUser"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_height="60dp"
                     android:layout_weight="1"
                     android:backgroundTint="@color/Egyptian_Blue"
                     android:text="@string/save"
@@ -333,9 +321,9 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnDeleteUser"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
                     android:layout_weight="1"
                     android:backgroundTint="@color/Coral_Red"
                     android:text="@string/delete"
@@ -345,9 +333,9 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnUpdateUser"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
                     android:layout_weight="1"
                     android:backgroundTint="@color/Lime_Green"
                     android:text="@string/update"
