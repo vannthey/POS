@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -159,8 +158,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void SaleNavigator() {
-        View view = binding.navDrawerView.findViewById(R.id.sale);
-        view.callOnClick();
+        binding.navDrawerView.findViewById(R.id.sale).callOnClick();
+    }
+
+    public void DashboardNavigator() {
+        binding.navDrawerView.findViewById(R.id.dashboad).callOnClick();
     }
 
     @Override

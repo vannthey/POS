@@ -1,7 +1,6 @@
 package com.example.pos.supplier;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,7 +23,6 @@ import com.example.pos.databinding.FragmentFragSupplierBinding;
 public class Frag_supplier extends Fragment {
     FragmentFragSupplierBinding binding;
     SupplierViewModel viewModel;
-    Handler handler;
     String SupplierName;
     String SupplierPhone;
     String SupplierAddress;
@@ -38,7 +36,6 @@ public class Frag_supplier extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentFragSupplierBinding.inflate(getLayoutInflater(), container, false);
         viewModel = new ViewModelProvider(this).get(SupplierViewModel.class);
-        handler = new Handler();
         binding.btnCancelSupplier.setOnClickListener(v -> OnUpdateUI());
         binding.btnSaveSupplier.setOnClickListener(this::SaveSupplier);
         binding.btnUpdateSupplier.setOnClickListener(this::UpdateSupplier);
@@ -50,10 +47,8 @@ public class Frag_supplier extends Fragment {
     }
 
     private void DeleteSupplier(View view) {
-        new Thread(() -> {
-            viewModel.deleteSupplierById(supplierId);
-            handler.post(this::OnUpdateUI);
-        }).start();
+        viewModel.deleteSupplierById(supplierId);
+        OnUpdateUI();
     }
 
     private void UpdateSupplier(View view) {
@@ -61,10 +56,8 @@ public class Frag_supplier extends Fragment {
         SupplierPhone = String.valueOf(binding.txtSupplierPhone.getText());
         SupplierAddress = String.valueOf(binding.txtSupplierAddress.getText());
         if (SupplierName != null) {
-            new Thread(() -> {
-                viewModel.updateSupplierById(SupplierName, SupplierAddress, SupplierSex, SupplierPhone, supplierId);
-                handler.post(this::OnUpdateUI);
-            }).start();
+            viewModel.updateSupplierById(SupplierName, SupplierAddress, SupplierSex, SupplierPhone, supplierId);
+            OnUpdateUI();
         } else {
             Toast.makeText(requireContext(), R.string.Please_Input_Supplier, Toast.LENGTH_SHORT).show();
         }
@@ -96,11 +89,10 @@ public class Frag_supplier extends Fragment {
             SupplierName = String.valueOf(binding.txtSupplierName.getText());
             SupplierPhone = String.valueOf(binding.txtSupplierPhone.getText());
             SupplierAddress = String.valueOf(binding.txtSupplierAddress.getText());
-            supplier = new Supplier(SupplierName, SupplierSex, SupplierPhone, SupplierAddress, SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()), DateHelper.getCurrentDate());
-            new Thread(() -> {
-                viewModel.createSupplier(supplier);
-                handler.post(this::OnUpdateUI);
-            }).start();
+            supplier = new Supplier(SupplierName, SupplierSex, SupplierPhone, SupplierAddress,
+                    SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()), DateHelper.getCurrentDate());
+            viewModel.createSupplier(supplier);
+            OnUpdateUI();
         }
     }
 

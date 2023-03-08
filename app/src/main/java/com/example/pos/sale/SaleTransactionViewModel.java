@@ -20,7 +20,7 @@ public class SaleTransactionViewModel extends AndroidViewModel {
     }
 
     public void createSaleTransaction(SaleTransaction transactionList) {
-        posDatabase.getDao().createSaleTransaction(transactionList);
+        new Thread(() -> posDatabase.getDao().createSaleTransaction(transactionList)).start();
     }
 
     public LiveData<List<SaleTransaction>> getAllSaleTransaction() {
@@ -28,14 +28,14 @@ public class SaleTransactionViewModel extends AndroidViewModel {
     }
 
     public void editProductOnSaleById(double price, int qty, double dist, int id) {
-        posDatabase.getDao().editProductOnSaleById(price, qty, dist, id);
+        new Thread(() -> posDatabase.getDao().editProductOnSaleById(price, qty, dist, id)).start();
     }
 
     public void deleteSaleTransactionById(int saleId) {
-        posDatabase.getDao().deleteSaleTransactionById(saleId);
+        new Thread(() -> posDatabase.getDao().deleteSaleTransactionById(saleId)).start();
     }
 
     public void deleteAfterPay() {
-        posDatabase.getDao().deleteAfterPay();
+        new Thread(() -> posDatabase.getDao().deleteAfterPay()).start();
     }
 }

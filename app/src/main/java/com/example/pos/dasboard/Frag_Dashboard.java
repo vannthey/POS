@@ -1,7 +1,7 @@
 package com.example.pos.dasboard;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -25,6 +25,7 @@ import com.example.pos.MainActivity;
 import com.example.pos.R;
 import com.example.pos.category.CategoryViewModel;
 import com.example.pos.databinding.BottomSheetDialogAddToCartBinding;
+import com.example.pos.databinding.CustomCheckPayTypeBinding;
 import com.example.pos.databinding.FragmentFragDashboardBinding;
 import com.example.pos.product.ProductViewModel;
 import com.example.pos.sale.SaleTransactionViewModel;
@@ -40,7 +41,6 @@ public class Frag_Dashboard extends Fragment {
     AdapterDashboard adapterDashboard;
     List<SaleTransaction> saleTransactionList;
     List<Category> categoryList;
-    Handler handler;
     int cartCount = 0;
     int itemCount = 0;
     FragmentFragDashboardBinding binding;
@@ -56,9 +56,12 @@ public class Frag_Dashboard extends Fragment {
     double productPrice;
     double productDiscount = 0;
 
+    CustomCheckPayTypeBinding checkPayTypeBinding;
+    AlertDialog.Builder builder;
+    AlertDialog alertDialog;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        handler = new Handler();
         productViewModel = new ViewModelProvider(this).get(ProductViewModel.class);
         categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
         bottomSheetDialog = new BottomSheetDialog(requireContext());
@@ -110,7 +113,7 @@ public class Frag_Dashboard extends Fragment {
         super.onDestroyView();
     }
 
-//    @SuppressLint("ClickableViewAccessibility")
+    //    @SuppressLint("ClickableViewAccessibility")
 //    private void OnScanQR() {
 //        binding.searchViewDashboard.setOnTouchListener((view, motionEvent) -> {
 //            final int DRAWABLE_RIGHT = 0;
@@ -121,8 +124,6 @@ public class Frag_Dashboard extends Fragment {
 //            return false;
 //        });
 //    }
-
-
     /*
     This method perform count increase item that user add to cart
     */
@@ -158,23 +159,19 @@ public class Frag_Dashboard extends Fragment {
             /*
             Check if there already have the same item in invoice if so just update the qty
              */
-//            for (SaleTransaction saleTransaction : saleTransactionList) {
-//                if (saleTransaction.getProductId() == productId) {
-//                    int finalQty = saleTransaction.getProductQty() + productQty;
-//
-//                    new Thread(() -> saleTransactionViewModel.editProductOnSaleById(saleTransaction.getProductPrice()
-//
-//                            , finalQty, saleTransaction.productDiscount, saleTransaction.getProductId())).start();
-//                } else {
-//                    new Thread(() -> saleTransactionViewModel.createSaleTransaction(new SaleTransaction(productId,
-//
-//                            productName, productImagePath, productQty, productUnit, productPrice, productDiscount))).start();
-//                }
-//            }
-
+            if (saleTransactionList != null) {
+                saleTransactionViewModel.createSaleTransaction(new SaleTransaction(productId,
+                        productName, productImagePath, productQty, productUnit, productPrice, productDiscount));
+                for (SaleTransaction saleTransaction : saleTransactionList) {
+                    if (saleTransaction.getProductId() == productId) {
+                        int finalQty = saleTransaction.getProductQty() + productQty;
+                        saleTransactionViewModel.editProductOnSaleById(saleTransaction.getProductPrice()
+                                , finalQty, saleTransaction.productDiscount, saleTransaction.getProductId());
+                    }
+                }
+            }
         }
     }
-
 
     /*
     this method perform observer all product show in dashboard
@@ -215,12 +212,24 @@ public class Frag_Dashboard extends Fragment {
                 });
             }
         });
-                 /*
+        /*
     invoke method of navigation view in MainActivity to select Sale Fragment
      */
         binding.floatActionbarSale.setOnClickListener(view -> {
-            MainActivity mainActivity = (MainActivity) requireActivity();
-            mainActivity.SaleNavigator();
+            ((MainActivity) requireActivity()).SaleNavigator();
+//            checkPayTypeBinding = CustomCheckPayTypeBinding.inflate(getLayoutInflater());
+//            builder = new AlertDialog.Builder(requireContext());
+//            builder.setView(checkPayTypeBinding.getRoot());
+//            alertDialog = builder.create();
+//            checkPayTypeBinding.payByCard.setOnClickListener(view1 -> {
+//                ((MainActivity) requireActivity()).SaleNavigator();
+//                alertDialog.dismiss();
+//            });
+//            checkPayTypeBinding.payByCase.setOnClickListener(view1 -> {
+//
+//                alertDialog.dismiss();
+//            });
+//            alertDialog.show();
         });
     }
 
@@ -253,11 +262,8 @@ tab layout on dashboard
     }
 
     /*
-create Option menu in fragment using addMenuProvider and ViewLifecycleOwner to remove when view were destroy
+this method perform operation bottom sheet bottomSheetDialog
  */
-        /*
-    this method perform operation bottom sheet bottomSheetDialog
-     */
     private void BottomSheetDialog() {
         addToCartBinding = BottomSheetDialogAddToCartBinding.inflate(getLayoutInflater());
         bottomSheetDialog.setContentView(addToCartBinding.getRoot());
@@ -269,6 +275,9 @@ create Option menu in fragment using addMenuProvider and ViewLifecycleOwner to r
         addToCartBinding.decreaseProductQtyBottomSheet.setOnClickListener(v -> DecreaseProductQty());
     }
 
+    /*
+create Option menu in fragment using addMenuProvider and ViewLifecycleOwner to remove when view were destroy
+ */
     private void OnCreateMenu() {
         requireActivity().addMenuProvider(new MenuProvider() {
             @Override

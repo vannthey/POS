@@ -56,4 +56,10 @@
         android:title="@string/add_customer"
         android:visible="false"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/go_dashboard"
+        android:icon="@drawable/ic_dashboard"
+        android:title="@string/go_dashboard"
+        android:visible="false"
+        app:showAsAction="ifRoom" />
 </menu>

@@ -1,7 +1,6 @@
 package com.example.pos.customer;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,7 +24,6 @@ import com.example.pos.databinding.FragmentFragCustomerBinding;
 public class Frag_customer extends Fragment {
     FragmentFragCustomerBinding binding;
     CustomerViewModel viewModel;
-    Handler handler;
     int customerId;
 
     double customerDiscount;
@@ -36,7 +34,6 @@ public class Frag_customer extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        handler = new Handler();
         viewModel = new ViewModelProvider(this).get(CustomerViewModel.class);
         super.onCreate(savedInstanceState);
     }
@@ -74,22 +71,20 @@ public class Frag_customer extends Fragment {
             }
             Toast.makeText(requireContext(), R.string.Please_Input_Customer, Toast.LENGTH_SHORT).show();
         } else {
-            new Thread(() -> {
-                if (customerName != null) {
-                    viewModel.updateCustomerById(customerName, customerSex, customerPhone, customerDiscount, customerAddress, customerId);
-                    handler.post(this::OnUpdateUI);
-                }
-            }).start();
+            if (customerName != null) {
+                viewModel.updateCustomerById(customerName, customerSex, customerPhone, customerDiscount, customerAddress, customerId);
+                OnUpdateUI();
+            }
+
         }
 
 
     }
 
     private void DeleteCustomer(View view) {
-        new Thread(() -> {
-            viewModel.deleteCustomerById(customerId);
-            handler.post(this::OnUpdateUI);
-        }).start();
+
+        viewModel.deleteCustomerById(customerId);
+        OnUpdateUI();
     }
 
     private void SaveCustomer(View view) {
@@ -106,14 +101,12 @@ public class Frag_customer extends Fragment {
             }
             Toast.makeText(requireContext(), R.string.Please_Input_Customer, Toast.LENGTH_SHORT).show();
         } else {
-            new Thread(() -> {
-                if (customerName != null) {
-                    viewModel.createCustomer(new Customer(customerName, customerSex, customerPhone, customerAddress,
-                            customerDiscount, SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()),
-                            DateHelper.getCurrentDate()));
-                    handler.post(this::OnUpdateUI);
-                }
-            }).start();
+            if (customerName != null) {
+                viewModel.createCustomer(new Customer(customerName, customerSex, customerPhone, customerAddress,
+                        customerDiscount, SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()),
+                        DateHelper.getCurrentDate()));
+                OnUpdateUI();
+            }
         }
     }
 
