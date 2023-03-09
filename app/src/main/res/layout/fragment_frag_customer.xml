@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
+    android:animateLayoutChanges="true"
     android:orientation="vertical"
     tools:context=".customer.Frag_customer">
 
@@ -20,6 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none"
+        android:listSelector="#00000000"
+        android:divider="@null"
         android:visibility="gone" />
 
     <include

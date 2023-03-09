@@ -1,5 +1,9 @@
 package com.example.pos.customer;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -9,28 +13,37 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.bumptech.glide.Glide;
 import com.example.pos.Database.Entity.Customer;
 import com.example.pos.DateHelper;
 import com.example.pos.R;
 import com.example.pos.SharedPrefHelper;
 import com.example.pos.databinding.FragmentFragCustomerBinding;
+import com.github.drjacky.imagepicker.ImagePicker;
+
+import java.io.File;
 
 public class Frag_customer extends Fragment {
     FragmentFragCustomerBinding binding;
     CustomerViewModel viewModel;
     int customerId;
-
     double customerDiscount;
     String customerName;
     String customerPhone;
     String customerAddress;
     String customerSex;
+    String customerProfile;
+    Uri uri;
+    File file;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,6 +60,7 @@ public class Frag_customer extends Fragment {
         binding.formCustomer.btnDeleteCustomer.setOnClickListener(this::DeleteCustomer);
         binding.formCustomer.btnUpdateCustomer.setOnClickListener(this::UpdateCustomer);
         binding.formCustomer.btnCancelCustomer.setOnClickListener(this::CancelCustomer);
+        binding.formCustomer.addCustomerProfile.setOnClickListener(this::OnGetImage);
         onCreateMenu();
         GetAllCustomer();
         CustomerSex();
@@ -72,7 +86,8 @@ public class Frag_customer extends Fragment {
             Toast.makeText(requireContext(), R.string.Please_Input_Customer, Toast.LENGTH_SHORT).show();
         } else {
             if (customerName != null) {
-                viewModel.updateCustomerById(customerName, customerSex, customerPhone, customerDiscount, customerAddress, customerId);
+                viewModel.updateCustomerById(customerName, customerSex, customerPhone, customerDiscount,
+                        customerAddress, customerProfile, customerId);
                 OnUpdateUI();
             }
 
@@ -103,6 +118,7 @@ public class Frag_customer extends Fragment {
         } else {
             if (customerName != null) {
                 viewModel.createCustomer(new Customer(customerName, customerSex, customerPhone, customerAddress,
+                        customerProfile,
                         customerDiscount, SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()),
                         DateHelper.getCurrentDate()));
                 OnUpdateUI();
@@ -128,6 +144,11 @@ public class Frag_customer extends Fragment {
                     } else {
                         binding.formCustomer.customerMale.setChecked(true);
                     }
+                    if (customers.get(i).getCustomerProfile() != null) {
+                        Glide.with(this).load(customers.get(i).getCustomerProfile()).into(binding.formCustomer.customerProfile);
+                    } else {
+                        binding.formCustomer.customerProfile.setImageResource(R.drawable.admin_profile);
+                    }
                     binding.formCustomer.customerDiscount.setText(String.valueOf(customers.get(i).getCustomerDiscount()));
                     binding.formCustomer.customerName.setText(customers.get(i).getCustomerName());
                     binding.formCustomer.customerPhoneNumber.setText(customers.get(i).getCustomerPhoneNumber());
@@ -147,7 +168,28 @@ public class Frag_customer extends Fragment {
                 customerSex = "Female";
             }
         });
+    }//customer sex
+
+    private void OnGetImage(View view) {
+        launcher.launch(ImagePicker.Companion.with(requireActivity()).maxResultSize(1080, 1080, true).crop().galleryOnly().createIntent()
+
+        );
+
     }
+
+    ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), (ActivityResult result) -> {
+        if (result.getResultCode() == RESULT_OK) {
+            assert result.getData() != null;
+            uri = result.getData().getData();
+            file = new File(uri.getPath());
+            customerProfile = file.toString();
+            // Use the uri to load the image
+            binding.formCustomer.customerProfile.setImageURI(uri);
+        } else if (result.getResultCode() == ImagePicker.RESULT_ERROR) {
+            Toast.makeText(requireContext(), "No Image Pick", Toast.LENGTH_SHORT).show();
+            // Use ImagePicker.Companion.getError(result.getData()) to show an error
+        }
+    });
 
 
     @Override
@@ -188,6 +230,7 @@ public class Frag_customer extends Fragment {
     }
 
     private void OnUpdateUI() {
+        binding.formCustomer.customerProfile.setImageResource(R.drawable.admin_profile);
         binding.formCustomer.customerName.setText(null);
         binding.formCustomer.customerPhoneNumber.setText(null);
         binding.formCustomer.customerAddress.setText(null);

@@ -140,5 +140,7 @@
     <string name="balance">Balance</string>
     <string name="double_dot"> : </string>
     <string name="Cash_drawer">Cash Drawer</string>
+    <string name="bill_to">Bill To</string>
+    <string name="phone">Phone</string>
 
 </resources>

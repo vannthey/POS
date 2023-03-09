@@ -28,11 +28,12 @@ public class CustomerViewModel extends AndroidViewModel {
 
     }
 
-    public void updateCustomerById(String customerName, String customerSex, String customerPhoneNumber, double customerDiscount,
-                                   String customerAddress,
-                                   int customerId) {
+    void updateCustomerById(String customerName, String customerSex, String customerPhoneNumber, double customerDiscount,
+                            String customerAddress, String customerProfile,
+                            int customerId) {
 
-        new Thread(() -> posDatabase.getDao().updateCustomerById(customerName, customerSex, customerPhoneNumber, customerDiscount, customerAddress,
+        new Thread(() -> posDatabase.getDao().updateCustomerById(customerName, customerSex, customerPhoneNumber,
+                customerDiscount, customerAddress,customerProfile,
                 customerId)).start();
     }
 

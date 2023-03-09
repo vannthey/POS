@@ -128,6 +128,7 @@ public class Frag_category extends Fragment {
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 if (menuItem.getItemId() == R.id.add_category) {
+                    binding.txtNoCategoryFound.setVisibility(View.GONE);
                     LayoutAddCategory();
                 }
                 return true;

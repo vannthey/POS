@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide;
 import com.example.pos.Database.Entity.SaleTransaction;
 import com.example.pos.MainActivity;
 import com.example.pos.R;
+import com.example.pos.customer.CustomerViewModel;
 import com.example.pos.databinding.CustomEditProductOnSaleBinding;
 import com.example.pos.databinding.FragmentFragSaleBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -25,25 +26,24 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import java.util.List;
 
 
-public class Frag_sale extends Fragment implements DeleteProductCallBack {
+public class Frag_sale extends Fragment implements doTransactionCallback {
     FragmentFragSaleBinding binding;
     CustomEditProductOnSaleBinding SaleBinding;
     BottomSheetDialog bottomSheetDialog;
     SaleTransactionViewModel saleTransactionViewModel;
     List<SaleTransaction> saleTransactionList;
+    AdapterSale adapterSale;
+    CustomerViewModel customerViewModel;
     int productId;
     double productPrice;
     double productDiscount;
     int productQty;
-    double saleDiscount;
-    double saleSubtotal;
-    double saleProductDiscount;
-    double saleProductPrice;
-    int saleProductQty;
+    double amount;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         saleTransactionViewModel = new ViewModelProvider(this).get(SaleTransactionViewModel.class);
+        customerViewModel = new ViewModelProvider(this).get(CustomerViewModel.class);
         super.onCreate(savedInstanceState);
     }
 
@@ -58,14 +58,8 @@ public class Frag_sale extends Fragment implements DeleteProductCallBack {
         return binding.getRoot();
     }
 
-
-    private void SetFinalPrice() {
-        binding.saleTotal.setText(String.valueOf(saleSubtotal));
-        binding.saleDiscount.setText("");
-        binding.saleSubtotal.setText(String.valueOf(saleSubtotal));
-    }
-
     private void SalePay(View view) {
+        binding.layoutSale.setVisibility(View.GONE);
         //saleTransactionViewModel.deleteAfterPay();
     }
 
@@ -80,27 +74,31 @@ public class Frag_sale extends Fragment implements DeleteProductCallBack {
     private void GetAllSale() {
         saleTransactionViewModel.getAllSaleTransaction().observe(getViewLifecycleOwner(), transactionList -> {
             if (transactionList != null) {
-                saleTransactionList = transactionList;
-                binding.listItemSale.setAdapter(new AdapterSale(this, requireContext(), transactionList));
+                adapterSale = new AdapterSale(this, requireContext(), transactionList);
+                binding.listItemSale.setAdapter(adapterSale);
+                binding.saleSubtotal.setText(String.valueOf(adapterSale.UpdateTotal()));
                 binding.listItemSale.setOnItemClickListener((adapterView, view, i, l) -> {
                     productId = transactionList.get(i).getProductId();
                     Glide.with(requireContext()).load(transactionList.get(i).getProductImagePath()).into(SaleBinding.customEditImageOnSale);
-                    SaleBinding.
-                            customEditProductPriceOnSale.setText(String.valueOf(transactionList.get(i).getProductPrice()));
-                    SaleBinding.
-                            customEditProductDiscountOnSale.setText(String.valueOf(transactionList.get(i).getProductDiscount()));
-                    SaleBinding.
-                            customEditProductQtyOnSale.setText(String.valueOf(transactionList.get(i).getProductQty()));
-                    SaleBinding.
-                            customBtnSaveEditProduct.setOnClickListener(view1 -> {
+                    SaleBinding.customEditProductPriceOnSale.setText(String.valueOf(transactionList.get(i).getProductPrice()));
+                    SaleBinding.customEditProductDiscountOnSale.setText(String.valueOf(transactionList.get(i).getProductDiscount()));
+                    SaleBinding.customEditProductQtyOnSale.setText(String.valueOf(transactionList.get(i).getProductQty()));
+
+
+                    SaleBinding.customBtnSaveEditProduct.setOnClickListener(view1 -> {
                         productPrice = Double.parseDouble(String.valueOf(SaleBinding.customEditProductPriceOnSale.getText()));
                         productDiscount = Double.parseDouble(String.valueOf(SaleBinding.customEditProductDiscountOnSale.getText()));
                         productQty = Integer.parseInt(String.valueOf(SaleBinding.customEditProductQtyOnSale.getText()));
-                        saleTransactionViewModel.editProductOnSaleById(productPrice, productQty, productDiscount, productId);
+
+                        saleTransactionViewModel.editProductOnSaleById(productPrice, productQty, productDiscount,
+                                (productPrice * productQty),
+                                productId);
+
                         bottomSheetDialog.dismiss();
-                        GetAllSale();
+
                     });
                     bottomSheetDialog.show();
+
                 });
             }
         });

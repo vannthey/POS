@@ -89,9 +89,7 @@ public class Frag_Product extends Fragment {
     }
 
     private void OnGetImage() {
-        launcher.launch(ImagePicker.Companion.with(requireActivity()).maxResultSize(1080, 1080, true).crop().galleryOnly().createIntent()
-
-        );
+        launcher.launch(ImagePicker.Companion.with(requireActivity()).maxResultSize(1080, 1080, true).crop().galleryOnly().createIntent());
 
     }
 

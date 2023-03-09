@@ -13,13 +13,14 @@ import java.util.List;
 
 public class AdapterSale extends BaseAdapter {
 
-    DeleteProductCallBack productCallBack;
+    doTransactionCallback productCallBack;
     Holder holder;
     CustomProductSaleBinding binding;
     Context context;
     List<SaleTransaction> transactionList;
+    double total;
 
-    public AdapterSale(DeleteProductCallBack productCallBack, Context context, List<SaleTransaction> transactionList) {
+    public AdapterSale(doTransactionCallback productCallBack, Context context, List<SaleTransaction> transactionList) {
         this.productCallBack = productCallBack;
         this.context = context;
         this.transactionList = transactionList;
@@ -60,25 +61,44 @@ public class AdapterSale extends BaseAdapter {
         } else {
             holder = (Holder) view.getTag();
         }
-        double discount = (transactionList.get(i).getProductDiscount()) / 100;
-        int qty = transactionList.get(i).getProductQty();
-        double price = transactionList.get(i).getProductPrice();
-        double subtotal = price * qty;
-        if (discount == 0) {
-            subtotal = price * qty;
-            holder.productSaleBinding.customSubtotalItemSale.setText(String.valueOf(subtotal));
-        } else {
-            subtotal = subtotal - discount;
-            holder.productSaleBinding.customSubtotalItemSale.setText(String.valueOf(subtotal));
-        }
+        setAmountProduct(transactionList, i);
         holder.productSaleBinding.customDiscountItemSale.setText(String.valueOf(transactionList.get(i).getProductDiscount()));
         holder.productSaleBinding.customNameItemSale.setText(transactionList.get(i).getProductName());
         holder.productSaleBinding.customPriceItemSale.setText(String.valueOf(transactionList.get(i).getProductPrice()));
         holder.productSaleBinding.customQtyItemSale.setText(String.valueOf(transactionList.get(i).productQty));
         holder.productSaleBinding.customDeleteItemSale.setOnClickListener(view1 -> {
-            productCallBack.doDelete(transactionList.get(i).saleId);
+            holder.productSaleBinding.customSubtotalItemSale.setText("");
+            for (SaleTransaction transaction : transactionList) {
+                int afterDelete = transactionList.get(i).saleId;
+                productCallBack.doDelete(afterDelete);
+                notifyDataSetChanged();
+            }
+
         });
+
         return holder.vu;
     }
 
+    private void setAmountProduct(List<SaleTransaction> transactionList, int i) {
+        if (transactionList.get(i).getProductDiscount() != 0) {
+            holder.productSaleBinding.customSubtotalItemSale.setText(String.valueOf(transactionList.get(i).getProductAmount() -
+                    (transactionList.get(i).getProductAmount() * (transactionList.get(i).getProductDiscount() / 100))));
+        } else {
+            holder.productSaleBinding.customSubtotalItemSale.setText(String.valueOf(transactionList.get(i).getProductAmount()));
+        }
+    }
+
+    public double UpdateTotal() {
+        //do calculate total
+        for (SaleTransaction s : transactionList) {
+            if (s.getProductDiscount() == 0) {
+                total += s.getProductAmount();
+                notifyDataSetChanged();
+            } else {
+                total += s.getProductAmount() - (s.getProductAmount() * (s.getProductDiscount() / 100));
+                notifyDataSetChanged();
+            }
+        }
+        return total;
+    }
 }

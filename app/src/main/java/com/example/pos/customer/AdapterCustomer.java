@@ -6,7 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import com.bumptech.glide.Glide;
 import com.example.pos.Database.Entity.Customer;
+import com.example.pos.R;
 import com.example.pos.databinding.CustomListAllCustomerBinding;
 
 import java.util.List;
@@ -57,8 +59,14 @@ public class AdapterCustomer extends BaseAdapter {
         } else {
             holder = (Holder) view.getTag();
         }
+        if (customerList.get(i).getCustomerProfile() != null) {
+            Glide.with(ctx).load(customerList.get(i).getCustomerProfile()).into(holder.customerBinding.customCustomerProfile);
+        } else {
+            holder.customerBinding.customCustomerProfile.setImageResource(R.drawable.admin_profile);
+        }
         holder.customerBinding.customCustomerName.setText(customerList.get(i).getCustomerName());
         holder.customerBinding.customCustomerPhone.setText(customerList.get(i).getCustomerPhoneNumber());
+        holder.customerBinding.customCustomerAddress.setText(customerList.get(i).getCustomerAddress());
         return holder.convertView;
     }
 }

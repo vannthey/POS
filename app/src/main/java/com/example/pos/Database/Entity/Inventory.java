@@ -2,9 +2,10 @@ package com.example.pos.Database.Entity;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity
+@Entity(indices = @Index(value = {"inventoryName"},unique = true))
 public class Inventory {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo

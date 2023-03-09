@@ -3,6 +3,7 @@ package com.example.pos.Database.Dao;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.example.pos.Database.Entity.Category;
@@ -22,7 +23,7 @@ public interface POSDao {
     /*
     Operation On Product
      */
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void createProduct(Product product);
 
     @Query("SELECT * FROM Product")
@@ -31,18 +32,13 @@ public interface POSDao {
     @Query("DELETE FROM Product WHERE productId LIKE :productId")
     void deleteProductById(int productId);
 
-    @Query("Update Product SET productName=:productName,productQty=:productQty,productUnitId=:productUnitId," +
-            "productCode=:productCode,productCost=:productCost,productPrice=:productPrice,productTax=:productTax," +
-            "inventoryId=:inventoryId,categoryId=:categoryId,supplierId=:supplierId,imagePath=:imagePath," +
-            "creator=:creator,createDate=:createDate WHERE productId LIKE :productId")
-    void updateProductById(String productName, int productQty, int productUnitId, long productCode, double productCost,
-                           double productPrice, double productTax, int inventoryId, int categoryId, int supplierId,
-                           String imagePath, String creator, String createDate, int productId);
+    @Query("Update Product SET productName=:productName,productQty=:productQty,productUnitId=:productUnitId," + "productCode=:productCode,productCost=:productCost,productPrice=:productPrice,productTax=:productTax," + "inventoryId=:inventoryId,categoryId=:categoryId,supplierId=:supplierId,imagePath=:imagePath," + "creator=:creator,createDate=:createDate WHERE productId LIKE :productId")
+    void updateProductById(String productName, int productQty, int productUnitId, long productCode, double productCost, double productPrice, double productTax, int inventoryId, int categoryId, int supplierId, String imagePath, String creator, String createDate, int productId);
 
     /*
     Operation On Category
      */
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void createCategory(Category category);
 
     @Query("SELECT * FROM Category")
@@ -57,18 +53,16 @@ public interface POSDao {
     /*
     Operation On Sale Transaction
      */
-
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void createSaleTransaction(SaleTransaction transactionList);
 
     @Query("SELECT * FROM SaleTransaction")
     LiveData<List<SaleTransaction>> getAllSaleTransaction();
 
-    @Query("Update SaleTransaction SET productPrice=:price, productQty=:qty,productDiscount=:dist " +
-            "WHERE productId " +
-            "LIKE " +
-            ":id")
-    void editProductOnSaleById(double price, int qty, double dist, int id);
+    @Query("Update SaleTransaction SET productPrice=:price, productQty=:qty,productDiscount=:dist,productAmount=:productAmount " +
+            "WHERE " +
+            "productId " + "LIKE " + ":id")
+    void editProductOnSaleById(double price, int qty, double dist, double productAmount, int id);
 
     @Query("DELETE FROM SaleTransaction WHERE saleId LIKE :saleId")
     void deleteSaleTransactionById(int saleId);
@@ -79,11 +73,8 @@ public interface POSDao {
     /*
     Operation On Supplier
      */
-    @Query("Update Supplier SET supplierName=:supplierName,supplierAddress=:supplierAddress," +
-            "supplierSex=:supplierSex,supplierPhoneNumber=:supplierPhoneNumber WHERE supplierId " +
-            "Like :Id")
-    void updateSupplierById(String supplierName, String supplierAddress, String supplierSex,
-                            String supplierPhoneNumber, int Id);
+    @Query("Update Supplier SET supplierName=:supplierName,supplierAddress=:supplierAddress," + "supplierSex=:supplierSex,supplierPhoneNumber=:supplierPhoneNumber WHERE supplierId " + "Like :Id")
+    void updateSupplierById(String supplierName, String supplierAddress, String supplierSex, String supplierPhoneNumber, int Id);
 
     @Insert
     void createSupplier(Supplier supplier);
@@ -98,13 +89,8 @@ public interface POSDao {
     /*
     Operation On User
      */
-    @Query("Update UserAccount SET Firstname=:FirstName,Lastname=:LastName,Username=:UserName," +
-            "Password=:Password,DOB=:DOB,Address=:Address,Sex=:Sex,UserRole=:Role," +
-            "ProfilePath=:profilePath," +
-            "canDiscount=:canDiscount,canChangePrice=:canChangePrice WHERE userId LIKE :Id")
-    void updateUserById(String FirstName, String LastName, String UserName, String Password,
-                        String DOB, String Address, String Sex, String Role, String profilePath,
-                        boolean canDiscount, boolean canChangePrice, int Id);
+    @Query("Update UserAccount SET Firstname=:FirstName,Lastname=:LastName,Username=:UserName," + "Password=:Password,DOB=:DOB,Address=:Address,Sex=:Sex,UserRole=:Role," + "ProfilePath=:profilePath," + "canDiscount=:canDiscount,canChangePrice=:canChangePrice WHERE userId LIKE :Id")
+    void updateUserById(String FirstName, String LastName, String UserName, String Password, String DOB, String Address, String Sex, String Role, String profilePath, boolean canDiscount, boolean canChangePrice, int Id);
 
     @Query("DELETE FROM UserAccount WHERE userId LIKE :userId")
     void deleteUserById(int userId);
@@ -121,7 +107,7 @@ public interface POSDao {
     /*
     Operation On Unit
      */
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void createUnit(Unit unit);
 
     @Query("SELECT * FROM Unit")
@@ -136,14 +122,13 @@ public interface POSDao {
     /*
     Operation On Inventory
      */
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void createInventory(Inventory inventory);
 
     @Query("Delete From Inventory Where inventoryId like :inventoryId")
     void deleteInventoryById(int inventoryId);
 
-    @Query("Update Inventory set inventoryAddress=:inventoryAddress, inventoryName=:inventoryName Where inventoryId " +
-            "Like :inventoryId")
+    @Query("Update Inventory set inventoryAddress=:inventoryAddress, inventoryName=:inventoryName Where inventoryId " + "Like :inventoryId")
     void updateInventoryById(String inventoryAddress, String inventoryName, int inventoryId);
 
     @Query("SELECT * FROM Inventory")
@@ -158,14 +143,8 @@ public interface POSDao {
     @Query("delete from Customer Where customerId like :customerId")
     void deleteCustomerById(int customerId);
 
-    @Query("update Customer set customerName=:customerName, customerSex=:customerSex," +
-            "customerPhoneNumber=:customerPhoneNumber,customerAddress=:customerAddress," +
-            "customerDiscount=:customerDiscount where " +
-            "customerId like " +
-            ":customerId")
-    void updateCustomerById(String customerName, String customerSex, String customerPhoneNumber, double customerDiscount,
-                            String customerAddress,
-                            int customerId);
+    @Query("update Customer set customerName=:customerName, customerSex=:customerSex," + "customerPhoneNumber=:customerPhoneNumber,customerAddress=:customerAddress,customerProfile=:customerProfile," + "customerDiscount=:customerDiscount where " + "customerId like " + ":customerId")
+    void updateCustomerById(String customerName, String customerSex, String customerPhoneNumber, double customerDiscount, String customerAddress, String customerProfile, int customerId);
 
     @Query("select * from Customer")
     LiveData<List<Customer>> getAllCustomer();

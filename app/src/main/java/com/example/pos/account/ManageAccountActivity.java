@@ -138,7 +138,7 @@ public class ManageAccountActivity extends AppCompatActivity {
                         month = "Feb";
                         break;
                     case 3:
-                        month = "Mac";
+                        month = "Mar";
                         break;
                     case 4:
                         month = "Apr";
