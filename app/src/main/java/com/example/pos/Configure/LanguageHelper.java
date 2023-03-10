@@ -1,4 +1,4 @@
-package com.example.pos;
+package com.example.pos.Configure;
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 
 import java.util.Locale;
 
-public class Language {
+public class LanguageHelper {
     static void setLanguage(@NonNull Context context, String Lang) {
         Locale locale = new Locale(Lang);
         Locale.setDefault(locale);

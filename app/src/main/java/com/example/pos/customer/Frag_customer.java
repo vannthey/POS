@@ -24,17 +24,19 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.example.pos.Database.Entity.Customer;
-import com.example.pos.DateHelper;
 import com.example.pos.R;
-import com.example.pos.SharedPrefHelper;
+import com.example.pos.Configure.DateHelper;
+import com.example.pos.Configure.SharedPrefHelper;
 import com.example.pos.databinding.FragmentFragCustomerBinding;
 import com.github.drjacky.imagepicker.ImagePicker;
 
 import java.io.File;
+import java.util.List;
 
-public class Frag_customer extends Fragment {
+public class Frag_customer extends Fragment implements doCustomizeCustomer {
     FragmentFragCustomerBinding binding;
     CustomerViewModel viewModel;
+    List<Customer> customerList;
     int customerId;
     double customerDiscount;
     String customerName;
@@ -78,18 +80,18 @@ public class Frag_customer extends Fragment {
         if (String.valueOf(binding.formCustomer.customerName.getText()).isEmpty() ||
                 String.valueOf(binding.formCustomer.customerAddress.getText()).isEmpty()
                 || String.valueOf(binding.formCustomer.customerPhoneNumber.getText()).isEmpty()) {
-            if (String.valueOf(binding.formCustomer.customerDiscount.getText()).isEmpty()) {
-                customerDiscount = 0;
-            } else {
-                customerDiscount = Double.parseDouble(String.valueOf(binding.formCustomer.customerDiscount.getText()));
-            }
             Toast.makeText(requireContext(), R.string.Please_Input_Customer, Toast.LENGTH_SHORT).show();
         } else {
-            if (customerName != null) {
-                viewModel.updateCustomerById(customerName, customerSex, customerPhone, customerDiscount,
-                        customerAddress, customerProfile, customerId);
+            if (String.valueOf(binding.formCustomer.customerDiscount.getText()).isEmpty()) {
+                customerDiscount = 0;
+                viewModel.updateCustomerById(customerName, customerSex, customerPhone, customerDiscount, customerAddress, customerProfile, customerId);
+                OnUpdateUI();
+            } else {
+                customerDiscount = Double.parseDouble(String.valueOf(binding.formCustomer.customerDiscount.getText()));
+                viewModel.updateCustomerById(customerName, customerSex, customerPhone, customerDiscount, customerAddress, customerProfile, customerId);
                 OnUpdateUI();
             }
+
 
         }
 
@@ -109,14 +111,17 @@ public class Frag_customer extends Fragment {
         if (String.valueOf(binding.formCustomer.customerName.getText()).isEmpty() ||
                 String.valueOf(binding.formCustomer.customerAddress.getText()).isEmpty()
                 || String.valueOf(binding.formCustomer.customerPhoneNumber.getText()).isEmpty()) {
-            if (String.valueOf(binding.formCustomer.customerDiscount.getText()).isEmpty()) {
-                customerDiscount = 0;
-            } else {
-                customerDiscount = Double.parseDouble(String.valueOf(binding.formCustomer.customerDiscount.getText()));
-            }
             Toast.makeText(requireContext(), R.string.Please_Input_Customer, Toast.LENGTH_SHORT).show();
         } else {
-            if (customerName != null) {
+            if (String.valueOf(binding.formCustomer.customerDiscount.getText()).isEmpty()) {
+                customerDiscount = 0;
+                viewModel.createCustomer(new Customer(customerName, customerSex, customerPhone, customerAddress,
+                        customerProfile,
+                        customerDiscount, SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()),
+                        DateHelper.getCurrentDate()));
+                OnUpdateUI();
+            } else {
+                customerDiscount = Double.parseDouble(String.valueOf(binding.formCustomer.customerDiscount.getText()));
                 viewModel.createCustomer(new Customer(customerName, customerSex, customerPhone, customerAddress,
                         customerProfile,
                         customerDiscount, SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()),
@@ -130,32 +135,34 @@ public class Frag_customer extends Fragment {
     private void GetAllCustomer() {
         viewModel.getAllCustomer().observe(getViewLifecycleOwner(), customers -> {
             if (customers.size() != 0) {
+                customerList = customers;
                 binding.txtNoCustomerFound.setVisibility(View.GONE);
                 binding.listAllCustomer.setVisibility(View.VISIBLE);
-                binding.listAllCustomer.setAdapter(new AdapterCustomer(customers, requireContext()));
-                binding.listAllCustomer.setOnItemClickListener((adapterView, view, i, l) -> {
-                    customerId = customers.get(i).getCustomerId();
-                    customerSex = customers.get(i).getCustomerSex();
-                    if (customerSex == null) {
-                        binding.formCustomer.customerMale.setChecked(false);
-                        binding.formCustomer.customerFemale.setChecked(false);
-                    } else if (customerSex.contains("Female")) {
-                        binding.formCustomer.customerFemale.setChecked(true);
-                    } else {
-                        binding.formCustomer.customerMale.setChecked(true);
-                    }
-                    if (customers.get(i).getCustomerProfile() != null) {
-                        Glide.with(this).load(customers.get(i).getCustomerProfile()).into(binding.formCustomer.customerProfile);
-                    } else {
-                        binding.formCustomer.customerProfile.setImageResource(R.drawable.admin_profile);
-                    }
-                    binding.formCustomer.customerDiscount.setText(String.valueOf(customers.get(i).getCustomerDiscount()));
-                    binding.formCustomer.customerName.setText(customers.get(i).getCustomerName());
-                    binding.formCustomer.customerPhoneNumber.setText(customers.get(i).getCustomerPhoneNumber());
-                    binding.formCustomer.customerAddress.setText(customers.get(i).getCustomerAddress());
-                    ShowAddCustomer();
-                    DeleteUpdate();
-                });
+                binding.listAllCustomer.setAdapter(new AdapterCustomer(this, customers, requireContext()));
+//                binding.listAllCustomer.setOnItemClickListener((adapterView, view, i, l) -> {
+//                    customerId = customers.get(i).getCustomerId();
+//                    customerSex = customers.get(i).getCustomerSex();
+//                    customerProfile = customers.get(i).getCustomerProfile();
+//                    if (customerSex == null) {
+//                        binding.formCustomer.customerMale.setChecked(false);
+//                        binding.formCustomer.customerFemale.setChecked(false);
+//                    } else if (customerSex.contains("Female")) {
+//                        binding.formCustomer.customerFemale.setChecked(true);
+//                    } else {
+//                        binding.formCustomer.customerMale.setChecked(true);
+//                    }
+//                    if (customers.get(i).getCustomerProfile() != null) {
+//                        Glide.with(this).load(customers.get(i).getCustomerProfile()).into(binding.formCustomer.customerProfile);
+//                    } else {
+//                        binding.formCustomer.customerProfile.setImageResource(R.drawable.admin_profile);
+//                    }
+//                    binding.formCustomer.customerDiscount.setText(String.valueOf(customers.get(i).getCustomerDiscount()));
+//                    binding.formCustomer.customerName.setText(customers.get(i).getCustomerName());
+//                    binding.formCustomer.customerPhoneNumber.setText(customers.get(i).getCustomerPhoneNumber());
+//                    binding.formCustomer.customerAddress.setText(customers.get(i).getCustomerAddress());
+//                    ShowAddCustomer();
+//                    DeleteUpdate();
+//                });
             }
         });//viewModel Get All Customer
     }
@@ -242,4 +249,33 @@ public class Frag_customer extends Fragment {
         binding.listAllCustomer.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void doCustomizeCustomerById(int i) {
+        customerId = i;
+        for (Customer c : customerList) {
+            if (c.getCustomerId() == customerId) {
+                binding.formCustomer.layoutAddCustomer.setVisibility(View.VISIBLE);
+                binding.listAllCustomer.setVisibility(View.GONE);
+                DeleteUpdate();
+                if (c.getCustomerProfile() != null) {
+                    Glide.with(this).load(c.getCustomerProfile()).into(binding.formCustomer.customerProfile);
+                } else {
+                    binding.formCustomer.customerProfile.setImageResource(R.drawable.admin_profile);
+                }
+                if (c.getCustomerSex().contains("Male")){
+                    binding.formCustomer.customerMale.setChecked(true);
+                }else if(c.getCustomerSex().contains("Female")){
+                    binding.formCustomer.customerFemale.setChecked(true);
+                }else {
+                    binding.formCustomer.customerMale.setChecked(false);
+                    binding.formCustomer.customerFemale.setChecked(false);
+                }
+
+                binding.formCustomer.customerName.setText(c.getCustomerName());
+                binding.formCustomer.customerAddress.setText(c.getCustomerAddress());
+                binding.formCustomer.customerDiscount.setText(String.valueOf(c.getCustomerDiscount()));
+                binding.formCustomer.customerPhoneNumber.setText(c.getCustomerPhoneNumber());
+            }
+        }
+    }
 }

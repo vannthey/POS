@@ -68,11 +68,9 @@ public class AdapterSale extends BaseAdapter {
         holder.productSaleBinding.customQtyItemSale.setText(String.valueOf(transactionList.get(i).productQty));
         holder.productSaleBinding.customDeleteItemSale.setOnClickListener(view1 -> {
             holder.productSaleBinding.customSubtotalItemSale.setText("");
-            for (SaleTransaction transaction : transactionList) {
-                int afterDelete = transactionList.get(i).saleId;
-                productCallBack.doDelete(afterDelete);
-                notifyDataSetChanged();
-            }
+            int afterDelete = transactionList.get(i).saleId;
+            productCallBack.doDelete(afterDelete);
+            notifyDataSetChanged();
 
         });
 

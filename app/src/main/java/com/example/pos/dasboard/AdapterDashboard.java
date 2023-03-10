@@ -96,6 +96,8 @@ public class AdapterDashboard extends BaseAdapter implements Filterable {
                         productListTextSearch.add(product);
                     } else if (String.valueOf(product.getProductCode()).contains(searchPattern)) {
                         productListTextSearch.add(product);
+                    } else if (String.valueOf(product.getCategoryName()).contains(searchPattern)) {
+                        productListTextSearch.add(product);
                     }
                 }
             }

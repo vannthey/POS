@@ -34,6 +34,7 @@ public class Frag_Dashboard extends Fragment {
     SaleTransactionViewModel saleTransactionViewModel;
     AdapterDashboard adapterDashboard;
     List<Category> categoryList;
+
     int itemCount = 0;
     FragmentFragDashboardBinding binding;
     String CategoryName;
@@ -56,12 +57,41 @@ public class Frag_Dashboard extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentFragDashboardBinding.inflate(inflater, container, false);
-
         GetProductInTransaction();
         GetCategory();
         GetAllProduct();
         OnCreateMenu();
         return binding.getRoot();
+    }
+
+    /*
+tab layout on dashboard
+*/
+    private void OnTabLayout() {
+        binding.tabLayoutOnDashboard.addTab(binding.tabLayoutOnDashboard.newTab().setText("All"));
+        if (categoryList.size() != 0) {
+            for (Category category : categoryList) {
+                CategoryName = category.getCategoryName();
+                binding.tabLayoutOnDashboard.addTab(binding.tabLayoutOnDashboard.newTab().setText(CategoryName));
+            }
+        }
+        binding.tabLayoutOnDashboard.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if (tab.getText() != "All") {
+                    adapterDashboard.getFilter().filter(tab.getText());
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });//tab bar
     }
 
     private void GetCategory() {
@@ -118,7 +148,7 @@ public class Frag_Dashboard extends Fragment {
                     productPrice = products.get(i).getProductPrice();
                     productName = products.get(i).getProductName();
                     saleTransactionViewModel.createSaleTransaction(new SaleTransaction(productId, productName,
-                            productImagePath, 1, productUnit, productPrice, 0,productPrice*1));
+                            productImagePath, 1, productUnit, productPrice, 0, productPrice * 1));
                 });
                 binding.searchViewDashboard.addTextChangedListener(new TextWatcher() {
                     @Override
@@ -146,34 +176,6 @@ public class Frag_Dashboard extends Fragment {
     }
 
     /*
-tab layout on dashboard
- */
-    private void OnTabLayout() {
-        binding.tabLayoutOnDashboard.addTab(binding.tabLayoutOnDashboard.newTab().setText("All"));
-        if (categoryList.size() != 0) {
-            for (Category category : categoryList) {
-                CategoryName = category.getCategoryName();
-                binding.tabLayoutOnDashboard.addTab(binding.tabLayoutOnDashboard.newTab().setText(CategoryName));
-            }
-        }
-        binding.tabLayoutOnDashboard.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-    }
-
-    /*
 create Option menu in fragment using addMenuProvider and ViewLifecycleOwner to remove when view were destroy
  */
     private void OnCreateMenu() {
@@ -192,6 +194,6 @@ create Option menu in fragment using addMenuProvider and ViewLifecycleOwner to r
                 return true;
             }
         }, getViewLifecycleOwner());
-    }
+    }//option menu
 
 }

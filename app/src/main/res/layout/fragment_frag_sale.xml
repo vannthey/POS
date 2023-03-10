@@ -49,71 +49,7 @@
                     android:text="@string/customer"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/saleCustomerPhone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/phone"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
             </LinearLayout>
-
-
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp">
-
-                <TableRow>
-                    <TextView
-                        android:layout_weight="1"
-                        android:paddingStart="0dp"
-                        android:paddingEnd="10dp"
-                        android:text="@string/qty"
-                        android:textColor="@color/black"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:layout_weight="2"
-                        android:gravity="center"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="10dp"
-                        android:text="@string/Description"
-                        android:textColor="@color/black"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="10dp"
-                        android:text="@string/price"
-                        android:textColor="@color/black"
-                        android:textSize="16sp" />
-
-
-                    <TextView
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="10dp"
-                        android:text="@string/discount"
-                        android:textColor="@color/black"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="10dp"
-                        android:text="@string/subtotal"
-                        android:textColor="@color/black"
-                        android:textSize="16sp" />
-
-                    <Space android:layout_width="24dp" />
-                </TableRow>
-            </TableLayout>
 
             <ListView
                 android:id="@+id/list_item_sale"

@@ -40,6 +40,9 @@ public class Product {
     int categoryId;
 
     @ColumnInfo
+    String categoryName;
+
+    @ColumnInfo
     int supplierId;
 
     @ColumnInfo
@@ -51,7 +54,7 @@ public class Product {
     @ColumnInfo
     String createDate;
 
-    public Product(String productName, int productQty, int productUnitId, long productCode, double productCost, double productPrice, double productTax, int inventoryId, int categoryId, int supplierId, String imagePath, String creator, String createDate) {
+    public Product(String productName, int productQty, int productUnitId, long productCode, double productCost, double productPrice, double productTax, int inventoryId, int categoryId, String categoryName, int supplierId, String imagePath, String creator, String createDate) {
         this.productName = productName;
         this.productQty = productQty;
         this.productUnitId = productUnitId;
@@ -61,6 +64,7 @@ public class Product {
         this.productTax = productTax;
         this.inventoryId = inventoryId;
         this.categoryId = categoryId;
+        this.categoryName = categoryName;
         this.supplierId = supplierId;
         this.imagePath = imagePath;
         this.creator = creator;
@@ -107,6 +111,10 @@ public class Product {
         return categoryId;
     }
 
+    public String getCategoryName() {
+        return categoryName;
+    }
+
     public int getSupplierId() {
         return supplierId;
     }
@@ -136,6 +144,7 @@ public class Product {
                 ", productTax=" + productTax +
                 ", inventoryId=" + inventoryId +
                 ", categoryId=" + categoryId +
+                ", categoryName='" + categoryName + '\'' +
                 ", supplierId=" + supplierId +
                 ", imagePath='" + imagePath + '\'' +
                 ", creator='" + creator + '\'' +

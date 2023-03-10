@@ -68,7 +68,8 @@
             android:id="@+id/txtSupplier_phone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:importantForAccessibility="no" />
+            android:importantForAccessibility="no"
+            android:inputType="number" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -86,6 +87,7 @@
             android:id="@+id/txtSupplier_address"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="start"
             android:importantForAccessibility="no" />
     </com.google.android.material.textfield.TextInputLayout>
 

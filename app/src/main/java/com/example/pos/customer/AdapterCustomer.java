@@ -14,12 +14,15 @@ import com.example.pos.databinding.CustomListAllCustomerBinding;
 import java.util.List;
 
 public class AdapterCustomer extends BaseAdapter {
+    private final String TAG = "customerId";
+    doCustomizeCustomer customer;
     List<Customer> customerList;
     Context ctx;
     CustomListAllCustomerBinding binding;
     Holder holder;
 
-    public AdapterCustomer(List<Customer> customerList, Context ctx) {
+    public AdapterCustomer(doCustomizeCustomer customer, List<Customer> customerList, Context ctx) {
+        this.customer = customer;
         this.customerList = customerList;
         this.ctx = ctx;
     }
@@ -67,6 +70,9 @@ public class AdapterCustomer extends BaseAdapter {
         holder.customerBinding.customCustomerName.setText(customerList.get(i).getCustomerName());
         holder.customerBinding.customCustomerPhone.setText(customerList.get(i).getCustomerPhoneNumber());
         holder.customerBinding.customCustomerAddress.setText(customerList.get(i).getCustomerAddress());
+        holder.customerBinding.customCustomerPreference.setOnClickListener(view1 -> {
+            customer.doCustomizeCustomerById(customerList.get(i).getCustomerId());
+        });
         return holder.convertView;
     }
 }

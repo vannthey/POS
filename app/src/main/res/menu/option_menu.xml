@@ -39,17 +39,26 @@
         android:visible="false"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/filter_product"
+        android:icon="@drawable/ic_sort"
+        android:title="@string/filter_product"
+        android:visible="false"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/add_supplier"
         android:icon="@drawable/ic_form_add"
         android:title="@string/add_supplier"
         android:visible="false"
         app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/add_customer"
         android:icon="@drawable/ic_person_add"
         android:title="@string/add_customer"
         android:visible="false"
         app:showAsAction="ifRoom" />
+
+
     <item
         android:id="@+id/add_user"
         android:icon="@drawable/ic_person_add"

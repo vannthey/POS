@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.pos.Database.Entity.UserAccount;
 import com.example.pos.Database.POSDatabase;
 import com.example.pos.MainActivity;
-import com.example.pos.SharedPrefHelper;
+import com.example.pos.Configure.SharedPrefHelper;
 import com.example.pos.account.ManageAccountActivity;
 import com.example.pos.databinding.ActivityLoginBinding;
 

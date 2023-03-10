@@ -20,7 +20,7 @@ import com.example.pos.Database.Entity.UserAccount;
 
 @Database(entities = {UserAccount.class, Category.class, Product.class, Inventory.class,
         Supplier.class, PayType.class, Customer.class, Unit.class, Stock.class, SaleTransaction.class},
-        version = 1, exportSchema = false)
+        version = 2, exportSchema = false)
 public abstract class POSDatabase extends RoomDatabase {
 
     public abstract POSDao getDao();

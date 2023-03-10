@@ -18,9 +18,9 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.example.pos.Database.Entity.UserAccount;
-import com.example.pos.DateHelper;
+import com.example.pos.Configure.DateHelper;
 import com.example.pos.R;
-import com.example.pos.SharedPrefHelper;
+import com.example.pos.Configure.SharedPrefHelper;
 import com.example.pos.databinding.ActivityManageAccountBinding;
 import com.github.drjacky.imagepicker.ImagePicker;
 

@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.example.pos.account.ManageAccountActivity;
 import com.example.pos.category.Frag_category;
+import com.example.pos.Configure.SharedPrefHelper;
 import com.example.pos.customer.Frag_customer;
 import com.example.pos.dasboard.Frag_Dashboard;
 import com.example.pos.databinding.ActivityMainBinding;
@@ -118,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
                 setStateFragment(new Frag_expense());
                 break;
             case R.id.language:
-                bottomSheetDialog.show();
+                ChangeLanguage();
                 break;
             case R.id.logout:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -145,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setStateFragment(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, fragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, fragment).addToBackStack(null).commit();
     }
 
     public void ChangeLanguage() {
@@ -168,6 +169,9 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (binding.navDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.navDrawerLayout.closeDrawer(GravityCompat.START);
+        }
+        if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+            getSupportFragmentManager().popBackStack();
         }
 
 //        else {

@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.POS" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
@@ -15,7 +15,8 @@
     </style>
 
     <style name="ToolbarFont">
-            <item name="android:textSize">20sp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="textAllCaps">true</item>
     </style>
 
     <style name="LocalFont">

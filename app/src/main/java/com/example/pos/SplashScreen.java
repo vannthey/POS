@@ -6,6 +6,7 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.pos.Configure.SharedPrefHelper;
 import com.example.pos.databinding.ActivitySpashScreenBinding;
 import com.example.pos.setting.Login;
 

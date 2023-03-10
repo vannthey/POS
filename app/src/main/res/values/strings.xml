@@ -20,7 +20,7 @@
     <string name="sign_out">Sign out</string>
     <string name="shopping_cart">cart</string>
     <string name="user_position">user position</string>
-    <string name="dashboard">Dashboard</string>
+    <string name="dashboard">POS</string>
     <string name="sale">Sale</string>
     <string name="category">Category</string>
     <string name="report">Report</string>
@@ -142,5 +142,6 @@
     <string name="Cash_drawer">Cash Drawer</string>
     <string name="bill_to">Bill To</string>
     <string name="phone">Phone</string>
+    <string name="filter_product">Filter product</string>
 
 </resources>
