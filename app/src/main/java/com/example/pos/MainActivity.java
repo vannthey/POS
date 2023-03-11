@@ -14,9 +14,9 @@ import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.example.pos.Configure.SharedPrefHelper;
 import com.example.pos.account.ManageAccountActivity;
 import com.example.pos.category.Frag_category;
-import com.example.pos.Configure.SharedPrefHelper;
 import com.example.pos.customer.Frag_customer;
 import com.example.pos.dasboard.Frag_Dashboard;
 import com.example.pos.databinding.ActivityMainBinding;
@@ -43,12 +43,16 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.actionBar.customActionbar);
-        setTitle("Dashboard");
         binding.navDrawerView.setCheckedItem(R.id.dashboad);
+        binding.navDrawerView.getChildAt(0).setVerticalScrollBarEnabled(false);
         setStateFragment(new Frag_Dashboard());
         SetUserNameAndRole();
 
-        drawerToggle = new ActionBarDrawerToggle(this, binding.navDrawerLayout, binding.actionBar.customActionbar, R.string.Navigation_drawer_open, R.string.Navigation_drawer_close);
+        drawerToggle = new ActionBarDrawerToggle(this,
+                binding.navDrawerLayout,
+                binding.actionBar.customActionbar,
+                R.string.Navigation_drawer_open, R.string.Navigation_drawer_close);
+
 
         /*
         Set state to navigation drawer to it visible on action bar

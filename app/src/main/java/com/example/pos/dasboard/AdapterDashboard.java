@@ -87,6 +87,7 @@ public class AdapterDashboard extends BaseAdapter implements Filterable {
             List<Product> productListTextSearch = new ArrayList<>();
             //check if user not input any thing so get all value from new list that declare in scope
             //equal to list before it filter so it mean set old data back
+            Frag_Dashboard frag_dashboard = new Frag_Dashboard();
             if (charSequence == null || charSequence.length() == 0) {
                 productListTextSearch.addAll(newProductList);
             } else {

@@ -34,7 +34,7 @@ public class Frag_Dashboard extends Fragment {
     SaleTransactionViewModel saleTransactionViewModel;
     AdapterDashboard adapterDashboard;
     List<Category> categoryList;
-
+    String categoryName;
     int itemCount = 0;
     FragmentFragDashboardBinding binding;
     String CategoryName;
@@ -78,7 +78,13 @@ tab layout on dashboard
         binding.tabLayoutOnDashboard.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                if (tab.getText() != "All") {
+//                if (categoryName!=null){
+//                    adapterDashboard.getFilter().filter(categoryName);
+//                }else {
+//                    categoryName = String.valueOf(tab.getText());
+//                    adapterDashboard.getFilter().filter(categoryName);
+//                }
+                if (tab.getText()!="All"){
                     adapterDashboard.getFilter().filter(tab.getText());
                 }
             }
@@ -92,6 +98,11 @@ tab layout on dashboard
 
             }
         });//tab bar
+    }
+
+    public String filterCategoryName(){
+        String txt = categoryName;
+        return txt;
     }
 
     private void GetCategory() {

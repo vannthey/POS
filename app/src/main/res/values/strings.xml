@@ -143,5 +143,6 @@
     <string name="bill_to">Bill To</string>
     <string name="phone">Phone</string>
     <string name="filter_product">Filter product</string>
+    <string name="expense_title">Expense Title</string>
 
 </resources>

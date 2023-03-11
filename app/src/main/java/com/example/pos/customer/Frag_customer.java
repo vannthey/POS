@@ -23,10 +23,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
-import com.example.pos.Database.Entity.Customer;
-import com.example.pos.R;
 import com.example.pos.Configure.DateHelper;
 import com.example.pos.Configure.SharedPrefHelper;
+import com.example.pos.Database.Entity.Customer;
+import com.example.pos.R;
 import com.example.pos.databinding.FragmentFragCustomerBinding;
 import com.github.drjacky.imagepicker.ImagePicker;
 
@@ -139,6 +139,7 @@ public class Frag_customer extends Fragment implements doCustomizeCustomer {
                 binding.txtNoCustomerFound.setVisibility(View.GONE);
                 binding.listAllCustomer.setVisibility(View.VISIBLE);
                 binding.listAllCustomer.setAdapter(new AdapterCustomer(this, customers, requireContext()));
+                binding.listAllCustomer.setOnItemClickListener((adapterView, view, i, l) -> Toast.makeText(requireContext(), "Loading History.....", Toast.LENGTH_SHORT).show());
 //                binding.listAllCustomer.setOnItemClickListener((adapterView, view, i, l) -> {
 //                    customerId = customers.get(i).getCustomerId();
 //                    customerSex = customers.get(i).getCustomerSex();
@@ -262,13 +263,13 @@ public class Frag_customer extends Fragment implements doCustomizeCustomer {
                 } else {
                     binding.formCustomer.customerProfile.setImageResource(R.drawable.admin_profile);
                 }
-                if (c.getCustomerSex().contains("Male")){
-                    binding.formCustomer.customerMale.setChecked(true);
-                }else if(c.getCustomerSex().contains("Female")){
-                    binding.formCustomer.customerFemale.setChecked(true);
-                }else {
+                if (c.getCustomerSex() == null) {
                     binding.formCustomer.customerMale.setChecked(false);
                     binding.formCustomer.customerFemale.setChecked(false);
+                } else if (c.getCustomerSex().contains("Male")) {
+                    binding.formCustomer.customerMale.setChecked(true);
+                } else if (c.getCustomerSex().contains("Female")) {
+                    binding.formCustomer.customerFemale.setChecked(true);
                 }
 
                 binding.formCustomer.customerName.setText(c.getCustomerName());
