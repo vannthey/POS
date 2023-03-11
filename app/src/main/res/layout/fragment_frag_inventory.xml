@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:animateLayoutChanges="true"
     tools:context=".inventory.Frag_inventory">
 
     <TextView
@@ -20,92 +21,7 @@
         android:layout_height="match_parent"
         android:scrollbars="none"
         android:visibility="gone" />
-
-    <LinearLayout
-        android:id="@+id/layout_add_inventory"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/inventoryName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/inventory_title" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/inventoryLocation"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:gravity="top"
-                android:hint="@string/inventory_location" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:gravity="center">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnCancelInventory"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_marginEnd="5dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/Deep_Saffron"
-                android:text="@string/cancel" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnDeleteInventory"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/Coral_Red"
-                android:text="@string/delete"
-                android:visibility="gone" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnUpdateInventory"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/Lime_Green"
-                android:text="@string/update"
-                android:visibility="gone" />
-
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnSaveInventory"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_marginStart="5dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/Egyptian_Blue"
-                android:text="@string/save" />
-        </LinearLayout>
-    </LinearLayout>
+    <include android:id="@+id/formInventory"
+        layout="@layout/custom_form_create_inventory"/>
 
 </LinearLayout>

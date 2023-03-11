@@ -2,66 +2,43 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center"
     android:orientation="vertical"
-    android:padding="20dp">
-
-    <ImageView
-        android:id="@+id/custom_edit_image_on_sale"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:contentDescription="@null"
-        android:src="@drawable/ic_image" />
+    android:padding="10dp">
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:layout_height="match_parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/custom_edit_product_qty_on_sale"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="@string/product_qty"
-            android:importantForAccessibility="no"
-            android:inputType="number"
-            android:textSize="18sp" />
-
+            android:hint="@string/expense_title"
+            android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:layout_height="match_parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/custom_edit_product_price_on_sale"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="@string/product_price"
-            android:importantForAccessibility="no"
-            android:inputType="number"
-            android:textSize="18sp" />
-
+            android:hint="@string/price"
+            android:inputType="number" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:layout_height="200dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/custom_edit_product_discount_on_sale"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="@string/product_discount"
-            android:importantForAccessibility="no"
-            android:inputType="number"
-            android:textSize="18sp" />
-
+            android:gravity="start"
+            android:hint="@string/Description" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
@@ -70,26 +47,33 @@
         android:layout_marginTop="10dp">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/custom_btn_cancel_edit_product"
             android:layout_width="0dp"
             android:layout_height="60dp"
+            android:layout_marginEnd="5dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/Coral_Red"
-            android:text="@string/cancel" />
-
-        <Space
-            android:layout_width="10dp"
-            android:layout_height="wrap_content" />
+            android:backgroundTint="@color/Deep_Saffron" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/custom_btn_save_edit_product"
             android:layout_width="0dp"
             android:layout_height="60dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/Egyptian_Blue"
-            android:text="@string/save" />
+            android:backgroundTint="@color/Coral_Red" />
 
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/Lime_Green" />
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/Egyptian_Blue" />
     </LinearLayout>
-
-
 </LinearLayout>

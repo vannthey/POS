@@ -14,6 +14,7 @@ import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.example.pos.Configure.SharedPrefHelper;
 import com.example.pos.account.ManageAccountActivity;
 import com.example.pos.category.Frag_category;
 import com.example.pos.customer.Frag_customer;
@@ -42,12 +43,16 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.actionBar.customActionbar);
-        setTitle("Dashboard");
         binding.navDrawerView.setCheckedItem(R.id.dashboad);
+        binding.navDrawerView.getChildAt(0).setVerticalScrollBarEnabled(false);
         setStateFragment(new Frag_Dashboard());
         SetUserNameAndRole();
 
-        drawerToggle = new ActionBarDrawerToggle(this, binding.navDrawerLayout, binding.actionBar.customActionbar, R.string.Navigation_drawer_open, R.string.Navigation_drawer_close);
+        drawerToggle = new ActionBarDrawerToggle(this,
+                binding.navDrawerLayout,
+                binding.actionBar.customActionbar,
+                R.string.Navigation_drawer_open, R.string.Navigation_drawer_close);
+
 
         /*
         Set state to navigation drawer to it visible on action bar
@@ -55,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
         binding.navDrawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
         binding.navDrawerView.setNavigationItemSelectedListener(this::NavigationSelected);
-
     }
 
     private void SetUserNameAndRole() {
@@ -119,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                 setStateFragment(new Frag_expense());
                 break;
             case R.id.language:
-                bottomSheetDialog.show();
+                ChangeLanguage();
                 break;
             case R.id.logout:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -146,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setStateFragment(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, fragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, fragment).addToBackStack(null).commit();
     }
 
     public void ChangeLanguage() {
@@ -169,6 +173,9 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (binding.navDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.navDrawerLayout.closeDrawer(GravityCompat.START);
+        }
+        if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+            getSupportFragmentManager().popBackStack();
         }
 
 //        else {

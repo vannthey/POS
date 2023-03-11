@@ -14,6 +14,11 @@ import java.util.List;
 public class SaleTransactionViewModel extends AndroidViewModel {
     POSDatabase posDatabase;
 
+    double Total = 0;
+    double discount = 0;
+    double subTotal = 0;
+    double afterDiscount = 0;
+
     public SaleTransactionViewModel(@NonNull Application application) {
         super(application);
         posDatabase = POSDatabase.getInstance(application.getApplicationContext());
@@ -27,8 +32,8 @@ public class SaleTransactionViewModel extends AndroidViewModel {
         return posDatabase.getDao().getAllSaleTransaction();
     }
 
-    public void editProductOnSaleById(double price, int qty, double dist, int id) {
-        new Thread(() -> posDatabase.getDao().editProductOnSaleById(price, qty, dist, id)).start();
+    public void editProductOnSaleById(double price, int qty, double dist, double productAmount, int id) {
+        new Thread(() -> posDatabase.getDao().editProductOnSaleById(price, qty, dist, productAmount, id)).start();
     }
 
     public void deleteSaleTransactionById(int saleId) {

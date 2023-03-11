@@ -15,9 +15,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.pos.Database.Entity.Supplier;
-import com.example.pos.DateHelper;
+import com.example.pos.Configure.DateHelper;
 import com.example.pos.R;
-import com.example.pos.SharedPrefHelper;
+import com.example.pos.Configure.SharedPrefHelper;
 import com.example.pos.databinding.FragmentFragSupplierBinding;
 
 public class Frag_supplier extends Fragment {
@@ -36,10 +36,10 @@ public class Frag_supplier extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentFragSupplierBinding.inflate(getLayoutInflater(), container, false);
         viewModel = new ViewModelProvider(this).get(SupplierViewModel.class);
-        binding.btnCancelSupplier.setOnClickListener(v -> OnUpdateUI());
-        binding.btnSaveSupplier.setOnClickListener(this::SaveSupplier);
-        binding.btnUpdateSupplier.setOnClickListener(this::UpdateSupplier);
-        binding.btnDeleteSupplier.setOnClickListener(this::DeleteSupplier);
+        binding.formSupplier.btnCancelSupplier.setOnClickListener(v -> OnUpdateUI());
+        binding.formSupplier.btnSaveSupplier.setOnClickListener(this::SaveSupplier);
+        binding.formSupplier.btnUpdateSupplier.setOnClickListener(this::UpdateSupplier);
+        binding.formSupplier.btnDeleteSupplier.setOnClickListener(this::DeleteSupplier);
         OnCreateMenu();
         GetAllSupplier();
         CheckSupplierSex();
@@ -52,9 +52,9 @@ public class Frag_supplier extends Fragment {
     }
 
     private void UpdateSupplier(View view) {
-        SupplierName = String.valueOf(binding.txtSupplierName.getText());
-        SupplierPhone = String.valueOf(binding.txtSupplierPhone.getText());
-        SupplierAddress = String.valueOf(binding.txtSupplierAddress.getText());
+        SupplierName = String.valueOf(binding.formSupplier.txtSupplierName.getText());
+        SupplierPhone = String.valueOf(binding.formSupplier.txtSupplierPhone.getText());
+        SupplierAddress = String.valueOf(binding.formSupplier.txtSupplierAddress.getText());
         if (SupplierName != null) {
             viewModel.updateSupplierById(SupplierName, SupplierAddress, SupplierSex, SupplierPhone, supplierId);
             OnUpdateUI();
@@ -65,14 +65,14 @@ public class Frag_supplier extends Fragment {
 
 
     private void DeleteAndUpdate() {
-        binding.btnDeleteSupplier.setVisibility(View.VISIBLE);
-        binding.btnUpdateSupplier.setVisibility(View.VISIBLE);
-        binding.btnSaveSupplier.setVisibility(View.GONE);
+        binding.formSupplier.btnDeleteSupplier.setVisibility(View.VISIBLE);
+        binding.formSupplier.btnUpdateSupplier.setVisibility(View.VISIBLE);
+        binding.formSupplier.btnSaveSupplier.setVisibility(View.GONE);
     }
 
     private void CheckSupplierSex() {
-        binding.groupSupplierSex.setOnCheckedChangeListener((radioGroup, i) -> {
-            if (binding.supplierMale.isChecked()) {
+        binding.formSupplier.groupSupplierSex.setOnCheckedChangeListener((radioGroup, i) -> {
+            if (binding.formSupplier.supplierMale.isChecked()) {
                 SupplierSex = "Male";
             } else {
                 SupplierSex = "Female";
@@ -81,14 +81,14 @@ public class Frag_supplier extends Fragment {
     }
 
     private void SaveSupplier(View view) {
-        if (String.valueOf(binding.txtSupplierName.getText()).isEmpty()
-                || String.valueOf(binding.txtSupplierPhone.getText()).isEmpty()
-                || String.valueOf(binding.txtSupplierAddress.getText()).isEmpty()) {
+        if (String.valueOf(binding.formSupplier.txtSupplierName.getText()).isEmpty()
+                || String.valueOf(binding.formSupplier.txtSupplierPhone.getText()).isEmpty()
+                || String.valueOf(binding.formSupplier.txtSupplierAddress.getText()).isEmpty()) {
             Toast.makeText(requireContext(), R.string.Please_Input_Supplier, Toast.LENGTH_SHORT).show();
         } else {
-            SupplierName = String.valueOf(binding.txtSupplierName.getText());
-            SupplierPhone = String.valueOf(binding.txtSupplierPhone.getText());
-            SupplierAddress = String.valueOf(binding.txtSupplierAddress.getText());
+            SupplierName = String.valueOf(binding.formSupplier.txtSupplierName.getText());
+            SupplierPhone = String.valueOf(binding.formSupplier.txtSupplierPhone.getText());
+            SupplierAddress = String.valueOf(binding.formSupplier.txtSupplierAddress.getText());
             supplier = new Supplier(SupplierName, SupplierSex, SupplierPhone, SupplierAddress,
                     SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()), DateHelper.getCurrentDate());
             viewModel.createSupplier(supplier);
@@ -104,19 +104,19 @@ public class Frag_supplier extends Fragment {
                 binding.listShowSupplier.setAdapter(new AdapterSupplier(suppliers, requireActivity()));
             }
             binding.listShowSupplier.setOnItemClickListener((adapterView, view, i, l) -> {
-                binding.txtSupplierPhone.setText(suppliers.get(i).getSupplierPhoneNumber());
-                binding.txtSupplierName.setText(suppliers.get(i).getSupplierName());
-                binding.txtSupplierAddress.setText(suppliers.get(i).getSupplierAddress());
+                binding.formSupplier.txtSupplierPhone.setText(suppliers.get(i).getSupplierPhoneNumber());
+                binding.formSupplier.txtSupplierName.setText(suppliers.get(i).getSupplierName());
+                binding.formSupplier.txtSupplierAddress.setText(suppliers.get(i).getSupplierAddress());
                 supplierId = suppliers.get(i).getSupplierId();
                 DeleteAndUpdate();
                 SupplierSex = suppliers.get(i).getSupplierSex();
                 if (SupplierSex == null) {
-                    binding.supplierMale.setChecked(false);
-                    binding.supplierFemale.setChecked(false);
+                    binding.formSupplier.supplierMale.setChecked(false);
+                    binding.formSupplier.supplierFemale.setChecked(false);
                 } else if (SupplierSex.equals("Female")) {
-                    binding.supplierFemale.setChecked(true);
+                    binding.formSupplier.supplierFemale.setChecked(true);
                 } else if (SupplierSex.equals("Male")) {
-                    binding.supplierMale.setChecked(true);
+                    binding.formSupplier.supplierMale.setChecked(true);
                 }
                 LayoutSaveSupplier();
             });
@@ -124,18 +124,18 @@ public class Frag_supplier extends Fragment {
     }
 
     private void OnUpdateUI() {
-        binding.layoutAddSupplier.setVisibility(View.GONE);
+        binding.formSupplier.layoutAddSupplier.setVisibility(View.GONE);
         binding.listShowSupplier.setVisibility(View.VISIBLE);
-        binding.btnDeleteSupplier.setVisibility(View.GONE);
-        binding.btnUpdateSupplier.setVisibility(View.GONE);
-        binding.btnSaveSupplier.setVisibility(View.VISIBLE);
-        binding.txtSupplierName.setText(null);
-        binding.txtSupplierPhone.setText(null);
-        binding.txtSupplierAddress.setText(null);
+        binding.formSupplier.btnDeleteSupplier.setVisibility(View.GONE);
+        binding.formSupplier.btnUpdateSupplier.setVisibility(View.GONE);
+        binding.formSupplier.btnSaveSupplier.setVisibility(View.VISIBLE);
+        binding.formSupplier.txtSupplierName.setText(null);
+        binding.formSupplier.txtSupplierPhone.setText(null);
+        binding.formSupplier.txtSupplierAddress.setText(null);
     }
 
     private void LayoutSaveSupplier() {
-        binding.layoutAddSupplier.setVisibility(View.VISIBLE);
+        binding.formSupplier.layoutAddSupplier.setVisibility(View.VISIBLE);
         binding.listShowSupplier.setVisibility(View.GONE);
     }
 

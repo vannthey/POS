@@ -24,11 +24,11 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.example.pos.Database.Entity.Product;
-import com.example.pos.DateHelper;
 import com.example.pos.R;
-import com.example.pos.SharedPrefHelper;
 import com.example.pos.category.AdapterCategory;
 import com.example.pos.category.CategoryViewModel;
+import com.example.pos.Configure.DateHelper;
+import com.example.pos.Configure.SharedPrefHelper;
 import com.example.pos.databinding.FragmentFragProductBinding;
 import com.example.pos.inventory.AdapterInventory;
 import com.example.pos.inventory.InventoryViewModel;
@@ -54,6 +54,7 @@ public class Frag_Product extends Fragment {
     AdapterInventory adapterInventory;
     Random rnd;
     String productName;
+    String categoryName;
     int productId;
     int productQty;
     int inventorySpinnerId;
@@ -76,12 +77,12 @@ public class Frag_Product extends Fragment {
         categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
         supplierViewModel = new ViewModelProvider(this).get(SupplierViewModel.class);
         inventoryViewModel = new ViewModelProvider(this).get(InventoryViewModel.class);
-        binding.btnSaveProduct.setOnClickListener(this::SaveProduct);
-        binding.btnCancelAddProduct.setOnClickListener(this::CancelProduct);
-        binding.btnUpdateProduct.setOnClickListener(this::UpdateProduct);
-        binding.btnDeleteProduct.setOnClickListener(this::DeleteProduct);
-        binding.addProductCode.setOnClickListener(this::getRandomProductCode);
-        binding.addProductImage.setOnClickListener(v -> OnGetImage());
+        binding.formProduct.btnSaveProduct.setOnClickListener(this::SaveProduct);
+        binding.formProduct.btnCancelAddProduct.setOnClickListener(this::CancelProduct);
+        binding.formProduct.btnUpdateProduct.setOnClickListener(this::UpdateProduct);
+        binding.formProduct.btnDeleteProduct.setOnClickListener(this::DeleteProduct);
+        binding.formProduct.addProductCode.setOnClickListener(this::getRandomProductCode);
+        binding.formProduct.addProductImage.setOnClickListener(v -> OnGetImage());
         GetAllProduct();
         GetSpinnerData();
         OnCreateMenu();
@@ -89,9 +90,7 @@ public class Frag_Product extends Fragment {
     }
 
     private void OnGetImage() {
-        launcher.launch(ImagePicker.Companion.with(requireActivity()).maxResultSize(1080, 1080, true).crop().galleryOnly().createIntent()
-
-        );
+        launcher.launch(ImagePicker.Companion.with(requireActivity()).maxResultSize(1080, 1080, true).crop().galleryOnly().createIntent());
 
     }
 
@@ -101,7 +100,7 @@ public class Frag_Product extends Fragment {
             uri = result.getData().getData();
             file = new File(uri.getPath());
             // Use the uri to load the image
-            binding.addProductImage.setImageURI(uri);
+            binding.formProduct.addProductImage.setImageURI(uri);
         } else if (result.getResultCode() == ImagePicker.RESULT_ERROR) {
             Toast.makeText(requireContext(), "No Image Pick", Toast.LENGTH_SHORT).show();
             // Use ImagePicker.Companion.getError(result.getData()) to show an error
@@ -116,45 +115,37 @@ public class Frag_Product extends Fragment {
     }
 
     private void SaveProduct(View view) {
-        if (String.valueOf(binding.addProductCode.getText()).isEmpty()
-                || String.valueOf(binding.addProductQty.getText()).isEmpty()
-                || String.valueOf(binding.addProductName.getText()).isEmpty()
-                || String.valueOf(binding.addProductCost.getText()).isEmpty()
-                || String.valueOf(binding.addProductTax.getText()).isEmpty()
-                || String.valueOf(binding.addProductPrice.getText()).isEmpty()) {
+        if (String.valueOf(binding.formProduct.addProductCode.getText()).isEmpty() || String.valueOf(binding.formProduct.addProductQty.getText()).isEmpty() || String.valueOf(binding.formProduct.addProductName.getText()).isEmpty() || String.valueOf(binding.formProduct.addProductCost.getText()).isEmpty() || String.valueOf(binding.formProduct.addProductTax.getText()).isEmpty() || String.valueOf(binding.formProduct.addProductPrice.getText()).isEmpty()) {
             Toast.makeText(requireContext(), R.string.Please_Input_Product, Toast.LENGTH_SHORT).show();
         } else {
-            productCode = Integer.parseInt(String.valueOf(binding.addProductCode.getText()));
-            productQty = Integer.parseInt(String.valueOf(binding.addProductQty.getText()));
-            productName = String.valueOf(binding.addProductName.getText());
-            productPrice = Double.parseDouble(String.valueOf(binding.addProductPrice.getText()));
-            productCost = Double.parseDouble(String.valueOf(binding.addProductCost.getText()));
-            productTax = Double.parseDouble(String.valueOf(binding.addProductTax.getText()));
-            productViewModel.createProduct(new Product(productName, productQty, unitSpinnerId, productCode, productCost, productPrice, productTax, inventorySpinnerId, categorySpinnerId, supplierSpinnerId, file.toString(), SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()), DateHelper.getCurrentDate()));
+            productCode = Integer.parseInt(String.valueOf(binding.formProduct.addProductCode.getText()));
+            productQty = Integer.parseInt(String.valueOf(binding.formProduct.addProductQty.getText()));
+            productName = String.valueOf(binding.formProduct.addProductName.getText());
+            productPrice = Double.parseDouble(String.valueOf(binding.formProduct.addProductPrice.getText()));
+            productCost = Double.parseDouble(String.valueOf(binding.formProduct.addProductCost.getText()));
+            productTax = Double.parseDouble(String.valueOf(binding.formProduct.addProductTax.getText()));
+            productViewModel.createProduct(new Product(productName, productQty, unitSpinnerId, productCode,
+                    productCost, productPrice, productTax, inventorySpinnerId, categorySpinnerId, categoryName, supplierSpinnerId
+                    , file.toString(), SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()), DateHelper.getCurrentDate()));
             OnUpdateUI();
         }
     }
 
 
     private void UpdateProduct(View view) {
-        if (String.valueOf(binding.addProductCode.getText()).isEmpty()
-                || String.valueOf(binding.addProductQty.getText()).isEmpty()
-                || String.valueOf(binding.addProductName.getText()).isEmpty()
-                || String.valueOf(binding.addProductCost.getText()).isEmpty()
-                || String.valueOf(binding.addProductTax.getText()).isEmpty()
-                || String.valueOf(binding.addProductPrice.getText()).isEmpty()) {
+        if (String.valueOf(binding.formProduct.addProductCode.getText()).isEmpty() || String.valueOf(binding.formProduct.addProductQty.getText()).isEmpty() || String.valueOf(binding.formProduct.addProductName.getText()).isEmpty() || String.valueOf(binding.formProduct.addProductCost.getText()).isEmpty() || String.valueOf(binding.formProduct.addProductTax.getText()).isEmpty() || String.valueOf(binding.formProduct.addProductPrice.getText()).isEmpty()) {
             Toast.makeText(requireContext(), R.string.Please_Input_Product, Toast.LENGTH_SHORT).show();
         } else {
-            productCode = Integer.parseInt(String.valueOf(binding.addProductCode.getText()));
-            productQty = Integer.parseInt(String.valueOf(binding.addProductQty.getText()));
-            productName = String.valueOf(binding.addProductName.getText());
-            productPrice = Double.parseDouble(String.valueOf(binding.addProductPrice.getText()));
-            productCost = Double.parseDouble(String.valueOf(binding.addProductCost.getText()));
-            productTax = Double.parseDouble(String.valueOf(binding.addProductTax.getText()));
-            productViewModel.updateProductById(productName, productQty, unitSpinnerId, productCode, productCost, productPrice,
-                    productTax, inventorySpinnerId, categorySpinnerId, supplierSpinnerId, file.toString(),
-                    SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()),
-                    DateHelper.getCurrentDate(), productId);
+            productCode = Integer.parseInt(String.valueOf(binding.formProduct.addProductCode.getText()));
+            productQty = Integer.parseInt(String.valueOf(binding.formProduct.addProductQty.getText()));
+            productName = String.valueOf(binding.formProduct.addProductName.getText());
+            productPrice = Double.parseDouble(String.valueOf(binding.formProduct.addProductPrice.getText()));
+            productCost = Double.parseDouble(String.valueOf(binding.formProduct.addProductCost.getText()));
+            productTax = Double.parseDouble(String.valueOf(binding.formProduct.addProductTax.getText()));
+            productViewModel.updateProductById(productName, productQty, unitSpinnerId, productCode, productCost,
+                    productPrice, productTax, inventorySpinnerId, categorySpinnerId, categoryName, supplierSpinnerId,
+                    file.toString(),
+                    SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()), DateHelper.getCurrentDate(), productId);
             OnUpdateUI();
         }
 
@@ -162,7 +153,7 @@ public class Frag_Product extends Fragment {
 
     private void getRandomProductCode(View view) {
         rnd = new Random();
-        binding.addProductCode.setText(String.valueOf(rnd.nextInt(999999)));
+        binding.formProduct.addProductCode.setText(String.valueOf(rnd.nextInt(999999)));
     }
 
     private void CancelProduct(View view) {
@@ -181,13 +172,15 @@ public class Frag_Product extends Fragment {
                     unitSpinnerId = products.get(i).getProductUnitId();
                     inventorySpinnerId = products.get(i).getInventoryId();
                     supplierSpinnerId = products.get(i).getSupplierId();
-                    binding.addProductName.setText(products.get(i).getProductName());
-                    binding.addProductCode.setText(String.valueOf(products.get(i).getProductCode()));
-                    binding.addProductQty.setText(String.valueOf(products.get(i).getProductQty()));
-                    binding.addProductTax.setText(String.valueOf(products.get(i).getProductTax()));
-                    binding.addProductCost.setText(String.valueOf(products.get(i).getProductCost()));
-                    binding.addProductPrice.setText(String.valueOf(products.get(i).getProductPrice()));
-                    Glide.with(this).load(products.get(i).getImagePath()).into(binding.addProductImage);
+                    file = new File(products.get(i).getImagePath());
+                    categoryName = products.get(i).getCategoryName();
+                    binding.formProduct.addProductName.setText(products.get(i).getProductName());
+                    binding.formProduct.addProductCode.setText(String.valueOf(products.get(i).getProductCode()));
+                    binding.formProduct.addProductQty.setText(String.valueOf(products.get(i).getProductQty()));
+                    binding.formProduct.addProductTax.setText(String.valueOf(products.get(i).getProductTax()));
+                    binding.formProduct.addProductCost.setText(String.valueOf(products.get(i).getProductCost()));
+                    binding.formProduct.addProductPrice.setText(String.valueOf(products.get(i).getProductPrice()));
+                    Glide.with(this).load(products.get(i).getImagePath()).into(binding.formProduct.addProductImage);
                     LayoutSaveProduct();
                     DeleteAndUpdate();
                 });
@@ -201,12 +194,13 @@ public class Frag_Product extends Fragment {
         categoryViewModel.getAllCategory().observe(getViewLifecycleOwner(), categories -> {
             if (categories != null) {
                 adapterCategory = new AdapterCategory(categories, requireContext());
-                binding.spinnerProductCategory.setAdapter(adapterCategory);
-                binding.spinnerProductCategory.setSelection(adapterCategory.getPosition(categorySpinnerId));
-                binding.spinnerProductCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                binding.formProduct.spinnerProductCategory.setAdapter(adapterCategory);
+                binding.formProduct.spinnerProductCategory.setSelection(adapterCategory.getPosition(categorySpinnerId));
+                binding.formProduct.spinnerProductCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                         categorySpinnerId = categories.get(i).categoryId;
+                        categoryName = categories.get(i).getCategoryName();
                     }
 
                     @Override
@@ -219,9 +213,9 @@ public class Frag_Product extends Fragment {
         inventoryViewModel.getAllInventory().observe(getViewLifecycleOwner(), inventories -> {
             if (inventories != null) {
                 adapterInventory = new AdapterInventory(inventories, requireContext());
-                binding.spinnerProductInventory.setAdapter(adapterInventory);
-                binding.spinnerProductInventory.setSelection(adapterInventory.getPosition(inventorySpinnerId));
-                binding.spinnerProductInventory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                binding.formProduct.spinnerProductInventory.setAdapter(adapterInventory);
+                binding.formProduct.spinnerProductInventory.setSelection(adapterInventory.getPosition(inventorySpinnerId));
+                binding.formProduct.spinnerProductInventory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                         inventorySpinnerId = inventories.get(i).inventoryId;
@@ -237,9 +231,9 @@ public class Frag_Product extends Fragment {
         supplierViewModel.getAllSupplier().observe(getViewLifecycleOwner(), supplierList -> {
             if (supplierList != null) {
                 adapterSupplier = new AdapterSupplier(supplierList, requireContext());
-                binding.spinnerProductSupplier.setAdapter(adapterSupplier);
-                binding.spinnerProductSupplier.setSelection(adapterSupplier.getPosition(supplierSpinnerId));
-                binding.spinnerProductSupplier.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                binding.formProduct.spinnerProductSupplier.setAdapter(adapterSupplier);
+                binding.formProduct.spinnerProductSupplier.setSelection(adapterSupplier.getPosition(supplierSpinnerId));
+                binding.formProduct.spinnerProductSupplier.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                         supplierSpinnerId = supplierList.get(i).getSupplierId();
@@ -255,9 +249,9 @@ public class Frag_Product extends Fragment {
         unitViewModel.getAllUnit().observe(getViewLifecycleOwner(), unitList -> {
             if (unitList != null) {
                 adapterUnit = new AdapterUnit(unitList, requireContext());
-                binding.spinnerProductUnit.setAdapter(adapterUnit);
-                binding.spinnerProductUnit.setSelection(adapterUnit.getPosition(unitSpinnerId));
-                binding.spinnerProductUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                binding.formProduct.spinnerProductUnit.setAdapter(adapterUnit);
+                binding.formProduct.spinnerProductUnit.setSelection(adapterUnit.getPosition(unitSpinnerId));
+                binding.formProduct.spinnerProductUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                         unitSpinnerId = unitList.get(i).getUnitId();
@@ -273,28 +267,28 @@ public class Frag_Product extends Fragment {
     }
 
     private void DeleteAndUpdate() {
-        binding.btnDeleteProduct.setVisibility(View.VISIBLE);
-        binding.btnUpdateProduct.setVisibility(View.VISIBLE);
-        binding.btnSaveProduct.setVisibility(View.GONE);
+        binding.formProduct.btnDeleteProduct.setVisibility(View.VISIBLE);
+        binding.formProduct.btnUpdateProduct.setVisibility(View.VISIBLE);
+        binding.formProduct.btnSaveProduct.setVisibility(View.GONE);
     }
 
     public void OnUpdateUI() {
-        binding.layoutAddProduct.setVisibility(View.GONE);
+        binding.formProduct.layoutAddProduct.setVisibility(View.GONE);
         binding.layoutShowProduct.setVisibility(View.VISIBLE);
-        binding.btnDeleteProduct.setVisibility(View.GONE);
-        binding.btnUpdateProduct.setVisibility(View.GONE);
-        binding.btnSaveProduct.setVisibility(View.VISIBLE);
-        binding.addProductName.setText(null);
-        binding.addProductCode.setText(null);
-        binding.addProductImage.setImageResource(R.drawable.ic_image);
-        binding.addProductPrice.setText(null);
-        binding.addProductTax.setText(null);
-        binding.addProductQty.setText(null);
-        binding.addProductCost.setText(null);
+        binding.formProduct.btnDeleteProduct.setVisibility(View.GONE);
+        binding.formProduct.btnUpdateProduct.setVisibility(View.GONE);
+        binding.formProduct.btnSaveProduct.setVisibility(View.VISIBLE);
+        binding.formProduct.addProductName.setText(null);
+        binding.formProduct.addProductCode.setText(null);
+        binding.formProduct.addProductImage.setImageResource(R.drawable.ic_image);
+        binding.formProduct.addProductPrice.setText(null);
+        binding.formProduct.addProductTax.setText(null);
+        binding.formProduct.addProductQty.setText(null);
+        binding.formProduct.addProductCost.setText(null);
     }
 
     private void LayoutSaveProduct() {
-        binding.layoutAddProduct.setVisibility(View.VISIBLE);
+        binding.formProduct.layoutAddProduct.setVisibility(View.VISIBLE);
         binding.layoutShowProduct.setVisibility(View.GONE);
     }
 
@@ -304,6 +298,7 @@ public class Frag_Product extends Fragment {
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
                 menuInflater.inflate(R.menu.option_menu, menu);
                 menu.findItem(R.id.add_product).setVisible(true);
+                menu.findItem(R.id.filter_product).setVisible(true);
             }
 
             @Override
@@ -311,6 +306,8 @@ public class Frag_Product extends Fragment {
                 if (menuItem.getItemId() == R.id.add_product) {
                     binding.txtNoProductFound.setVisibility(View.GONE);
                     LayoutSaveProduct();
+                }else {
+                    Toast.makeText(requireContext(), "Filter Product", Toast.LENGTH_SHORT).show();
                 }
                 return true;
             }
