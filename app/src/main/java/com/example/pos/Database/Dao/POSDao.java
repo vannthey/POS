@@ -34,11 +34,11 @@ public interface POSDao {
 
     @Query("Update Product SET productName=:productName,productQty=:productQty,productUnitId=:productUnitId," +
             "productCode=:productCode,productCost=:productCost,productPrice=:productPrice,productTax=:productTax," +
-            "inventoryId=:inventoryId,categoryId=:categoryId,categoryName=:categoryName,supplierId=:supplierId," +
+            "inventoryId=:inventoryId,categoryId=:categoryId,supplierId=:supplierId," +
             "imagePath=:imagePath," + "creator=:creator,createDate=:createDate WHERE productId LIKE :productId")
     void updateProductById(String productName, int productQty, int productUnitId, long productCode,
                            double productCost, double productPrice, double productTax, int inventoryId,
-                           int categoryId,String categoryName, int supplierId, String imagePath, String creator, String createDate,
+                           int categoryId, int supplierId, String imagePath, String creator, String createDate,
                            int productId);
 
     /*

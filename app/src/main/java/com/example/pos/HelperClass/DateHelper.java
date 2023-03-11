@@ -1,4 +1,4 @@
-package com.example.pos.Configure;
+package com.example.pos.HelperClass;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

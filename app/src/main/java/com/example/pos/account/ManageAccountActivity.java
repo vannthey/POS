@@ -18,10 +18,11 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.example.pos.Database.Entity.UserAccount;
-import com.example.pos.Configure.DateHelper;
+import com.example.pos.HelperClass.DateHelper;
+import com.example.pos.HelperClass.SharedPrefHelper;
 import com.example.pos.R;
-import com.example.pos.Configure.SharedPrefHelper;
 import com.example.pos.databinding.ActivityManageAccountBinding;
+import com.example.pos.setting.Login;
 import com.github.drjacky.imagepicker.ImagePicker;
 
 import java.io.File;
@@ -66,10 +67,11 @@ public class ManageAccountActivity extends AppCompatActivity {
         setSupportActionBar(binding.customActionbarManageAccount.customActionbar);
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        binding.customActionbarManageAccount.customActionbar.setNavigationOnClickListener(v -> {
-            finish();
-        });
         setTitle("Account Management");
+        binding.customActionbarManageAccount.customActionbar.setNavigationOnClickListener(v -> {
+            startActivity(new Intent(this, Login.class));
+            this.finish();
+        });
         setContentView(binding.getRoot());
         viewModel = new ViewModelProvider(this).get(AccountViewModel.class);
         binding.formUser.btnSaveCreateUser.setOnClickListener(v -> SaveUserAccount());

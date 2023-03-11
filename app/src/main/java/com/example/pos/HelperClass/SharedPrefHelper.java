@@ -1,16 +1,13 @@
-package com.example.pos.Configure;
+package com.example.pos.HelperClass;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
 public class SharedPrefHelper {
     private final String SavedUserLogin = "UserLogin";
-    private final String DefaultUsername = "Admin";
     private final String DefaultUser = "DefaultUser";
-    private final String DefaultPassword = "Admin";
-    private final String customizeCustomerId = "CustomerById";
     private final String saleCustomerIndex = "CustomerIndex";
-    private final String customerId = "CustomerId";
+
     private static SharedPrefHelper INSTANCE;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -20,33 +17,6 @@ public class SharedPrefHelper {
             INSTANCE = new SharedPrefHelper();
         }
         return INSTANCE;
-    }
-
-    public String getDefaultUser(Context context) {
-        sharedPreferences = context.getSharedPreferences(DefaultUser, Context.MODE_PRIVATE);
-        return sharedPreferences.getString(DefaultUsername, "");
-    }
-
-    public String getDefaultUserPassword(Context context) {
-        sharedPreferences = context.getSharedPreferences(DefaultUser, Context.MODE_PRIVATE);
-        return sharedPreferences.getString(DefaultPassword, "");
-    }
-
-    public void ClearDefaultUser(Context context) {
-
-        sharedPreferences = context.getSharedPreferences(DefaultUser, Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
-        editor.clear();
-        editor.apply();
-
-    }
-
-    public void SaveDefaultUser(String txtUsername, String txtPassword, Context context) {
-        sharedPreferences = context.getSharedPreferences(DefaultUser, Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
-        editor.putString(DefaultPassword, txtPassword);
-        editor.putString(DefaultUsername, txtUsername);
-        editor.apply();
     }
 
     public String getSaveUserLoginName(Context context) {

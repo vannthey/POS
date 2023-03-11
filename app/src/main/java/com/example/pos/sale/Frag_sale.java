@@ -18,7 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.bumptech.glide.Glide;
 import com.example.pos.MainActivity;
 import com.example.pos.R;
-import com.example.pos.Configure.SharedPrefHelper;
+import com.example.pos.HelperClass.SharedPrefHelper;
 import com.example.pos.customer.AdapterCustomer;
 import com.example.pos.customer.CustomerViewModel;
 import com.example.pos.customer.doCustomizeCustomer;

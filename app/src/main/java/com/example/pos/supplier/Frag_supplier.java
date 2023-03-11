@@ -15,9 +15,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.pos.Database.Entity.Supplier;
-import com.example.pos.Configure.DateHelper;
+import com.example.pos.HelperClass.DateHelper;
 import com.example.pos.R;
-import com.example.pos.Configure.SharedPrefHelper;
+import com.example.pos.HelperClass.SharedPrefHelper;
 import com.example.pos.databinding.FragmentFragSupplierBinding;
 
 public class Frag_supplier extends Fragment {

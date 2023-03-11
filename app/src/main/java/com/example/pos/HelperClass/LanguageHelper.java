@@ -1,4 +1,4 @@
-package com.example.pos.Configure;
+package com.example.pos.HelperClass;
 
 import android.content.Context;
 import android.content.res.Configuration;

@@ -24,11 +24,11 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.example.pos.Database.Entity.Product;
+import com.example.pos.HelperClass.DateHelper;
+import com.example.pos.HelperClass.SharedPrefHelper;
 import com.example.pos.R;
 import com.example.pos.category.AdapterCategory;
 import com.example.pos.category.CategoryViewModel;
-import com.example.pos.Configure.DateHelper;
-import com.example.pos.Configure.SharedPrefHelper;
 import com.example.pos.databinding.FragmentFragProductBinding;
 import com.example.pos.inventory.AdapterInventory;
 import com.example.pos.inventory.InventoryViewModel;
@@ -54,7 +54,6 @@ public class Frag_Product extends Fragment {
     AdapterInventory adapterInventory;
     Random rnd;
     String productName;
-    String categoryName;
     int productId;
     int productQty;
     int inventorySpinnerId;
@@ -125,7 +124,7 @@ public class Frag_Product extends Fragment {
             productCost = Double.parseDouble(String.valueOf(binding.formProduct.addProductCost.getText()));
             productTax = Double.parseDouble(String.valueOf(binding.formProduct.addProductTax.getText()));
             productViewModel.createProduct(new Product(productName, productQty, unitSpinnerId, productCode,
-                    productCost, productPrice, productTax, inventorySpinnerId, categorySpinnerId, categoryName, supplierSpinnerId
+                    productCost, productPrice, productTax, inventorySpinnerId, categorySpinnerId, supplierSpinnerId
                     , file.toString(), SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()), DateHelper.getCurrentDate()));
             OnUpdateUI();
         }
@@ -143,7 +142,7 @@ public class Frag_Product extends Fragment {
             productCost = Double.parseDouble(String.valueOf(binding.formProduct.addProductCost.getText()));
             productTax = Double.parseDouble(String.valueOf(binding.formProduct.addProductTax.getText()));
             productViewModel.updateProductById(productName, productQty, unitSpinnerId, productCode, productCost,
-                    productPrice, productTax, inventorySpinnerId, categorySpinnerId, categoryName, supplierSpinnerId,
+                    productPrice, productTax, inventorySpinnerId, categorySpinnerId, supplierSpinnerId,
                     file.toString(),
                     SharedPrefHelper.getInstance().getSaveUserLoginName(requireContext()), DateHelper.getCurrentDate(), productId);
             OnUpdateUI();
@@ -173,7 +172,6 @@ public class Frag_Product extends Fragment {
                     inventorySpinnerId = products.get(i).getInventoryId();
                     supplierSpinnerId = products.get(i).getSupplierId();
                     file = new File(products.get(i).getImagePath());
-                    categoryName = products.get(i).getCategoryName();
                     binding.formProduct.addProductName.setText(products.get(i).getProductName());
                     binding.formProduct.addProductCode.setText(String.valueOf(products.get(i).getProductCode()));
                     binding.formProduct.addProductQty.setText(String.valueOf(products.get(i).getProductQty()));
@@ -200,7 +198,6 @@ public class Frag_Product extends Fragment {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                         categorySpinnerId = categories.get(i).categoryId;
-                        categoryName = categories.get(i).getCategoryName();
                     }
 
                     @Override
@@ -306,7 +303,7 @@ public class Frag_Product extends Fragment {
                 if (menuItem.getItemId() == R.id.add_product) {
                     binding.txtNoProductFound.setVisibility(View.GONE);
                     LayoutSaveProduct();
-                }else {
+                } else {
                     Toast.makeText(requireContext(), "Filter Product", Toast.LENGTH_SHORT).show();
                 }
                 return true;

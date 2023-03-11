@@ -78,15 +78,7 @@ tab layout on dashboard
         binding.tabLayoutOnDashboard.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-//                if (categoryName!=null){
-//                    adapterDashboard.getFilter().filter(categoryName);
-//                }else {
-//                    categoryName = String.valueOf(tab.getText());
-//                    adapterDashboard.getFilter().filter(categoryName);
-//                }
-                if (tab.getText()!="All"){
-                    adapterDashboard.getFilter().filter(tab.getText());
-                }
+
             }
 
             @Override

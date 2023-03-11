@@ -23,8 +23,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
-import com.example.pos.Configure.DateHelper;
-import com.example.pos.Configure.SharedPrefHelper;
+import com.example.pos.HelperClass.DateHelper;
+import com.example.pos.HelperClass.SharedPrefHelper;
 import com.example.pos.Database.Entity.Customer;
 import com.example.pos.R;
 import com.example.pos.databinding.FragmentFragCustomerBinding;
