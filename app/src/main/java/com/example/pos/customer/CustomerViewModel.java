@@ -6,25 +6,25 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.example.pos.Database.AppDatabase;
 import com.example.pos.Database.Entity.Customer;
-import com.example.pos.Database.POSDatabase;
 
 import java.util.List;
 
 public class CustomerViewModel extends AndroidViewModel {
-    POSDatabase posDatabase;
+    AppDatabase appDatabase;
 
     public CustomerViewModel(@NonNull Application application) {
         super(application);
-        posDatabase = POSDatabase.getInstance(application.getApplicationContext());
+        appDatabase = AppDatabase.getInstance(application.getApplicationContext());
     }
 
     public LiveData<List<Customer>> getAllCustomer() {
-        return posDatabase.getDao().getAllCustomer();
+        return appDatabase.getDao().getAllCustomer();
     }
 
     public void createCustomer(Customer customer) {
-        new Thread(() -> posDatabase.getDao().createCustomer(customer)).start();
+        new Thread(() -> appDatabase.getDao().createCustomer(customer)).start();
 
     }
 
@@ -32,13 +32,13 @@ public class CustomerViewModel extends AndroidViewModel {
                             String customerAddress, String customerProfile,
                             int customerId) {
 
-        new Thread(() -> posDatabase.getDao().updateCustomerById(customerName, customerSex, customerPhoneNumber,
+        new Thread(() -> appDatabase.getDao().updateCustomerById(customerName, customerSex, customerPhoneNumber,
                 customerDiscount, customerAddress,customerProfile,
                 customerId)).start();
     }
 
     public void deleteCustomerById(int customerId) {
-        new Thread(() -> posDatabase.getDao().deleteCustomerById(customerId)).start();
+        new Thread(() -> appDatabase.getDao().deleteCustomerById(customerId)).start();
 
     }
 

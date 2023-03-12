@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.example.pos.HelperClass.SharedPrefHelper;
 import com.example.pos.account.ManageAccountActivity;
 import com.example.pos.category.Frag_category;
+import com.example.pos.customer.CustomerHelper;
 import com.example.pos.customer.Frag_customer;
 import com.example.pos.dasboard.Frag_Dashboard;
 import com.example.pos.databinding.ActivityMainBinding;
@@ -31,7 +32,7 @@ import com.example.pos.supplier.Frag_supplier;
 import com.example.pos.unit.Frag_unit;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements CustomerHelper {
     ActivityMainBinding binding;
     ActionBarDrawerToggle drawerToggle;
     BottomSheetDialog bottomSheetDialog;
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle.syncState();
         binding.navDrawerView.setNavigationItemSelectedListener(this::NavigationSelected);
     }
+
 
     private void SetUserNameAndRole() {
         ImageView userProfileOnNavDrawer = binding.navDrawerView.getHeaderView(0).findViewById(R.id.image_profile_user);
@@ -193,4 +195,10 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        }, 2000);
     }
+
+    @Override
+    public void doCustomizeCustomerById(int i) {
+
+    }
+
 }

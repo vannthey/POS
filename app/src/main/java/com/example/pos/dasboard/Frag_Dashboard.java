@@ -1,6 +1,7 @@
 package com.example.pos.dasboard;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -16,8 +17,9 @@ import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.pos.Database.Entity.Category;
+import com.example.pos.Database.AppDatabase;
 import com.example.pos.Database.Entity.SaleTransaction;
+import com.example.pos.Database.Relationship.CategoryWithProducts;
 import com.example.pos.MainActivity;
 import com.example.pos.R;
 import com.example.pos.category.CategoryViewModel;
@@ -29,27 +31,30 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.List;
 
 public class Frag_Dashboard extends Fragment {
+    private final String TAG = "CategoryId";
     ProductViewModel productViewModel;
     CategoryViewModel categoryViewModel;
     SaleTransactionViewModel saleTransactionViewModel;
     AdapterDashboard adapterDashboard;
-    List<Category> categoryList;
+    List<CategoryWithProducts> categoryList;
     String categoryName;
     int itemCount = 0;
     FragmentFragDashboardBinding binding;
-    String CategoryName;
     String productImagePath;
     String productName;
+    int categoryId;
     int productId;
     int productUnit;
     double productPrice;
     List<SaleTransaction> saleTransactionList;
+    Handler handler;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         productViewModel = new ViewModelProvider(this).get(ProductViewModel.class);
         categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
         saleTransactionViewModel = new ViewModelProvider(this).get(SaleTransactionViewModel.class);
+        handler = new Handler();
         super.onCreate(savedInstanceState);
     }
 
@@ -58,82 +63,11 @@ public class Frag_Dashboard extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentFragDashboardBinding.inflate(inflater, container, false);
         GetProductInTransaction();
-        GetCategory();
         GetAllProduct();
         OnCreateMenu();
+        GetCategoryWithProduct();
         return binding.getRoot();
     }
-
-    /*
-tab layout on dashboard
-*/
-    private void OnTabLayout() {
-        binding.tabLayoutOnDashboard.addTab(binding.tabLayoutOnDashboard.newTab().setText("All"));
-        if (categoryList.size() != 0) {
-            for (Category category : categoryList) {
-                CategoryName = category.getCategoryName();
-                binding.tabLayoutOnDashboard.addTab(binding.tabLayoutOnDashboard.newTab().setText(CategoryName));
-            }
-        }
-        binding.tabLayoutOnDashboard.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });//tab bar
-    }
-
-    public String filterCategoryName(){
-        String txt = categoryName;
-        return txt;
-    }
-
-    private void GetCategory() {
-        categoryViewModel.getAllCategory().observe(getViewLifecycleOwner(), categories -> {
-            if (categories.size() != 0) {
-                categoryList = categories;
-                OnTabLayout();
-            }
-        });
-    }
-
-    /*
-    this method perform observer all product in sale
-     */
-    private void GetProductInTransaction() {
-        saleTransactionViewModel.getAllSaleTransaction().observe(getViewLifecycleOwner(), transactionList -> {
-            if (transactionList.size() != 0) {
-                saleTransactionList = transactionList;
-                binding.floatActionbarSale.setVisibility(View.VISIBLE);
-                binding.floatActionbarSale.setText(String.valueOf(transactionList.size()));
-            }
-        });
-    }
-
-    /*
-    remove observer to prevent memory lack
-     */
-    @Override
-    public void onDestroyView() {
-        productViewModel.getAllProduct().removeObservers(getViewLifecycleOwner());
-        saleTransactionViewModel.getAllSaleTransaction().removeObservers(getViewLifecycleOwner());
-        categoryViewModel.getAllCategory().removeObservers(getViewLifecycleOwner());
-        super.onDestroyView();
-    }
-
-    /*
-    This method perform count decrease item that user add to cart
-    */
-
 
     /*
     this method perform observer all product show in dashboard
@@ -150,8 +84,7 @@ tab layout on dashboard
                     productId = products.get(i).getProductId();
                     productPrice = products.get(i).getProductPrice();
                     productName = products.get(i).getProductName();
-                    saleTransactionViewModel.createSaleTransaction(new SaleTransaction(productId, productName,
-                            productImagePath, 1, productUnit, productPrice, 0, productPrice * 1));
+                    saleTransactionViewModel.createSaleTransaction(new SaleTransaction(productId, productName, productImagePath, 1, productUnit, productPrice, 0, productPrice * 1));
                 });
                 binding.searchViewDashboard.addTextChangedListener(new TextWatcher() {
                     @Override
@@ -173,8 +106,69 @@ tab layout on dashboard
         /*
     invoke method of navigation view in MainActivity to select Sale Fragment
      */
-        binding.floatActionbarSale.setOnClickListener(view -> {
-            ((MainActivity) requireActivity()).SaleNavigator();
+        binding.floatActionbarSale.setOnClickListener(view -> ((MainActivity) requireActivity()).SaleNavigator());
+    }
+
+
+    private void GetCategoryWithProduct() {
+        categoryViewModel.getCategoryWithProducts().observe(getViewLifecycleOwner(), categoryWithProducts -> {
+            if (categoryWithProducts != null) {
+                categoryList = categoryWithProducts;
+                OnTabLayout();
+            }//for each
+        });
+    }
+
+    /*
+tab layout on dashboard
+*/
+    private void OnTabLayout() {
+        binding.tabLayoutOnDashboard.addTab(binding.tabLayoutOnDashboard.newTab().setText("All"));
+        if (categoryList.size() != 0) {
+            for (CategoryWithProducts c : categoryList) {
+                categoryName = c.getCategoryName();
+                binding.tabLayoutOnDashboard.addTab(binding.tabLayoutOnDashboard.newTab().setText(categoryName));
+            }
+        }
+        binding.tabLayoutOnDashboard.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                categoryName = String.valueOf(tab.getText());
+                if (!categoryName.equals("All")) {
+                    new Thread(() -> {
+                        categoryId = AppDatabase.getInstance(requireContext()).getDao().getCategoryId(categoryName);
+                        handler.post(() -> adapterDashboard.getFilter().filter(String.valueOf(categoryId)));
+                    }).start();
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });//tab bar
+    }
+
+
+    public int filterCategoryId() {
+
+        return categoryId;
+    }
+
+    /*
+    this method perform observer all product in sale
+     */
+    private void GetProductInTransaction() {
+        saleTransactionViewModel.getAllSaleTransaction().observe(getViewLifecycleOwner(), transactionList -> {
+            if (transactionList.size() != 0) {
+                saleTransactionList = transactionList;
+                binding.floatActionbarSale.setVisibility(View.VISIBLE);
+                binding.floatActionbarSale.setText(String.valueOf(transactionList.size()));
+            }
         });
     }
 

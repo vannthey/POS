@@ -5,6 +5,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Transaction;
 
 import com.example.pos.Database.Entity.Category;
 import com.example.pos.Database.Entity.Customer;
@@ -14,11 +15,23 @@ import com.example.pos.Database.Entity.SaleTransaction;
 import com.example.pos.Database.Entity.Supplier;
 import com.example.pos.Database.Entity.Unit;
 import com.example.pos.Database.Entity.UserAccount;
+import com.example.pos.Database.Relationship.CategoryWithProducts;
 
 import java.util.List;
 
 @Dao
 public interface POSDao {
+
+    /*
+    Operation Category With Products
+     */
+    @Transaction
+    @Query("SELECT Product.productId,Product.productName,Category.categoryId,Category.categoryName From Category Join" +
+            " Product " +
+            " Where " +
+            "Category.categoryId=Product.productId ")
+    LiveData<List<CategoryWithProducts>> getCategoryWithProducts();
+
 
     /*
     Operation On Product
@@ -55,6 +68,9 @@ public interface POSDao {
 
     @Query("DELETE FROM Category WHERE categoryId LIKE :categoryId")
     void deleteCategoryById(int categoryId);
+
+    @Query("select categoryId from Category where categoryName like :categoryName")
+    int getCategoryId(String categoryName);
 
     /*
     Operation On Sale Transaction

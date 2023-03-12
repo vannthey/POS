@@ -6,8 +6,8 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.pos.Database.AppDatabase;
 import com.example.pos.Database.Entity.UserAccount;
-import com.example.pos.Database.POSDatabase;
 import com.example.pos.HelperClass.SharedPrefHelper;
 import com.example.pos.account.ManageAccountActivity;
 import com.example.pos.databinding.ActivitySpashScreenBinding;
@@ -42,7 +42,7 @@ public class StartUpScreen extends AppCompatActivity {
             if (!Username.isEmpty() || !Password.isEmpty()) {
                 new Thread(() -> {
                     userAccounts =
-                            POSDatabase.getInstance(getApplicationContext()).getDao().checkUser(Username,
+                            AppDatabase.getInstance(getApplicationContext()).getDao().checkUser(Username,
                                     Password);
                     for (UserAccount u : userAccounts) {
                         if (u.getUsername().contains(Username) && u.getPassword().contains(Password)) {

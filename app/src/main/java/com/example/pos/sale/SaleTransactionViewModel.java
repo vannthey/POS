@@ -6,13 +6,13 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.example.pos.Database.AppDatabase;
 import com.example.pos.Database.Entity.SaleTransaction;
-import com.example.pos.Database.POSDatabase;
 
 import java.util.List;
 
 public class SaleTransactionViewModel extends AndroidViewModel {
-    POSDatabase posDatabase;
+    AppDatabase appDatabase;
 
     double Total = 0;
     double discount = 0;
@@ -21,26 +21,26 @@ public class SaleTransactionViewModel extends AndroidViewModel {
 
     public SaleTransactionViewModel(@NonNull Application application) {
         super(application);
-        posDatabase = POSDatabase.getInstance(application.getApplicationContext());
+        appDatabase = AppDatabase.getInstance(application.getApplicationContext());
     }
 
     public void createSaleTransaction(SaleTransaction transactionList) {
-        new Thread(() -> posDatabase.getDao().createSaleTransaction(transactionList)).start();
+        new Thread(() -> appDatabase.getDao().createSaleTransaction(transactionList)).start();
     }
 
     public LiveData<List<SaleTransaction>> getAllSaleTransaction() {
-        return posDatabase.getDao().getAllSaleTransaction();
+        return appDatabase.getDao().getAllSaleTransaction();
     }
 
     public void editProductOnSaleById(double price, int qty, double dist, double productAmount, int id) {
-        new Thread(() -> posDatabase.getDao().editProductOnSaleById(price, qty, dist, productAmount, id)).start();
+        new Thread(() -> appDatabase.getDao().editProductOnSaleById(price, qty, dist, productAmount, id)).start();
     }
 
     public void deleteSaleTransactionById(int saleId) {
-        new Thread(() -> posDatabase.getDao().deleteSaleTransactionById(saleId)).start();
+        new Thread(() -> appDatabase.getDao().deleteSaleTransactionById(saleId)).start();
     }
 
     public void deleteAfterPay() {
-        new Thread(() -> posDatabase.getDao().deleteAfterPay()).start();
+        new Thread(() -> appDatabase.getDao().deleteAfterPay()).start();
     }
 }

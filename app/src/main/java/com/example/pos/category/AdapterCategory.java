@@ -7,15 +7,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.example.pos.Database.Entity.Category;
-import com.example.pos.databinding.CustomCategoryModelItemsBinding;
+import com.example.pos.databinding.CustomListAllCategoryBinding;
 
 import java.util.List;
 import java.util.Objects;
 
 public class AdapterCategory extends BaseAdapter {
-    CustomCategoryModelItemsBinding binding;
+    CustomListAllCategoryBinding binding;
     List<Category> categories;
-
     Context context;
 
     public AdapterCategory(List<Category> categories, Context context) {
@@ -41,7 +40,7 @@ public class AdapterCategory extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         if (view == null) {
-            binding = CustomCategoryModelItemsBinding.inflate(LayoutInflater.from(context), viewGroup, false);
+            binding = CustomListAllCategoryBinding.inflate(LayoutInflater.from(context), viewGroup, false);
             view = binding.getRoot();
         }
         binding.itemCategory.setText(categories.get(i).getCategoryName());

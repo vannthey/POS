@@ -81,20 +81,26 @@ public class AdapterDashboard extends BaseAdapter implements Filterable {
 
     private final Filter searchItem = new Filter() {
         String searchPattern;
+        int categoryId;
 
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
             List<Product> productListTextSearch = new ArrayList<>();
+            Frag_Dashboard frag_dashboard = new Frag_Dashboard();
+            categoryId = frag_dashboard.filterCategoryId();
             //check if user not input any thing so get all value from new list that declare in scope
             //equal to list before it filter so it mean set old data back
             if (charSequence == null || charSequence.length() == 0) {
                 productListTextSearch.addAll(newProductList);
             } else {
                 searchPattern = charSequence.toString().toLowerCase().trim();
+
                 for (Product product : newProductList) {
                     if (product.getProductName().toLowerCase().contains(searchPattern)) {
                         productListTextSearch.add(product);
                     } else if (String.valueOf(product.getProductCode()).contains(searchPattern)) {
+                        productListTextSearch.add(product);
+                    } else if (product.getCategoryId() == categoryId) {
                         productListTextSearch.add(product);
                     }
                 }

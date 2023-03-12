@@ -6,32 +6,32 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.example.pos.Database.AppDatabase;
 import com.example.pos.Database.Entity.Inventory;
-import com.example.pos.Database.POSDatabase;
 
 import java.util.List;
 
 public class InventoryViewModel extends AndroidViewModel {
-    POSDatabase posDatabase;
+    AppDatabase appDatabase;
 
     public InventoryViewModel(@NonNull Application application) {
         super(application);
-        posDatabase = POSDatabase.getInstance(application.getApplicationContext());
+        appDatabase = AppDatabase.getInstance(application.getApplicationContext());
     }
 
     public LiveData<List<Inventory>> getAllInventory() {
-        return posDatabase.getDao().getAllInventory();
+        return appDatabase.getDao().getAllInventory();
     }
 
     public void createInventory(Inventory inventory) {
-        new Thread(() -> posDatabase.getDao().createInventory(inventory)).start();
+        new Thread(() -> appDatabase.getDao().createInventory(inventory)).start();
     }
 
     public void deleteInventoryById(int inventoryId) {
-        new Thread(() -> posDatabase.getDao().deleteInventoryById(inventoryId)).start();
+        new Thread(() -> appDatabase.getDao().deleteInventoryById(inventoryId)).start();
     }
 
     public void updateInventoryById(String inventoryAddress, String inventoryName, int inventoryId) {
-        new Thread(() -> posDatabase.getDao().updateInventoryById(inventoryAddress, inventoryName, inventoryId)).start();
+        new Thread(() -> appDatabase.getDao().updateInventoryById(inventoryAddress, inventoryName, inventoryId)).start();
     }
 }

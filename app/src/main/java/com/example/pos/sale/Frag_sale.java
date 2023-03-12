@@ -16,19 +16,19 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
+import com.example.pos.HelperClass.SharedPrefHelper;
 import com.example.pos.MainActivity;
 import com.example.pos.R;
-import com.example.pos.HelperClass.SharedPrefHelper;
 import com.example.pos.customer.AdapterCustomer;
+import com.example.pos.customer.CustomerHelper;
 import com.example.pos.customer.CustomerViewModel;
-import com.example.pos.customer.doCustomizeCustomer;
 import com.example.pos.databinding.CustomEditProductOnSaleBinding;
 import com.example.pos.databinding.FragmentFragSaleBinding;
 import com.example.pos.databinding.SumarizeSaleChargeBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 
-public class Frag_sale extends Fragment implements doTransactionCallback, doCustomizeCustomer {
+public class Frag_sale extends Fragment implements doTransactionCallback, CustomerHelper {
     FragmentFragSaleBinding binding;
     CustomEditProductOnSaleBinding SaleBinding;
     BottomSheetDialog bottomSheetDialog;
@@ -64,6 +64,7 @@ public class Frag_sale extends Fragment implements doTransactionCallback, doCust
         OnCreateMenu();
         return binding.getRoot();
     }
+
 
     private double CalculateTotal(double subtotal, double saleDiscount) {
         return (subtotal - (saleDiscount / 100 * subtotal));
@@ -120,7 +121,8 @@ public class Frag_sale extends Fragment implements doTransactionCallback, doCust
     private void GetCustomer() {
         customerViewModel.getAllCustomer().observe(getViewLifecycleOwner(), customers -> {
             if (customers != null) {
-                adapterCustomer = new AdapterCustomer(this,customers, requireContext());
+                adapterCustomer = new AdapterCustomer(this, customers, requireContext());
+                adapterCustomer.isVisible(0);
                 binding.spinnerCustomerSale.setAdapter(adapterCustomer);
                 binding.spinnerCustomerSale.setSelection(SharedPrefHelper.getInstance().getSaveCustomerIndex(requireContext()));
                 binding.spinnerCustomerSale.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -183,4 +185,5 @@ public class Frag_sale extends Fragment implements doTransactionCallback, doCust
     public void doCustomizeCustomerById(int i) {
 
     }
+
 }

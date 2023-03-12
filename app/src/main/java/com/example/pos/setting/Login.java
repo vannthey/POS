@@ -9,7 +9,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pos.Database.Entity.UserAccount;
-import com.example.pos.Database.POSDatabase;
+import com.example.pos.Database.AppDatabase;
 import com.example.pos.HelperClass.SharedPrefHelper;
 import com.example.pos.MainActivity;
 import com.example.pos.account.ManageAccountActivity;
@@ -45,7 +45,7 @@ public class Login extends AppCompatActivity {
         }
         new Thread(() -> {
             userAccounts =
-                    POSDatabase.getInstance(getApplicationContext()).getDao().checkUser(Username,
+                    AppDatabase.getInstance(getApplicationContext()).getDao().checkUser(Username,
                             Password);
             if (userAccounts != null) {
                 for (UserAccount u : userAccounts) {

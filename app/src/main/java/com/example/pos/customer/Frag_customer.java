@@ -23,9 +23,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
+import com.example.pos.Database.Entity.Customer;
 import com.example.pos.HelperClass.DateHelper;
 import com.example.pos.HelperClass.SharedPrefHelper;
-import com.example.pos.Database.Entity.Customer;
 import com.example.pos.R;
 import com.example.pos.databinding.FragmentFragCustomerBinding;
 import com.github.drjacky.imagepicker.ImagePicker;
@@ -33,7 +33,7 @@ import com.github.drjacky.imagepicker.ImagePicker;
 import java.io.File;
 import java.util.List;
 
-public class Frag_customer extends Fragment implements doCustomizeCustomer {
+public class Frag_customer extends Fragment implements CustomerHelper {
     FragmentFragCustomerBinding binding;
     CustomerViewModel viewModel;
     List<Customer> customerList;
@@ -46,6 +46,7 @@ public class Frag_customer extends Fragment implements doCustomizeCustomer {
     String customerProfile;
     Uri uri;
     File file;
+    AdapterCustomer adapterCustomer;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -138,7 +139,9 @@ public class Frag_customer extends Fragment implements doCustomizeCustomer {
                 customerList = customers;
                 binding.txtNoCustomerFound.setVisibility(View.GONE);
                 binding.listAllCustomer.setVisibility(View.VISIBLE);
-                binding.listAllCustomer.setAdapter(new AdapterCustomer(this, customers, requireContext()));
+                adapterCustomer = new AdapterCustomer(this, customers, requireContext());
+                adapterCustomer.isVisible(1);
+                binding.listAllCustomer.setAdapter(adapterCustomer);
                 binding.listAllCustomer.setOnItemClickListener((adapterView, view, i, l) -> Toast.makeText(requireContext(), "Loading History.....", Toast.LENGTH_SHORT).show());
 //                binding.listAllCustomer.setOnItemClickListener((adapterView, view, i, l) -> {
 //                    customerId = customers.get(i).getCustomerId();

@@ -1,5 +1,5 @@
 package com.example.pos.customer;
 
-public interface doCustomizeCustomer {
+public interface CustomerHelper {
     void doCustomizeCustomerById(int i);
 }

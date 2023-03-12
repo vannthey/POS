@@ -21,23 +21,21 @@ import com.example.pos.Database.Entity.UserAccount;
 @Database(entities = {UserAccount.class, Category.class, Product.class, Inventory.class,
         Supplier.class, PayType.class, Customer.class, Unit.class, Stock.class, SaleTransaction.class},
         version = 2, exportSchema = false)
-public abstract class POSDatabase extends RoomDatabase {
+public abstract class AppDatabase extends RoomDatabase {
 
     public abstract POSDao getDao();
 
-    private static volatile POSDatabase INSTANCE;
+    private static volatile AppDatabase INSTANCE;
 
-    public static POSDatabase getInstance(Context context) {
+    public static AppDatabase getInstance(Context context) {
 
         if (INSTANCE == null) {
 
-            INSTANCE = Room.databaseBuilder(context.getApplicationContext(), POSDatabase.class,
+            INSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class,
                     "POS_DATABASE").fallbackToDestructiveMigration().build();
         }
 
         return INSTANCE;
     }
-
-    ;
 
 }

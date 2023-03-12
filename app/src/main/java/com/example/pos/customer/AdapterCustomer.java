@@ -8,21 +8,23 @@ import android.widget.BaseAdapter;
 
 import com.bumptech.glide.Glide;
 import com.example.pos.Database.Entity.Customer;
+import com.example.pos.MainActivity;
 import com.example.pos.R;
 import com.example.pos.databinding.CustomListAllCustomerBinding;
 
 import java.util.List;
-import java.util.Objects;
 
 public class AdapterCustomer extends BaseAdapter {
     private final String TAG = "customerId";
-    doCustomizeCustomer customer;
+    CustomerHelper customer;
     List<Customer> customerList;
     Context ctx;
     CustomListAllCustomerBinding binding;
     Holder holder;
+    int isVisible;
+    MainActivity mainActivity;
 
-    public AdapterCustomer(doCustomizeCustomer customer, List<Customer> customerList, Context ctx) {
+    public AdapterCustomer(CustomerHelper customer, List<Customer> customerList, Context ctx) {
         this.customer = customer;
         this.customerList = customerList;
         this.ctx = ctx;
@@ -63,17 +65,31 @@ public class AdapterCustomer extends BaseAdapter {
         } else {
             holder = (Holder) view.getTag();
         }
-        if (customerList.get(i).getCustomerProfile() != null) {
-            Glide.with(ctx).load(customerList.get(i).getCustomerProfile()).into(holder.customerBinding.customCustomerProfile);
-        } else {
-            holder.customerBinding.customCustomerProfile.setImageResource(R.drawable.admin_profile);
+
+        //isVisible == 0 set visible to GONE and 1 set visible VISIBLE
+        if (isVisible == 0) {
+            holder.customerBinding.customCustomerProfile.setVisibility(View.GONE);
+            holder.customerBinding.customCustomerPhone.setVisibility(View.GONE);
+            holder.customerBinding.customCustomerAddress.setVisibility(View.GONE);
+            holder.customerBinding.customCustomerPreference.setVisibility(View.GONE);
+            holder.customerBinding.customCustomerCard.setCardElevation(0);
+        } else if (isVisible == 1) {
+            if (customerList.get(i).getCustomerProfile() != null) {
+                Glide.with(ctx).load(customerList.get(i).getCustomerProfile()).into(holder.customerBinding.customCustomerProfile);
+            } else {
+                holder.customerBinding.customCustomerProfile.setImageResource(R.drawable.admin_profile);
+            }
+            holder.customerBinding.customCustomerPhone.setText(customerList.get(i).getCustomerPhoneNumber());
+            holder.customerBinding.customCustomerAddress.setText(customerList.get(i).getCustomerAddress());
+            holder.customerBinding.customCustomerPreference.setOnClickListener(view1 -> customer.doCustomizeCustomerById(customerList.get(i).getCustomerId()));
         }
         holder.customerBinding.customCustomerName.setText(customerList.get(i).getCustomerName());
-        holder.customerBinding.customCustomerPhone.setText(customerList.get(i).getCustomerPhoneNumber());
-        holder.customerBinding.customCustomerAddress.setText(customerList.get(i).getCustomerAddress());
-        holder.customerBinding.customCustomerPreference.setOnClickListener(view1 -> {
-            customer.doCustomizeCustomerById(customerList.get(i).getCustomerId());
-        });
+
         return holder.convertView;
+    }
+
+    public int isVisible(int visible) {
+        isVisible = visible;
+        return isVisible;
     }
 }
