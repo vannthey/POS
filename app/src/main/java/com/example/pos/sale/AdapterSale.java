@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import com.bumptech.glide.Glide;
 import com.example.pos.Database.Entity.SaleTransaction;
 import com.example.pos.databinding.CustomProductSaleBinding;
 
@@ -66,6 +67,7 @@ public class AdapterSale extends BaseAdapter {
         holder.productSaleBinding.customNameItemSale.setText(transactionList.get(i).getProductName());
         holder.productSaleBinding.customPriceItemSale.setText(String.valueOf(transactionList.get(i).getProductPrice()));
         holder.productSaleBinding.customQtyItemSale.setText(String.valueOf(transactionList.get(i).productQty));
+        Glide.with(context).load(transactionList.get(i).getProductImagePath()).into(holder.productSaleBinding.customProductImageOnSale);
         holder.productSaleBinding.customDeleteItemSale.setOnClickListener(view1 -> {
             holder.productSaleBinding.customSubtotalItemSale.setText("");
             int afterDelete = transactionList.get(i).saleId;

@@ -1,5 +1,6 @@
 package com.example.pos.sale;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,6 +17,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
+import com.example.pos.Database.AppDatabase;
+import com.example.pos.Database.Entity.Product;
+import com.example.pos.Database.Entity.SaleTransaction;
 import com.example.pos.HelperClass.SharedPrefHelper;
 import com.example.pos.MainActivity;
 import com.example.pos.R;
@@ -23,24 +27,34 @@ import com.example.pos.customer.AdapterCustomer;
 import com.example.pos.customer.CustomerHelper;
 import com.example.pos.customer.CustomerViewModel;
 import com.example.pos.databinding.CustomEditProductOnSaleBinding;
+import com.example.pos.databinding.CustomSaleDiscountBinding;
 import com.example.pos.databinding.FragmentFragSaleBinding;
 import com.example.pos.databinding.SumarizeSaleChargeBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import java.text.DecimalFormat;
+import java.util.List;
+
 
 public class Frag_sale extends Fragment implements doTransactionCallback, CustomerHelper {
+    private final String TAG = "Product Quantity";
+    DecimalFormat format;
     FragmentFragSaleBinding binding;
     CustomEditProductOnSaleBinding SaleBinding;
+    CustomSaleDiscountBinding discountBinding;
     BottomSheetDialog bottomSheetDialog;
     SaleTransactionViewModel saleTransactionViewModel;
     AdapterSale adapterSale;
     CustomerViewModel customerViewModel;
+
+    List<SaleTransaction> saleTransactionList;
+    List<Product> productList;
+    int riel = 4100;
     int customerId;
     int productId;
     double productPrice;
     double productDiscount;
     int productQty;
-    double saleTotal;
     double saleDiscount;
     double salSubTotal;
     BottomSheetDialog dialog;
@@ -51,6 +65,7 @@ public class Frag_sale extends Fragment implements doTransactionCallback, Custom
     public void onCreate(@Nullable Bundle savedInstanceState) {
         saleTransactionViewModel = new ViewModelProvider(this).get(SaleTransactionViewModel.class);
         customerViewModel = new ViewModelProvider(this).get(CustomerViewModel.class);
+        format = new DecimalFormat("#,###.#");
         super.onCreate(savedInstanceState);
     }
 
@@ -74,23 +89,45 @@ public class Frag_sale extends Fragment implements doTransactionCallback, Custom
         saleChargeBinding = SumarizeSaleChargeBinding.inflate(getLayoutInflater());
         dialog = new BottomSheetDialog(requireContext());
         dialog.setContentView(saleChargeBinding.getRoot());
-        saleChargeBinding.sumarizeTotal.setText(String.valueOf(CalculateTotal(saleTotal, saleDiscount)));
-        dialog.create();
+        saleChargeBinding.sumarizeTotal.setText(String.valueOf(CalculateTotal(salSubTotal, saleDiscount)));
+        saleChargeBinding.sumarizeTotalRiel.setText(format.format(CalculateTotal(salSubTotal, saleDiscount) * riel));
+        saleChargeBinding.payByCard.setOnClickListener(view -> UpdateProductAfterSale());
+        saleChargeBinding.payByCase.setOnClickListener(view -> UpdateProductAfterSale());
         dialog.show();
+    }
+
+    private void UpdateProductAfterSale() {
+        for (SaleTransaction s : saleTransactionList) {
+            new Thread(() -> {
+                productQty = AppDatabase.getInstance(requireContext()).getDao().getProductQtyById(s.getProductId());
+                AppDatabase.getInstance(requireContext()).getDao().updateProductQtyAfterSale(productQty - (s.getProductQty()), s.getProductId());
+                saleTransactionViewModel.deleteAfterPay();
+            }).start();
+        }
     }
 
     private void GetAllSale() {
         saleTransactionViewModel.getAllSaleTransaction().observe(getViewLifecycleOwner(), transactionList -> {
             if (transactionList != null) {
                 GetCustomer();
+                saleTransactionList = transactionList;
+
+                binding.addSaleDiscount.setOnClickListener(view -> addSaleDiscount());//add sale discount
+
+
+                //initialize adapter to list view
                 adapterSale = new AdapterSale(this, requireContext(), transactionList);
                 binding.listItemSale.setAdapter(adapterSale);
-                salSubTotal = adapterSale.UpdateTotal();
+
+
+                salSubTotal = adapterSale.UpdateTotal();//method update price from adapter
+
                 binding.saleSubtotal.setText(String.valueOf(salSubTotal));//set subtotal before edit product
                 binding.saleTotal.setText(String.valueOf(CalculateTotal(salSubTotal, saleDiscount)));//set Total
-                // before edit product
+
 
                 binding.listItemSale.setOnItemClickListener((adapterView, view, i, l) -> {
+
                     productId = transactionList.get(i).getProductId();
                     Glide.with(requireContext()).load(transactionList.get(i).getProductImagePath()).into(SaleBinding.customEditImageOnSale);
                     SaleBinding.customEditProductPriceOnSale.setText(String.valueOf(transactionList.get(i).getProductPrice()));
@@ -106,7 +143,7 @@ public class Frag_sale extends Fragment implements doTransactionCallback, Custom
                                 (productPrice * productQty),
                                 productId);
                         binding.saleTotal.setText(String.valueOf(CalculateTotal(salSubTotal, saleDiscount)));//set Total
-                        // after edit product
+
                         binding.saleSubtotal.setText(String.valueOf(salSubTotal));//set subtotal after edit product
                         bottomSheetDialog.dismiss();
 
@@ -117,6 +154,26 @@ public class Frag_sale extends Fragment implements doTransactionCallback, Custom
             }
         });
     }//GetAllSale
+
+
+    private void addSaleDiscount() {
+        discountBinding = CustomSaleDiscountBinding.inflate(getLayoutInflater());
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setView(discountBinding.getRoot());
+        builder.setCancelable(false);
+        AlertDialog alertDialog = builder.create();
+        if (discountBinding.customSaleDiscount.getText() != null) {
+            discountBinding.customSaveSaleDiscount.setOnClickListener(view -> {
+                binding.saleDiscount.setText(String.valueOf(discountBinding.customSaleDiscount.getText()));
+                saleDiscount = Double.parseDouble(String.valueOf(discountBinding.customSaleDiscount.getText()));
+                binding.saleTotal.setText(String.valueOf(CalculateTotal(salSubTotal, saleDiscount)));//set Total
+                //set total riel
+                alertDialog.dismiss();
+            });
+        }
+        discountBinding.customCancelSaleDiscount.setOnClickListener(view -> alertDialog.dismiss());
+        alertDialog.show();
+    }
 
     private void GetCustomer() {
         customerViewModel.getAllCustomer().observe(getViewLifecycleOwner(), customers -> {
@@ -132,6 +189,7 @@ public class Frag_sale extends Fragment implements doTransactionCallback, Custom
                         SharedPrefHelper.getInstance().SaveCustomerSaleIndex(i, requireContext());
                         customerId = customers.get(i).getCustomerId();
                         binding.saleDiscount.setText(String.valueOf(saleDiscount));
+                        binding.saleTotal.setText(String.valueOf(CalculateTotal(salSubTotal, saleDiscount)));//set Total
                     }
 
                     @Override
@@ -173,13 +231,6 @@ public class Frag_sale extends Fragment implements doTransactionCallback, Custom
             }
         }, getViewLifecycleOwner());
     }//OnCreateMenu
-
-    @Override
-    public void onDestroyView() {
-        saleTransactionViewModel.getAllSaleTransaction().removeObservers(getViewLifecycleOwner());
-        customerViewModel.getAllCustomer().removeObservers(getViewLifecycleOwner());
-        super.onDestroyView();
-    }
 
     @Override
     public void doCustomizeCustomerById(int i) {

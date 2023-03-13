@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:focusable="false">
+
     <ScrollView
         android:id="@+id/form_add_user"
         android:layout_width="match_parent"
@@ -170,6 +172,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableEnd="@drawable/ic_date"
+                        android:focusable="false"
                         android:importantForAccessibility="no" />
 
                 </com.google.android.material.textfield.TextInputLayout>

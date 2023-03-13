@@ -26,6 +26,7 @@ import com.example.pos.setting.Login;
 import com.github.drjacky.imagepicker.ImagePicker;
 
 import java.io.File;
+import java.util.Objects;
 
 public class ManageAccountActivity extends AppCompatActivity {
     ActivityManageAccountBinding binding;
@@ -69,8 +70,12 @@ public class ManageAccountActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Account Management");
         binding.customActionbarManageAccount.customActionbar.setNavigationOnClickListener(v -> {
-            startActivity(new Intent(this, Login.class));
-            this.finish();
+            if (Objects.equals(SharedPrefHelper.getInstance().getSaveUserLoginName(this), "Admin")) {
+                startActivity(new Intent(this, Login.class));
+                this.finish();
+            } else {
+                this.finish();
+            }
         });
         setContentView(binding.getRoot());
         viewModel = new ViewModelProvider(this).get(AccountViewModel.class);

@@ -9,18 +9,18 @@ import androidx.room.RoomDatabase;
 import com.example.pos.Database.Dao.POSDao;
 import com.example.pos.Database.Entity.Category;
 import com.example.pos.Database.Entity.Customer;
+import com.example.pos.Database.Entity.Expense;
 import com.example.pos.Database.Entity.Inventory;
 import com.example.pos.Database.Entity.PayType;
 import com.example.pos.Database.Entity.Product;
 import com.example.pos.Database.Entity.SaleTransaction;
-import com.example.pos.Database.Entity.Stock;
 import com.example.pos.Database.Entity.Supplier;
 import com.example.pos.Database.Entity.Unit;
 import com.example.pos.Database.Entity.UserAccount;
 
 @Database(entities = {UserAccount.class, Category.class, Product.class, Inventory.class,
-        Supplier.class, PayType.class, Customer.class, Unit.class, Stock.class, SaleTransaction.class},
-        version = 2, exportSchema = false)
+        Supplier.class, PayType.class, Customer.class, Unit.class, Expense.class, SaleTransaction.class},
+        version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract POSDao getDao();

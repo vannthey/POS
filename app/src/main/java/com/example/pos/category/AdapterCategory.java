@@ -14,10 +14,13 @@ import java.util.Objects;
 
 public class AdapterCategory extends BaseAdapter {
     CustomListAllCategoryBinding binding;
+    CategoryHelper categoryHelper;
     List<Category> categories;
     Context context;
+    int isVisible;
 
-    public AdapterCategory(List<Category> categories, Context context) {
+    public AdapterCategory(CategoryHelper categoryHelper, List<Category> categories, Context context) {
+        this.categoryHelper = categoryHelper;
         this.categories = categories;
         this.context = context;
     }
@@ -43,9 +46,19 @@ public class AdapterCategory extends BaseAdapter {
             binding = CustomListAllCategoryBinding.inflate(LayoutInflater.from(context), viewGroup, false);
             view = binding.getRoot();
         }
+        if (isVisible == 0) {
+            binding.categoryPreference.setVisibility(View.GONE);
+        } else if (isVisible == 1) {
+            binding.categoryPreference.setOnClickListener(view1 -> {
+                categoryHelper.doCustomizeCategoryById(categories.get(i).getCategoryId());
+            });
+        }
         binding.itemCategory.setText(categories.get(i).getCategoryName());
-
         return view;
+    }
+
+    public int setVisible(int i) {
+        return isVisible = i;
     }
 
     public int getPosition(int position) {

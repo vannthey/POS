@@ -1,39 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:animateLayoutChanges="true"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="50dp">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/total"
-        android:textColor="@color/black"
-        android:textSize="32sp" />
+    android:paddingStart="50dp"
+    android:paddingTop="20dp"
+    android:paddingEnd="50dp"
+    android:paddingBottom="50dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
         android:gravity="center">
 
-        <TextView
-            android:id="@+id/sumarize_total"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textSize="32sp" />
+            android:gravity="center|end"
+            android:paddingEnd="5dp"
+            android:paddingStart="0dp"
+            android:orientation="vertical">
 
-        <TextView
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dollar_money"
+                android:textColor="@color/black"
+                android:textSize="32sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/riel_money"
+                android:textColor="@color/black"
+                android:textSize="32sp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/dollar"
-            android:textColor="@color/Lime_Green"
-            android:textSize="32sp" />
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/sumarize_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="32sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dollar"
+                    android:textColor="@color/Lime_Green"
+                    android:textSize="32sp" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/sumarize_total_riel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="32sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/riel"
+                    android:textColor="@color/Lime_Green"
+                    android:textSize="32sp" />
+            </LinearLayout>
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
@@ -41,6 +92,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/light_gray"
+        android:layout_marginTop="10dp"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
@@ -66,8 +118,8 @@
         android:id="@+id/pay_by_case"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/light_gray"
         android:layout_marginTop="10dp"
+        android:background="@color/light_gray"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"

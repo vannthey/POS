@@ -19,7 +19,7 @@
 
     <style name="ToolbarFont">
         <item name="android:textSize">18sp</item>
-        <item name="textAllCaps">true</item>
+        <item name="android:textAllCaps">true</item>
     </style>
 
     <style name="LocalFont">

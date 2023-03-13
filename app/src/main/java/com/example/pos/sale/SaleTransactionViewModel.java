@@ -14,11 +14,6 @@ import java.util.List;
 public class SaleTransactionViewModel extends AndroidViewModel {
     AppDatabase appDatabase;
 
-    double Total = 0;
-    double discount = 0;
-    double subTotal = 0;
-    double afterDiscount = 0;
-
     public SaleTransactionViewModel(@NonNull Application application) {
         super(application);
         appDatabase = AppDatabase.getInstance(application.getApplicationContext());
@@ -41,6 +36,6 @@ public class SaleTransactionViewModel extends AndroidViewModel {
     }
 
     public void deleteAfterPay() {
-        new Thread(() -> appDatabase.getDao().deleteAfterPay()).start();
+        appDatabase.getDao().deleteAfterPay();
     }
 }

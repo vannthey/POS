@@ -6,9 +6,11 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Transaction;
+import androidx.room.Update;
 
 import com.example.pos.Database.Entity.Category;
 import com.example.pos.Database.Entity.Customer;
+import com.example.pos.Database.Entity.Expense;
 import com.example.pos.Database.Entity.Inventory;
 import com.example.pos.Database.Entity.Product;
 import com.example.pos.Database.Entity.SaleTransaction;
@@ -16,6 +18,7 @@ import com.example.pos.Database.Entity.Supplier;
 import com.example.pos.Database.Entity.Unit;
 import com.example.pos.Database.Entity.UserAccount;
 import com.example.pos.Database.Relationship.CategoryWithProducts;
+import com.example.pos.Database.Relationship.UnitWithProducts;
 
 import java.util.List;
 
@@ -32,6 +35,15 @@ public interface POSDao {
             "Category.categoryId=Product.productId ")
     LiveData<List<CategoryWithProducts>> getCategoryWithProducts();
 
+    /*
+    Operation Unit With Products
+     */
+    @Transaction
+    @Query("select Unit.unitId,Unit.unitTitle,Product.productId,Product.productName from Unit Join Product Where Unit" +
+            ".unitId = " +
+            "Product" +
+            ".productId")
+    LiveData<List<UnitWithProducts>> getUnitWithProduct();
 
     /*
     Operation On Product
@@ -53,6 +65,12 @@ public interface POSDao {
                            double productCost, double productPrice, double productTax, int inventoryId,
                            int categoryId, int supplierId, String imagePath, String creator, String createDate,
                            int productId);
+
+    @Query("Update Product Set productQty=:productQty Where productId like :productId")
+    void updateProductQtyAfterSale(int productQty, int productId);
+
+    @Query("select productQty from Product where productId like :productId")
+    int getProductQtyById(int productId);
 
     /*
     Operation On Category
@@ -91,6 +109,7 @@ public interface POSDao {
 
     @Query("DELETE FROM SaleTransaction")
     void deleteAfterPay();
+
 
     /*
     Operation On Supplier
@@ -170,4 +189,24 @@ public interface POSDao {
 
     @Query("select * from Customer")
     LiveData<List<Customer>> getAllCustomer();
+
+    /*
+    Operation On Expense
+     */
+    @Insert
+    void createExpense(Expense expense);
+
+    @Query("select * from Expense")
+    LiveData<List<Expense>> getAllExpense();
+
+    @Query("Delete from Expense Where id like :id")
+    void deleteExpenseById(int id);
+
+    @Query("Update Expense set expenseName = expenseName, " +
+            "expensePrice=expensePrice, " +
+            "expensePaid=expensePrice," +
+            "expanseDue=expanseDue," +
+            "expenseDescription=expenseDescription where id like :id ")
+    void updateExpenseById(String expenseName,double expensePrice,double expensePaid,double expanseDue,String expenseDescription,int id);
+
 }

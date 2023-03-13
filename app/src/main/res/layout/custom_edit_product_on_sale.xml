@@ -59,7 +59,7 @@
             android:layout_height="match_parent"
             android:hint="@string/product_discount"
             android:importantForAccessibility="no"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:textSize="18sp" />
 
     </com.google.android.material.textfield.TextInputLayout>

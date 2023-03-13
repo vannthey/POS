@@ -20,7 +20,7 @@
     <string name="sign_out">Sign out</string>
     <string name="shopping_cart">cart</string>
     <string name="user_position">user position</string>
-    <string name="dashboard">POS</string>
+    <string name="dashboard">Dashboard</string>
     <string name="sale">Sale</string>
     <string name="category">Category</string>
     <string name="report">Report</string>
@@ -107,9 +107,9 @@
     <string name="no_supplier">No Supplier</string>
     <string name="no_unit">No Unit</string>
     <string name="product_discount">Product Discount</string>
-    <string name="sale_discount">Sale Discount</string>
-    <string name="total">Total</string>
-    <string name="sale_subtotal">Subtotal</string>
+    <string name="sale_discount">Sale Discount %</string>
+    <string name="total">Total $</string>
+    <string name="sale_subtotal">Subtotal $</string>
     <string name="Please_Input_Unit_Name">Please Input Unit Name</string>
     <string name="Please_Input_Category_Name">Please Input Category Name</string>
     <string name="Please_Input_Supplier">Please Input Supplier</string>
@@ -117,7 +117,7 @@
     <string name="add_to_cart">Add To Cart</string>
     <string name="riel">៛</string>
     <string name="equal">=</string>
-    <string name="riel_money">Riel</string>
+    <string name="riel_money">Riel :</string>
     <string name="Description">Description</string>
     <string name="Sale">Sale</string>
     <string name="preference">Preference</string>
@@ -140,9 +140,20 @@
     <string name="balance">Balance</string>
     <string name="double_dot"> : </string>
     <string name="Cash_drawer">Cash Drawer</string>
-    <string name="bill_to">Bill To</string>
+    <string name="bill_to">Bill To :</string>
     <string name="phone">Phone</string>
     <string name="filter_product">Filter product</string>
     <string name="expense_title">Expense Title</string>
+    <string name="Cannot_delete_this_category_products">Cannot delete cause this category contain products</string>
+    <string name="Deleted">Deleted</string>
+    <string name="disc">Disc</string>
+    <string name="charge">Charge</string>
+    <string name="total_riel">Total រ</string>
+    <string name="percentage">%</string>
+    <string name="dollar_money">Dollar :</string>
+    <string name="due">Due</string>
+    <string name="price_dollar">Price $</string>
+    <string name="paid_dollar">Paid $</string>
+    <string name="due_dollar">Due $</string>
 
 </resources>

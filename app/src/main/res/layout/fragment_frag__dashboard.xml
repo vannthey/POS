@@ -19,7 +19,8 @@
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_search"
             android:drawableEnd="@drawable/ic_qr_code_scanner"
-            android:importantForAccessibility="no" />
+            android:importantForAccessibility="no"
+            android:lines="1" />
 
 
     </com.google.android.material.textfield.TextInputLayout>

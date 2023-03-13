@@ -13,6 +13,7 @@ import java.util.List;
 
 public class ProductViewModel extends AndroidViewModel {
     AppDatabase appDatabase;
+    int productQty;
 
     public ProductViewModel(@NonNull Application application) {
         super(application);
@@ -38,6 +39,19 @@ public class ProductViewModel extends AndroidViewModel {
         new Thread(() -> appDatabase.getDao().updateProductById(productName, productQty, productUnitId, productCode, productCost,
                 productPrice, productTax, inventoryId, categoryId, supplierId, imagePath, creator, createDate,
                 productId)).start();
+    }
+
+    public void updateProductQtyAfterSale(int productQty, int productId) {
+        new Thread(() -> {
+            appDatabase.getDao().updateProductQtyAfterSale(productQty, productId);
+        }).start();
+    }
+
+    public int getProductQtyById(int productId) {
+        new Thread(() -> {
+            productQty = appDatabase.getDao().getProductQtyById(productId);
+        }).start();
+        return productQty;
     }
 
 }

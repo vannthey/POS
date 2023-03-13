@@ -123,8 +123,8 @@ public class Frag_Dashboard extends Fragment {
 tab layout on dashboard
 */
     private void OnTabLayout() {
-        binding.tabLayoutOnDashboard.addTab(binding.tabLayoutOnDashboard.newTab().setText("All"));
         if (categoryList.size() != 0) {
+            binding.tabLayoutOnDashboard.addTab(binding.tabLayoutOnDashboard.newTab().setText("All"));
             for (CategoryWithProducts c : categoryList) {
                 categoryName = c.getCategoryName();
                 binding.tabLayoutOnDashboard.addTab(binding.tabLayoutOnDashboard.newTab().setText(categoryName));
@@ -137,7 +137,6 @@ tab layout on dashboard
                 if (!categoryName.equals("All")) {
                     new Thread(() -> {
                         categoryId = AppDatabase.getInstance(requireContext()).getDao().getCategoryId(categoryName);
-                        handler.post(() -> adapterDashboard.getFilter().filter(String.valueOf(categoryId)));
                     }).start();
                 }
             }
@@ -151,12 +150,6 @@ tab layout on dashboard
 
             }
         });//tab bar
-    }
-
-
-    public int filterCategoryId() {
-
-        return categoryId;
     }
 
     /*

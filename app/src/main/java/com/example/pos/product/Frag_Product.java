@@ -28,6 +28,7 @@ import com.example.pos.HelperClass.DateHelper;
 import com.example.pos.HelperClass.SharedPrefHelper;
 import com.example.pos.R;
 import com.example.pos.category.AdapterCategory;
+import com.example.pos.category.CategoryHelper;
 import com.example.pos.category.CategoryViewModel;
 import com.example.pos.databinding.FragmentFragProductBinding;
 import com.example.pos.inventory.AdapterInventory;
@@ -41,7 +42,7 @@ import com.github.drjacky.imagepicker.ImagePicker;
 import java.io.File;
 import java.util.Random;
 
-public class Frag_Product extends Fragment {
+public class Frag_Product extends Fragment implements CategoryHelper {
     FragmentFragProductBinding binding;
     ProductViewModel productViewModel;
     SupplierViewModel supplierViewModel;
@@ -191,8 +192,9 @@ public class Frag_Product extends Fragment {
     private void GetSpinnerData() {
         categoryViewModel.getAllCategory().observe(getViewLifecycleOwner(), categories -> {
             if (categories != null) {
-                adapterCategory = new AdapterCategory(categories, requireContext());
+                adapterCategory = new AdapterCategory(this, categories, requireContext());
                 binding.formProduct.spinnerProductCategory.setAdapter(adapterCategory);
+                adapterCategory.setVisible(0);
                 binding.formProduct.spinnerProductCategory.setSelection(adapterCategory.getPosition(categorySpinnerId));
                 binding.formProduct.spinnerProductCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
@@ -309,5 +311,10 @@ public class Frag_Product extends Fragment {
                 return true;
             }
         }, getViewLifecycleOwner());
+    }
+
+    @Override
+    public void doCustomizeCategoryById(int i) {
+
     }
 }

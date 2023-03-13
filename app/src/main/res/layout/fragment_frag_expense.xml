@@ -3,7 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:orientation="vertical"
     tools:context=".expense.Frag_expense">
+
+    <ListView
+        android:id="@+id/expense_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@null"
+        android:listSelector="#00000000"
+        android:scrollbars="none" />
 
     <include
         android:id="@+id/formExpense"

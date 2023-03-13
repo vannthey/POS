@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements CustomerHelper {
         setSupportActionBar(binding.actionBar.customActionbar);
         binding.navDrawerView.setCheckedItem(R.id.dashboad);
         binding.navDrawerView.getChildAt(0).setVerticalScrollBarEnabled(false);
+        setTitle(R.string.dashboard);
         setStateFragment(new Frag_Dashboard());
         SetUserNameAndRole();
 

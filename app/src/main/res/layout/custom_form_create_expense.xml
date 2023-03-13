@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -8,26 +9,78 @@
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:boxStrokeColor="@color/Brilliant_Azure"
+        app:hintTextColor="@color/Brilliant_Azure">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/expense_title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/expense_title"
-            android:inputType="text" />
+            android:inputType="text"
+            android:lines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:boxStrokeColor="@color/Brilliant_Azure"
+        app:hintTextColor="@color/Brilliant_Azure">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/expense_price"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="@string/price"
-            android:inputType="number" />
+            android:hint="@string/price_dollar"
+            android:inputType="numberDecimal"
+            android:lines="1" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1"
+            app:boxStrokeColor="@color/Brilliant_Azure"
+            app:hintTextColor="@color/Brilliant_Azure">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/expense_paid"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/paid_dollar"
+                android:inputType="numberDecimal"
+                android:lines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            app:boxStrokeColor="@color/Brilliant_Azure"
+            app:hintTextColor="@color/Brilliant_Azure">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/expense_due"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:focusable="false"
+                android:hint="@string/due_dollar"
+                android:inputType="numberDecimal"
+                android:lines="1"
+                android:textColor="@color/Coral_Red" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -35,10 +88,13 @@
         android:layout_height="200dp">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/expense_description"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="start"
-            android:hint="@string/Description" />
+            android:hint="@string/Description"
+            app:boxStrokeColor="@color/Brilliant_Azure"
+            app:hintTextColor="@color/Brilliant_Azure" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
@@ -47,33 +103,45 @@
         android:layout_marginTop="10dp">
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_expense_cancel"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_marginEnd="5dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/Deep_Saffron" />
+            android:backgroundTint="@color/Deep_Saffron"
+            android:text="@string/cancel"
+            android:textAllCaps="false" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_expense_delete"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/Coral_Red" />
+            android:backgroundTint="@color/Coral_Red"
+            android:text="@string/delete"
+            android:textAllCaps="false" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_expense_update"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/Lime_Green" />
+            android:backgroundTint="@color/Lime_Green"
+            android:text="@string/update"
+            android:textAllCaps="false" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_expense_save"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_marginStart="5dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/Egyptian_Blue" />
+            android:backgroundTint="@color/Egyptian_Blue"
+            android:text="@string/save"
+            android:textAllCaps="false" />
     </LinearLayout>
 </LinearLayout>
